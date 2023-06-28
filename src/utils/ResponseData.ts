@@ -1,9 +1,9 @@
 export default class ResponseData {
   success: boolean;
-  error: string | null | undefined;
+  error?: string | null | undefined;
   result: any | null;
 
-  constructor(result: any | null, error: string | null | undefined) {
+  constructor(result: any | null, error?: string | null | undefined) {
     this.success = error === null || error === undefined;
     this.error = null;
     this.result = null;

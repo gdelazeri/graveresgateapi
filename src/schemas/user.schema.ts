@@ -17,3 +17,13 @@ export const createUserSchema = object({
     imageUrl: string().optional(),
   }),
 });
+
+export const loginSchema = object({
+  body: object({
+    email: string()
+      .email("Must be a valid email")
+      .required("Email is required"),
+    password: string()
+      .required("Password is required"),
+  }),
+});
