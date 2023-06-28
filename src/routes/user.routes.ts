@@ -1,19 +1,25 @@
 import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
-import { postUser, postLogin } from '../controllers/user.controller';
-import { createUserSchema, loginSchema } from '../schemas/user.schema';
+import { postUser, postLogin, putUser } from '../controllers/user.controller';
+import { postUserSchema, postLoginSchema, putUserSchema } from '../schemas/user.schema';
 
 const router = express.Router();
 
 router.post(
   '/',
-  validateRequest(createUserSchema),
+  validateRequest(postUserSchema),
   postUser,
+);
+
+router.put(
+  '/:_id',
+  validateRequest(putUserSchema),
+  putUser,
 );
 
 router.post(
   '/login',
-  validateRequest(loginSchema),
+  validateRequest(postLoginSchema),
   postLogin,
 );
 

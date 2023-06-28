@@ -7,6 +7,7 @@ async function connect() {
     .connect(DATABASE_CONNECTION_STRING, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     })
     .then(() => {
       log.info("Database connected");

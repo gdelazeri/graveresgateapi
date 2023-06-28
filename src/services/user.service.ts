@@ -11,9 +11,25 @@ export async function createUser(input: DocumentDefinition<UserDocument>) {
   }
 }
 
+export async function updateUser(_id: string, input: UserDocument) {
+  try {
+    return await User.findByIdAndUpdate(_id, input);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function findUserByEmail(email: string) {
   try {
     return await User.findOne({ email });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function findUserById(_id: string) {
+  try {
+    return await User.findById(_id);
   } catch (error: any) {
     throw new Error(error);
   }
