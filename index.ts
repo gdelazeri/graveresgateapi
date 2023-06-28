@@ -1,13 +1,17 @@
-import express, { Request, Response, Express, NextFunction } from 'express';
+import express, { Request, Response, Express } from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import connect from './src/config/connect';
+import deserializeUser from './src/middlewares/deserializeUser';
 import userRoutes from './src/routes/user.routes';
-import { INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status';
+import { NOT_FOUND } from 'http-status';
 
 dotenv.config();
 
 const router: Express = express();
+
+// Access token data
+router.use(deserializeUser);
 
 // Logging
 router.use(morgan('dev'));
