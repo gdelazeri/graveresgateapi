@@ -1,20 +1,35 @@
-import express, { Express } from 'express';
+import express, { Request, Response, Express, NextFunction } from 'express';
 import morgan from 'morgan';
+import dotenv from 'dotenv';
+import connect from './src/config/connect';
+import userRoutes from './src/routes/user.routes';
+import { INTERNAL_SERVER_ERROR, NOT_FOUND } from 'http-status';
+
+dotenv.config();
 
 const router: Express = express();
 
-/** Logging */
+// Logging
 router.use(morgan('dev'));
-/** Parse the request */
+
+// Parse the request
 router.use(express.urlencoded({ extended: false }));
-/** Takes care of JSON data */
+
+// Takes care of JSON data
 router.use(express.json());
 
-/** Error handling */
-router.use((req, res, next) => res.sendStatus(404));
+// Routes
+router.use('/v1/user', userRoutes);
 
-/** Server */
+/* Error */
+router.all('*', (req: Request, res: Response) => {
+  res.sendStatus(NOT_FOUND);
+});
+
+
+// Server
 const PORT: any = process.env.PORT ?? 6060;
 router.listen(PORT, () => {
+  connect();
   console.log(`The server is running on port ${PORT}`)
 });
