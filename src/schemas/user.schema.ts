@@ -34,6 +34,12 @@ export const putUserSchema = object({
   }),
 });
 
+export const deleteUserSchema = object({
+  params: object({
+    _id: string().required(),
+  }),
+});
+
 export const postLoginSchema = object({
   body: object({
     email: string()

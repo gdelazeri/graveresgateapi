@@ -1,4 +1,6 @@
-export interface UserIdParams {
+import * as core from 'express-serve-static-core';
+
+export interface UserIdParams extends core.ParamsDictionary {
   _id: string;
 }
 

@@ -1,6 +1,6 @@
 enum Permission {
   ADMIN = 'ADMIN',
-  RESCUER = 'RESCUER',
+  VOLUNTARY = 'VOLUNTARY',
   TRAINEE = 'TRAINEE',
 }
 

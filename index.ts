@@ -30,7 +30,6 @@ router.all('*', (req: Request, res: Response) => {
   res.sendStatus(NOT_FOUND);
 });
 
-
 // Server
 const PORT: any = process.env.PORT ?? 6060;
 router.listen(PORT, () => {

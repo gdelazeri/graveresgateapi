@@ -13,7 +13,8 @@ async function connect() {
       log.info("Database connected");
     })
     .catch((error) => {
-      log.error("Database not connected", error);
+      console.log(error);
+      log.error("Database not connected");
       process.exit(1);
     });
 }

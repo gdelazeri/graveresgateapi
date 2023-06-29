@@ -1,4 +1,4 @@
-import { DocumentDefinition, Error } from 'mongoose';
+import { Error } from 'mongoose';
 import Status from '../enum/user/UserStatus';
 import { LoginPayload } from '../interfaces/User';
 import User, { UserDocument } from '../models/user.model';
@@ -47,5 +47,13 @@ export async function checkLogin(payload: LoginPayload) {
 
   } catch (error: any) {
     throw new Error(error);
+  }
+}
+
+export async function softDeleteUser(_id: string) {
+  try {
+    return await User.findByIdAndUpdate(_id, { $set: { status: Status.DELETED, deletedAt: Date.now() } });
+  } catch (error) {
+    throw error;
   }
 }
