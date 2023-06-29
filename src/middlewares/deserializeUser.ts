@@ -2,6 +2,15 @@ import { get } from "lodash";
 import { Request, Response, NextFunction } from "express";
 import { decodeAccessToken } from '../utils/JsonWebToken';
 
+declare global {
+  namespace Express {
+    export interface Request {
+      userId: string;
+      permission: Permission;
+    }
+  }
+}
+
 const deserializeUser = async (
   req: Request,
   res: Response,
@@ -17,9 +26,7 @@ const deserializeUser = async (
   const { decoded } = decodeAccessToken(accessToken);
 
   if (decoded) {
-    // @ts-ignore
     req.userId = decoded.userId;
-    // @ts-ignore
     req.permission = decoded.permission;
 
     return next();

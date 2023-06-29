@@ -1,9 +1,9 @@
 import { Error } from 'mongoose';
 import Status from '../enum/user/UserStatus';
-import { LoginPayload } from '../interfaces/User';
+import { LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload } from '../interfaces/User';
 import User, { UserDocument } from '../models/user.model';
 
-export async function createUser(input: UserDocument) {
+export async function createUser(input: PostUserPayload) {
   try {
     return await User.create(input);
   } catch (error) {
@@ -11,9 +11,9 @@ export async function createUser(input: UserDocument) {
   }
 }
 
-export async function updateUser(_id: string, input: UserDocument) {
+export async function updateUser(_id: string, input: PutUserPayload | PutOwnUserPayload) {
   try {
-    return await User.findByIdAndUpdate(_id, input);
+    return await User.findByIdAndUpdate(_id, input as UserDocument);
   } catch (error) {
     throw error;
   }

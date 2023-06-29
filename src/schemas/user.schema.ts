@@ -1,10 +1,9 @@
-import { object, string, ref } from "yup";
+import { object, string } from "yup";
 import Permission from "../enum/user/UserPermission";
 import Status from "../enum/user/UserStatus";
 
 export const postUserSchema = object({
   body: object({
-    registrationId: string().required("RegistrationId is required"),
     name: string().required("Name is required"),
     email: string()
       .email("Must be a valid email")
@@ -12,9 +11,6 @@ export const postUserSchema = object({
     password: string()
       .required("Password is required")
       .min(8, "Password is too short - should be 8 chars minimum."),
-    permission: string().oneOf(Object.values(Permission)).required(),
-    status: string().oneOf(Object.values(Status)).required(),
-    imageUrl: string().optional(),
   }),
 });
 
@@ -30,7 +26,15 @@ export const putUserSchema = object({
       .optional(),
     permission: string().oneOf(Object.values(Permission)).optional(),
     status: string().oneOf(Object.values(Status)).optional(),
-    imageUrl: string().optional(),
+  }),
+});
+
+export const putOwnUserSchema = object({
+  body: object({
+    name: string().optional(),
+    email: string()
+      .email("Must be a valid email")
+      .optional(),
   }),
 });
 
