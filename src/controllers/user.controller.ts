@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK, UNAUTHORIZED } from 'http-status';
 import { UserErrorCodes } from '../enum/ErrorCodes';
-import LoginRequest from '../interfaces/LoginRequest';
 import { createUser, updateUser, findUserByEmail, checkLogin, findUserById } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
 import { createAccessToken } from '../utils/JsonWebToken';
+import { LoginPayload, UserIdParams } from '../interfaces/User';
+import { UserDocument } from '../models/user.model';
 
-export async function postUser(req: Request, res: Response) {
+export async function postUser(req: Request<unknown, unknown, UserDocument>, res: Response) {
   try {
     const { body } = req;
 
@@ -16,7 +17,7 @@ export async function postUser(req: Request, res: Response) {
       );
     }
   
-    await createUser({ ...body });
+    await createUser(body);
   
     return res.sendStatus(CREATED);
   } catch (error) {
@@ -24,7 +25,7 @@ export async function postUser(req: Request, res: Response) {
   }
 }
 
-export async function putUser(req: Request, res: Response) {
+export async function putUser(req: Request<UserIdParams, unknown, UserDocument>, res: Response) {
   try {
     const { body, params: { _id } } = req;
 
@@ -34,7 +35,7 @@ export async function putUser(req: Request, res: Response) {
       );
     }
   
-    await updateUser(_id, { ...body });
+    await updateUser(_id, body);
   
     return res.sendStatus(NO_CONTENT);
   } catch (error) {
@@ -42,7 +43,7 @@ export async function putUser(req: Request, res: Response) {
   }
 }
 
-export async function postLogin(req: Request<unknown, unknown, LoginRequest>, res: Response) {
+export async function postLogin(req: Request<unknown, unknown, LoginPayload>, res: Response) {
   try {
     const { body } = req;
 

@@ -1,9 +1,9 @@
 import { DocumentDefinition, Error } from 'mongoose';
 import Status from '../enum/user/UserStatus';
-import LoginRequest from '../interfaces/LoginRequest';
+import { LoginPayload } from '../interfaces/User';
 import User, { UserDocument } from '../models/user.model';
 
-export async function createUser(input: DocumentDefinition<UserDocument>) {
+export async function createUser(input: UserDocument) {
   try {
     return await User.create(input);
   } catch (error) {
@@ -35,7 +35,7 @@ export async function findUserById(_id: string) {
   }
 }
 
-export async function checkLogin(payload: LoginRequest) {
+export async function checkLogin(payload: LoginPayload) {
   try {
     const user = await User.findOne({ email: payload.email, status: { $in: [Status.ACTIVE, Status.PENDING] } });
     
