@@ -1,6 +1,7 @@
 import { get } from "lodash";
 import { Request, Response, NextFunction } from "express";
 import { decodeAccessToken } from '../utils/JsonWebToken';
+import Permission from "../enum/user/UserPermission";
 
 declare global {
   namespace Express {

@@ -10,6 +10,7 @@ export interface UserDocument extends mongoose.Document {
   password: string;
   permission: Permission;
   status: string;
+  isDriver: boolean;
   imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
@@ -25,6 +26,7 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     permission: { type: String, enum: Permission, required: true, default: Permission.TRAINEE },
     status: { type: String, enum: Status, required: true, default: Status.PENDING },
+    isDriver: { type: Boolean, required: true, default: false },
     imageUrl: { type: String, required: false },
     deletedAt: { type: Date, required: false },
   },

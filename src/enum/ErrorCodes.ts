@@ -3,3 +3,7 @@ export enum UserErrorCodes {
   LoginInvalid = 'USER_0002',
   UserInexistent = 'USER_0003',
 }
+
+export enum GenericErrorCodes {
+  WrongFields = 'ERROR_0001'
+}

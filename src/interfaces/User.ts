@@ -21,6 +21,7 @@ export interface PutUserPayload {
   email: string;
   permission: string;
   status: string;
+  isDriver: boolean;
 }
 
 export interface PutOwnUserPayload {

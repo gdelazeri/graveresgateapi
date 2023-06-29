@@ -11,13 +11,13 @@ export const postUserSchema = object({
     password: string()
       .required("Password is required")
       .min(8, "Password is too short - should be 8 chars minimum."),
-  }),
-});
+  }).noUnknown(true).strict()
+})
 
 export const putUserSchema = object({
   params: object({
     _id: string().required(),
-  }),
+  }).noUnknown(true).strict(),
   body: object({
     registrationId: string().optional(),
     name: string().optional(),
@@ -26,7 +26,7 @@ export const putUserSchema = object({
       .optional(),
     permission: string().oneOf(Object.values(Permission)).optional(),
     status: string().oneOf(Object.values(Status)).optional(),
-  }),
+  }).noUnknown(true).strict()
 });
 
 export const putOwnUserSchema = object({
@@ -35,13 +35,13 @@ export const putOwnUserSchema = object({
     email: string()
       .email("Must be a valid email")
       .optional(),
-  }),
+  }).noUnknown(true).strict(),
 });
 
 export const deleteUserSchema = object({
   params: object({
     _id: string().required(),
-  }),
+  }).noUnknown(true).strict(),
 });
 
 export const postLoginSchema = object({
@@ -51,5 +51,5 @@ export const postLoginSchema = object({
       .required("Email is required"),
     password: string()
       .required("Password is required"),
-  }),
+  }).noUnknown(true).strict(),
 });
