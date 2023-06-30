@@ -2,6 +2,7 @@ import { Error } from 'mongoose';
 import Status from '../enum/user/UserStatus';
 import { LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload } from '../interfaces/User';
 import User, { UserDocument } from '../models/user.model';
+import { createAccessToken, createRefreshToken } from '../utils/JsonWebToken';
 
 export async function createUser(input: PostUserPayload) {
   try {
@@ -35,6 +36,14 @@ export async function findUserById(_id: string) {
   }
 }
 
+export async function checkValidUser(_id: string) {
+  try {
+    return await User.findOne({ _id, status: { $in: [Status.ACTIVE, Status.PENDING] } });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
 export async function checkLogin(payload: LoginPayload) {
   try {
     const user = await User.findOne({ email: payload.email, status: { $in: [Status.ACTIVE, Status.PENDING] } });
@@ -53,6 +62,17 @@ export async function checkLogin(payload: LoginPayload) {
 export async function softDeleteUser(_id: string) {
   try {
     return await User.findByIdAndUpdate(_id, { $set: { status: Status.DELETED, deletedAt: Date.now() } });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function generateTokens(user: UserDocument) {
+  try {
+    return {
+      accessToken: createAccessToken({ userId: user._id, permission: user.permission }),
+      refreshToken: createRefreshToken({ userId: user._id }),
+    }
   } catch (error) {
     throw error;
   }

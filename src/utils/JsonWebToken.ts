@@ -1,24 +1,35 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { ACCESS_TOKEN_EXPIRES_IN, ACCESS_TOKEN_SECRET } from "../config/environment";
+import { Error } from "mongoose";
+import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN, ACCESS_TOKEN_SECRET } from "../config/environment";
 import Permission from "../enum/user/UserPermission";
 
-export interface TokenPayload extends JwtPayload {
+export interface AccessTokenPayload extends JwtPayload {
   userId: string;
   permission: Permission;
 }
 
-export function createAccessToken(object: TokenPayload) {
+export interface RefreshTokenPayload extends JwtPayload {
+  userId: string;
+}
+
+export function createAccessToken(object: AccessTokenPayload) {
   return jwt.sign(object, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
 }
 
-export function decodeAccessToken(token: string) {
+export function createRefreshToken(object: RefreshTokenPayload) {
+  return jwt.sign(object, ACCESS_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_IN });
+}
+
+export function decodeToken(token: string) {
   try {
-    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as TokenPayload;
+    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET) as any;
 
     return { valid: true, expired: false, decoded };
-  } catch (error) {
+  } catch (error: any) {
     return {
       valid: false,
+      expired: error.message === "jwt expired",
+      decoded: null,
     };
   }
 }

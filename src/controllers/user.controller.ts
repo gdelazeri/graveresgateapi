@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import { BAD_REQUEST, CREATED, INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK, UNAUTHORIZED } from 'http-status';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK, UNAUTHORIZED } from 'http-status';
 import { UserErrorCodes } from '../enum/ErrorCodes';
-import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, softDeleteUser } from '../services/user.service';
+import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, softDeleteUser, generateTokens } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
-import { createAccessToken } from '../utils/JsonWebToken';
 import { LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload, UserIdParams } from '../interfaces/User';
 
 export async function postUser(req: Request<unknown, unknown, PostUserPayload>, res: Response) {
@@ -16,9 +15,11 @@ export async function postUser(req: Request<unknown, unknown, PostUserPayload>, 
       );
     }
   
-    await createUser(body);
+    const user = await createUser(body);
   
-    return res.sendStatus(CREATED);
+    return res.status(OK).send(
+      new ResponseData(generateTokens(user))
+    );
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -90,12 +91,9 @@ export async function postLogin(req: Request<unknown, unknown, LoginPayload>, re
       );
     }
 
-    const token = createAccessToken({
-      userId: user._id,
-      permission: user.permission,
-    });
-
-    return res.status(OK).send(new ResponseData({ token }));
+    return res.status(OK).send(
+      new ResponseData(generateTokens(user))
+    );
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
