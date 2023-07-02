@@ -7,7 +7,7 @@ import { createAccessToken, createRefreshToken } from '../../../src/utils/JsonWe
 
 import { connectDB, clearDB, disconnectDB } from '../../mocks/database';
 
-describe('[src/middlewares/deserializeUser] deserializeUser', () => {
+describe('src/middlewares/deserializeUser', () => {
   describe('deserializeUser method', () => {
     beforeAll(async () => {
       await connectDB();
