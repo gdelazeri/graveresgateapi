@@ -12,12 +12,12 @@ export interface RefreshTokenPayload extends JwtPayload {
   userId: string;
 }
 
-export function createAccessToken(object: AccessTokenPayload) {
-  return jwt.sign(object, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
+export function createAccessToken(object: AccessTokenPayload, expiresIn = ACCESS_TOKEN_EXPIRES_IN) {
+  return jwt.sign(object, ACCESS_TOKEN_SECRET, { expiresIn });
 }
 
-export function createRefreshToken(object: RefreshTokenPayload) {
-  return jwt.sign(object, ACCESS_TOKEN_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_IN });
+export function createRefreshToken(object: RefreshTokenPayload, expiresIn = REFRESH_TOKEN_EXPIRES_IN) {
+  return jwt.sign(object, ACCESS_TOKEN_SECRET, { expiresIn });
 }
 
 export function decodeToken(token: string) {
