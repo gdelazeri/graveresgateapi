@@ -1,9 +1,41 @@
 import { Request, Response } from 'express';
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK, UNAUTHORIZED } from 'http-status';
 import { UserErrorCodes } from '../enum/ErrorCodes';
-import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, softDeleteUser, generateTokens } from '../services/user.service';
+import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, findUserByPage, softDeleteUser, generateTokens } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
-import { LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload, UserIdParams } from '../interfaces/User';
+import { GetListUsers, LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload, UserIdParams } from '../interfaces/User';
+
+export async function getOwnUser(req: Request, res: Response) {
+  try {
+    const { userId } = req;
+
+    const user = await findUserById(userId);
+
+    if (!user) {
+      return res.sendStatus(NOT_FOUND);
+    }
+  
+    return res.status(OK).send(
+      new ResponseData(user)
+    );
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function listUsers(req: Request<unknown, unknown, unknown, GetListUsers>, res: Response) {
+  try {
+    const { pageNumber, pageSize } = req.query;
+
+    const list = await findUserByPage(parseInt(pageNumber, 10), parseInt(pageSize, 10));
+  
+    return res.status(OK).send(
+      new ResponseData(list)
+    );
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
 
 export async function postUser(req: Request<unknown, unknown, PostUserPayload>, res: Response) {
   try {

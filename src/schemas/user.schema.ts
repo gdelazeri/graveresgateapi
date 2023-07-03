@@ -1,6 +1,15 @@
-import { object, string } from "yup";
+import { number, object, string } from "yup";
 import Permission from "../enum/user/UserPermission";
 import Status from "../enum/user/UserStatus";
+
+export const getOwnUserSchema = object({ }).noUnknown(true).strict();
+
+export const listUsersSchema = object({
+  query: object({
+    pageNumber: string().required(),
+    pageSize: string().required(),
+  }).noUnknown(true).strict()
+});
 
 export const postUserSchema = object({
   body: object({
@@ -12,7 +21,7 @@ export const postUserSchema = object({
       .required("Password is required")
       .min(8, "Password is too short - should be 8 chars minimum."),
   }).noUnknown(true).strict()
-})
+});
 
 export const putUserSchema = object({
   params: object({

@@ -28,3 +28,8 @@ export interface PutOwnUserPayload {
   name: string;
   email: string;
 }
+
+export interface GetListUsers extends core.Query {
+  pageNumber: string;
+  pageSize: string;
+}

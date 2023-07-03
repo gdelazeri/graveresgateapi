@@ -30,7 +30,19 @@ export async function findUserByEmail(email: string) {
 
 export async function findUserById(_id: string) {
   try {
-    return await User.findById(_id);
+    return await User.findById(_id, { password: 0 });
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function findUserByPage(pageNumber: number, pageSize: number) {
+  try {
+    return await User.aggregate<UserDocument>([
+      { $skip: (pageNumber - 1)*pageSize },
+      { $limit: pageSize },
+      { $project: { password: 0 } },
+    ]);
   } catch (error: any) {
     throw new Error(error);
   }
