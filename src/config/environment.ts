@@ -1,7 +1,7 @@
-export const DATABASE_CONNECTION_STRING = String(process.env.DATABASE_CONNECTION_STRING || "mongodb+srv://api:fyBpPj81tSMyawnZ@grave-cluster.6dp1z3r.mongodb.net/graveresgate");
+export const DATABASE_CONNECTION_STRING = String(process.env.DATABASE_CONNECTION_STRING);
 
-export const ACCESS_TOKEN_EXPIRES_IN = '2h';
+export const ACCESS_TOKEN_EXPIRES_IN = String(process.env.ACCESS_TOKEN_EXPIRES_IN);
 
-export const REFRESH_TOKEN_EXPIRES_IN = '30 days';
+export const REFRESH_TOKEN_EXPIRES_IN = String(process.env.REFRESH_TOKEN_EXPIRES_IN);
 
-export const ACCESS_TOKEN_SECRET = 'dev';
+export const ACCESS_TOKEN_SECRET = String(process.env.ACCESS_TOKEN_SECRET);
