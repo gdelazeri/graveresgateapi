@@ -1,5 +1,4 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { Error } from "mongoose";
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN, ACCESS_TOKEN_SECRET } from "../config/environment";
 import Permission from "../enum/user/UserPermission";
 

@@ -5,9 +5,9 @@ import deserializeUser from '../../../src/middlewares/deserializeUser';
 import User from '../../../src/models/user.model';
 import { createAccessToken, createRefreshToken } from '../../../src/utils/JsonWebToken';
 
-import { connectDB, clearDB, disconnectDB } from '../../mocks/database';
+import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 
-describe('src/middlewares/deserializeUser', () => {
+describe('src/middlewares/deserializeUser.ts', () => {
   describe('deserializeUser method', () => {
     beforeAll(async () => {
       await connectDB();

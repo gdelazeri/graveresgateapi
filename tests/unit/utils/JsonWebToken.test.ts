@@ -1,19 +1,36 @@
 import { NextFunction, Request, Response } from 'express';
 import { FORBIDDEN, UNAUTHORIZED } from 'http-status';
+import { string } from 'yup';
 import Permission from '../../../src/enum/user/UserPermission';
 import requiresAuth from '../../../src/middlewares/requiresAuth';
+import { createAccessToken, decodeToken } from '../../../src/utils/JsonWebToken';
 
-describe('src/middlewares/requiresAuth.ts', () => {
-  test('requires user data on access token', async () => {
+describe('src/utils/JsonWebToken.ts', () => {
+  test('create access token and decode it', async () => {
     const userId = '1';
     const permission = Permission.ADMIN;
-    const request = { userId, permission } as unknown as Request;
-    const response = { sendStatus: jest.fn() } as unknown as Response;
-    const next: NextFunction = jest.fn();
 
-    requiresAuth([Permission.ADMIN])(request, response, next);
+    const accessToken = createAccessToken({ userId, permission });
+    const { valid, expired, decoded } = decodeToken(accessToken);
 
-    expect(next).toHaveBeenCalled();
+    expect(typeof accessToken).toBe('string');
+    expect(decoded.userId).toEqual(userId);
+    expect(decoded.permission).toEqual(permission);
+    expect(valid).toBeTruthy();
+    expect(expired).toBeFalsy();
+  });
+
+  test('create access token expired and decode it', async () => {
+    const userId = '1';
+    const permission = Permission.ADMIN;
+
+    const accessToken = createAccessToken({ userId, permission }, '-10');
+    const { valid, expired, decoded } = decodeToken(accessToken);
+
+    expect(typeof accessToken).toBe('string');
+    expect(decoded).toBeNull();
+    expect(valid).toBeFalsy();
+    expect(expired).toBeTruthy();
   });
 
   test('error on verify user data on access token without permission', async () => {
