@@ -1,12 +1,9 @@
 import express, { Request, Response, Express } from 'express';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import connect from './src/config/connect';
 import deserializeUser from './src/middlewares/deserializeUser';
 import userRoutes from './src/routes/user.routes';
 import { NOT_FOUND } from 'http-status';
-
-dotenv.config();
 
 const router: Express = express();
 
