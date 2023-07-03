@@ -38,14 +38,4 @@ describe('src/middlewares/requiresAuth.ts', () => {
 
     expect(response.sendStatus).toHaveBeenCalledWith(UNAUTHORIZED);
   });
-
-  test('error on verify headers', async () => {
-    const request = { } as unknown as Request;
-    const response = { sendStatus: jest.fn() } as unknown as Response;
-    const next: NextFunction = jest.fn();
-
-    requiresAuth([])(request, response, next);
-
-    expect(response.sendStatus).toHaveBeenCalledWith(UNAUTHORIZED);
-  });
 });

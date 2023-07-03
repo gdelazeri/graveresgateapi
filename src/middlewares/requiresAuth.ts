@@ -8,22 +8,18 @@ const requiresAuth = (permissionsAuthorized: Permission[]) => (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const userId = get(req, "userId") as unknown as string;
-    const permission = get(req, "permission") as unknown as Permission;
+  const userId = get(req, "userId") as unknown as string;
+  const permission = get(req, "permission") as unknown as Permission;
 
-    if (!userId) {
-      return res.sendStatus(UNAUTHORIZED);
-    }
-
-    if (!permissionsAuthorized.includes(permission)) {
-      return res.sendStatus(FORBIDDEN);
-    }
-  
-    return next();
-  } catch (e) {
+  if (!userId) {
     return res.sendStatus(UNAUTHORIZED);
   }
+
+  if (!permissionsAuthorized.includes(permission)) {
+    return res.sendStatus(FORBIDDEN);
+  }
+
+  return next();
 };
 
 export default requiresAuth;
