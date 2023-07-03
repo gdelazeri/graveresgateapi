@@ -11,7 +11,7 @@ export async function postUser(req: Request<unknown, unknown, PostUserPayload>, 
 
     if (await findUserByEmail(body.email)) {
       return res.status(BAD_REQUEST).send(
-        new ResponseData(null, UserErrorCodes.UserExistent)
+        new ResponseData(null, UserErrorCodes.EmailInUsage)
       );
     }
   
