@@ -28,7 +28,7 @@ describe('src/routes/user.routes postUser', () => {
     await disconnectDB();
   });
 
-  test.only('create user successfully', async () => {
+  test('create user successfully', async () => {
     const res = await request(api)
       .post(ROUTE_MAP.USER_V1)
       .send({ ...userObj });
@@ -41,7 +41,7 @@ describe('src/routes/user.routes postUser', () => {
     expect(userCreated?.name).toEqual(userObj.name);
   });
 
-  test.only('error on create user cause there are not acceptable fields', async () => {
+  test('error on create user cause there are not acceptable fields', async () => {
     const res = await request(api)
       .post(ROUTE_MAP.USER_V1)
       .send({ ...userObj, permission: Permission.ADMIN, status: Status.ACTIVE });
@@ -50,7 +50,7 @@ describe('src/routes/user.routes postUser', () => {
     expect(res.body.error).toEqual(GenericErrorCodes.WrongFields);
   });
 
-  test.only('error on create user cause already exists another user with the same email', async () => {
+  test('error on create user cause already exists another user with the same email', async () => {
     await User.create({ ...userObj });
 
     const res = await request(api)
