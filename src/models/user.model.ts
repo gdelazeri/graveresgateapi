@@ -15,6 +15,7 @@ export interface UserDocument extends mongoose.Document {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+  deletedBy: string;
   comparePassword(candidatePassword: string): boolean;
 }
 
@@ -29,6 +30,7 @@ const UserSchema = new mongoose.Schema(
     isDriver: { type: Boolean, required: true, default: false },
     imageUrl: { type: String, required: false },
     deletedAt: { type: Date, required: false },
+    deletedBy: { type: String, required: false },
   },
   { timestamps: true }
 );

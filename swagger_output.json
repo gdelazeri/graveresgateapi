@@ -1,0 +1,483 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "GRAVE Resgate API",
+    "description": "Rest API to manage and store internal data related to GRAVE Resgate organization"
+  },
+  "host": "localhost:7100",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "User endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization",
+      "description": "Please enter into field the word ‘Bearer’ following by space and JWT"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get data from user logged",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Register a new user",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostNewUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update the user logged",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PutOwnUser"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v1/user/list": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "List users with pagination",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Starts with 1",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Max of 20",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v1/user/{_id}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update an user",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "params",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          },
+          {
+            "name": "payload",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PutUser"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Delete an user",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "params",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v1/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Delete an user",
+        "parameters": [
+          {
+            "name": "payload",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ResponseLogin": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string",
+              "example": "string"
+            },
+            "refreshToken": {
+              "type": "string",
+              "example": "string"
+            }
+          }
+        }
+      }
+    },
+    "ResponseUser": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "string"
+            },
+            "registrationId": {
+              "type": "string",
+              "example": "string"
+            },
+            "name": {
+              "type": "string",
+              "example": "string"
+            },
+            "email": {
+              "type": "string",
+              "example": "string"
+            },
+            "password": {
+              "type": "string",
+              "example": "string"
+            },
+            "permission": {
+              "type": "string",
+              "example": "string"
+            },
+            "status": {
+              "type": "string",
+              "example": "string"
+            },
+            "isDriver": {
+              "type": "boolean",
+              "example": true
+            },
+            "imageUrl": {
+              "type": "string",
+              "example": "string"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "string"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "string"
+            },
+            "deletedAt": {
+              "type": "string",
+              "example": "string"
+            }
+          }
+        }
+      }
+    },
+    "ResponseUserList": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "string"
+              },
+              "registrationId": {
+                "type": "string",
+                "example": "string"
+              },
+              "name": {
+                "type": "string",
+                "example": "string"
+              },
+              "email": {
+                "type": "string",
+                "example": "string"
+              },
+              "password": {
+                "type": "string",
+                "example": "string"
+              },
+              "permission": {
+                "type": "string",
+                "example": "string"
+              },
+              "status": {
+                "type": "string",
+                "example": "string"
+              },
+              "isDriver": {
+                "type": "boolean",
+                "example": true
+              },
+              "imageUrl": {
+                "type": "string",
+                "example": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "string"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "string"
+              },
+              "deletedAt": {
+                "type": "string",
+                "example": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "PostNewUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "string"
+        },
+        "email": {
+          "type": "string",
+          "example": "string"
+        },
+        "password": {
+          "type": "string",
+          "example": "string"
+        }
+      }
+    },
+    "PutUser": {
+      "type": "object",
+      "properties": {
+        "registrationId": {
+          "type": "string",
+          "example": "string"
+        },
+        "name": {
+          "type": "string",
+          "example": "string"
+        },
+        "email": {
+          "type": "string",
+          "example": "string"
+        },
+        "permission": {
+          "type": "string",
+          "example": "ADMIN | VOLUNTARY | TRAINEE"
+        },
+        "status": {
+          "type": "string",
+          "example": "ACTIVE | PENDING | SUSPENDED | DELETED"
+        }
+      }
+    },
+    "PutOwnUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "string"
+        },
+        "email": {
+          "type": "string",
+          "example": "string"
+        }
+      }
+    },
+    "PostLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "string"
+        },
+        "password": {
+          "type": "string",
+          "example": "string"
+        }
+      }
+    }
+  }
+}

@@ -5,5 +5,6 @@ export enum UserErrorCodes {
 }
 
 export enum GenericErrorCodes {
-  WrongFields = 'ERROR_0001'
+  WrongFields = 'ERROR_0001',
+  PaginationInvalid = 'ERROR_0002',
 }

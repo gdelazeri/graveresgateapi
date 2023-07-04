@@ -71,9 +71,9 @@ export async function checkLogin(payload: LoginPayload) {
   }
 }
 
-export async function softDeleteUser(_id: string) {
+export async function softDeleteUser(_id: string, deletedBy: string) {
   try {
-    return await User.findByIdAndUpdate(_id, { $set: { status: Status.DELETED, deletedAt: Date.now() } });
+    return await User.findByIdAndUpdate(_id, { $set: { status: Status.DELETED, deletedAt: Date.now(), deletedBy } });
   } catch (error) {
     throw error;
   }

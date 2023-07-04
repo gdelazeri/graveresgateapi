@@ -8,7 +8,7 @@ import Permission from '../enum/user/UserPermission';
 const router = express.Router();
 
 router.get(
-  '/',
+  '',
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
   validateRequest(getOwnUserSchema),
   getOwnUser,
@@ -22,7 +22,7 @@ router.get(
 );
 
 router.post(
-  '/',
+  '',
   validateRequest(postUserSchema),
   postUser,
 );
@@ -35,7 +35,7 @@ router.put(
 );
 
 router.put(
-  '/',
+  '',
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
   validateRequest(putOwnUserSchema),
   putOwnUser,

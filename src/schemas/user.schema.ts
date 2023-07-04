@@ -1,4 +1,4 @@
-import { number, object, string } from "yup";
+import { object, string } from "yup";
 import Permission from "../enum/user/UserPermission";
 import Status from "../enum/user/UserStatus";
 
