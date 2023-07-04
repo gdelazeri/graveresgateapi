@@ -3,38 +3,34 @@ import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import { NOT_FOUND } from 'http-status';
 import connect from './src/config/connect';
-import deserializeUser from './src/middlewares/deserializeUser';
 import { PORT } from './src/config/environment';
-import userRoutes from './src/routes/user.routes';
 import swaggerFile from './swagger_output.json';
+import routes from './src/routes/index.routes';
 
-const router: Express = express();
-
-// Access token data
-router.use(deserializeUser);
+const app: Express = express();
 
 // Logging
-router.use(morgan('dev'));
+app.use(morgan('dev'));
 
 // Parse the request
-router.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 
 // Takes care of JSON data
-router.use(express.json());
+app.use(express.json());
 
 // Routes
-router.use('/v1/user', userRoutes);
+app.use(routes)
 
 // Swagger
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // Error
-router.all('*', (req: Request, res: Response) => {
+app.all('*', (req: Request, res: Response) => {
   res.sendStatus(NOT_FOUND);
 });
 
 // Server
-router.listen(PORT, () => {
+app.listen(PORT, () => {
   connect();
   console.log(`The server is running on port ${PORT}`)
 });

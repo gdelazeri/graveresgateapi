@@ -2,7 +2,11 @@ import { object, string } from "yup";
 import Permission from "../enum/user/UserPermission";
 import Status from "../enum/user/UserStatus";
 
-export const getOwnUserSchema = object({ }).noUnknown(true).strict();
+export const getOwnUserSchema = object({
+  query: object({ }).noUnknown(true).strict(),
+  params: object({ }).noUnknown(true).strict(),
+  body: object({ }).noUnknown(true).strict()
+}).noUnknown(true).strict();
 
 export const listUsersSchema = object({
   query: object({
