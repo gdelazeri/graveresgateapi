@@ -1,6 +1,5 @@
 import swaggerAutogen from 'swagger-autogen';
 import { PORT } from '../src/config/environment';
-import responses from './responses';
 import payloads from './payloads';
 import packageJson from '../package.json';
 
@@ -28,7 +27,6 @@ const doc = {
     }
   },
   definitions: {
-    ...responses,
     ...payloads,
   }
 }
