@@ -59,8 +59,8 @@ export async function checkValidUser(_id: string) {
 export async function checkLogin(payload: LoginPayload) {
   try {
     const user = await User.findOne({ email: payload.email, status: { $in: [Status.ACTIVE, Status.PENDING] } });
-    
-    if (user && user.comparePassword(payload.password)) {
+
+    if (user?.comparePassword(payload.password)) {
       return user;
     }
 

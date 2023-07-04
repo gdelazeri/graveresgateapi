@@ -51,7 +51,7 @@ UserSchema.pre('save', async function (next: mongoose.HookNextFunction) {
 });
 
 // Used for logging in
-UserSchema.methods.comparePassword = async function (
+UserSchema.methods.comparePassword = function (
   candidatePassword: string
 ) {
   const user = this as UserDocument;
