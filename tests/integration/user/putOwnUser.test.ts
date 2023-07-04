@@ -6,9 +6,8 @@ import makeApp from '../../../mocks/makeApp';
 import User from '../../../src/models/user.model';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import Permission from '../../../src/enum/user/UserPermission';
-import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, NO_CONTENT, OK } from 'http-status';
+import { BAD_REQUEST, NOT_FOUND, NO_CONTENT } from 'http-status';
 import { GenericErrorCodes, UserErrorCodes } from '../../../src/enum/ErrorCodes';
-import Status from '../../../src/enum/user/UserStatus';
 import { createAccessToken } from '../../../src/utils/JsonWebToken';
 
 const api = makeApp('', routes);
