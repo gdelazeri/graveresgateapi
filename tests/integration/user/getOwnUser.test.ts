@@ -7,6 +7,7 @@ import User from '../../../src/models/user.model';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import { createAccessToken } from '../../../src/utils/JsonWebToken';
 import Permission from '../../../src/enum/user/UserPermission';
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK, UNAUTHORIZED } from 'http-status';
 
 const api = makeApp('', routes);
 
@@ -37,7 +38,7 @@ describe('src/routes/user.routes getOwnUser', () => {
       .get(ROUTE_MAP.USER_V1)
       .auth(jwtTokenUser, { type: "bearer" });
 
-    expect(res.status).toEqual(200);
+    expect(res.status).toEqual(OK);
     expect(res.body.result.name).toEqual(userObj.name);
     expect(res.body.result.email).toEqual(userObj.email);
     expect(res.body.result.permission).toEqual(permission);
@@ -56,7 +57,7 @@ describe('src/routes/user.routes getOwnUser', () => {
     const res = await request(api)
       .get(ROUTE_MAP.USER_V1);
 
-    expect(res.status).toEqual(401);
+    expect(res.status).toEqual(UNAUTHORIZED);
   });
 
   test('error on get user data from inexistent user', async () => {
@@ -66,7 +67,7 @@ describe('src/routes/user.routes getOwnUser', () => {
       .get(ROUTE_MAP.USER_V1)
       .auth(jwtTokenUser, { type: "bearer" });
 
-    expect(res.status).toEqual(404);
+    expect(res.status).toEqual(NOT_FOUND);
   });
 
   test('error on get user data with an invalid user id', async () => {
@@ -76,6 +77,6 @@ describe('src/routes/user.routes getOwnUser', () => {
       .get(ROUTE_MAP.USER_V1)
       .auth(jwtTokenUser, { type: "bearer" });
 
-    expect(res.status).toEqual(500);
+    expect(res.status).toEqual(INTERNAL_SERVER_ERROR);
   });
 });
