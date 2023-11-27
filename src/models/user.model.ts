@@ -7,6 +7,7 @@ export interface UserDocument extends mongoose.Document {
   registrationId: string;
   name: string;
   email: string;
+  phone: string;
   password: string;
   permission: Permission;
   status: string;
@@ -24,6 +25,7 @@ const UserSchema = new mongoose.Schema(
     registrationId: { type: String, required: false },
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+    phone: { type: String, required: false },
     password: { type: String, required: true },
     permission: { type: String, enum: Permission, required: true, default: Permission.TRAINEE },
     status: { type: String, enum: Status, required: true, default: Status.PENDING },

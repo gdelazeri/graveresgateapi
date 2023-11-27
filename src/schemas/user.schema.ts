@@ -21,6 +21,9 @@ export const postUserSchema = object({
     email: string()
       .email("Must be a valid email")
       .required("Email is required"),
+    phone: string()
+      .required("Phone is required")
+      .min(11, "Phone is too short - should be 11 chars minimum."),
     password: string()
       .required("Password is required")
       .min(8, "Password is too short - should be 8 chars minimum."),

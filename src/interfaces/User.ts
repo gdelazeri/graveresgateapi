@@ -12,6 +12,7 @@ export interface LoginPayload {
 export interface PostUserPayload {
   name: string;
   email: string;
+  phone: string;
   password: string;
 }
 
@@ -19,6 +20,7 @@ export interface PutUserPayload {
   registrationId: string;
   name: string;
   email: string;
+  phone: string;
   permission: string;
   status: string;
   isDriver: boolean;
