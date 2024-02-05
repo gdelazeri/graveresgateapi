@@ -4,6 +4,7 @@ import { GenericErrorCodes, UserErrorCodes } from '../enum/ErrorCodes';
 import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, findUserByPage, softDeleteUser, generateTokens } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
 import { GetListUsers, LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload, UserIdParams } from '../interfaces/User';
+import { User } from '../models/user.model';
 
 export async function getOwnUser(req: Request, res: Response) {
   /* 	
@@ -97,7 +98,7 @@ export async function postUser(req: Request<unknown, unknown, PostUserPayload>, 
         new ResponseData(null, UserErrorCodes.EmailInUsage)
       );
     }
-  
+
     const user = await createUser(body);
   
     return res.status(OK).send(
@@ -138,7 +139,7 @@ export async function putUser(req: Request<UserIdParams, unknown, PutUserPayload
       );
     }
   
-    await updateUser(_id, body);
+    await updateUser(_id, body as User);
   
     return res.sendStatus(NO_CONTENT);
   } catch (error) {
@@ -170,7 +171,7 @@ export async function putOwnUser(req: Request<unknown, unknown, PutOwnUserPayloa
       );
     }
   
-    await updateUser(userId, body);
+    await updateUser(userId, body as User);
   
     return res.sendStatus(NO_CONTENT);
   } catch (error) {

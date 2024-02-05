@@ -1,20 +1,25 @@
 import { Error } from 'mongoose';
+import { In } from 'typeorm';
+import bcrypt from 'bcrypt';
 import Status from '../enum/user/UserStatus';
-import { LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload } from '../interfaces/User';
-import User, { UserDocument } from '../models/user.model';
+import { LoginPayload } from '../interfaces/User';
+import { User } from '../models/user.model';
+import DataSource from '../models';
 import { createAccessToken, createRefreshToken } from '../utils/JsonWebToken';
 
-export async function createUser(input: PostUserPayload) {
+const userRepository = DataSource.getRepository(User)
+
+export async function createUser(input: any) {
   try {
-    return await User.create(input);
+    return userRepository.save(userRepository.create(input));
   } catch (error) {
     throw error;
   }
 }
 
-export async function updateUser(_id: string, input: PutUserPayload | PutOwnUserPayload) {
+export async function updateUser(id: string, input: User) {
   try {
-    return await User.findByIdAndUpdate(_id, input as UserDocument);
+    return userRepository.update(id, input);
   } catch (error) {
     throw error;
   }
@@ -22,15 +27,15 @@ export async function updateUser(_id: string, input: PutUserPayload | PutOwnUser
 
 export async function findUserByEmail(email: string) {
   try {
-    return await User.findOne({ email });
+    return userRepository.findOne({ where: { email } });
   } catch (error: any) {
     throw new Error(error);
   }
 }
 
-export async function findUserById(_id: string) {
+export async function findUserById(id: string) {
   try {
-    return await User.findById(_id, { password: 0 });
+    return userRepository.findOne({ where: { id }, select: { password: false } });
   } catch (error: any) {
     throw new Error(error);
   }
@@ -38,19 +43,15 @@ export async function findUserById(_id: string) {
 
 export async function findUserByPage(pageNumber: number, pageSize: number) {
   try {
-    return await User.aggregate<UserDocument>([
-      { $skip: (pageNumber - 1)*pageSize },
-      { $limit: pageSize },
-      { $project: { password: 0 } },
-    ]);
+    return userRepository.find({ skip: (pageNumber - 1) * pageSize, take: pageSize, select: { password: false } });
   } catch (error: any) {
     throw new Error(error);
   }
 }
 
-export async function checkValidUser(_id: string) {
+export async function checkValidUser(id: string) {
   try {
-    return await User.findOne({ _id, status: { $in: [Status.ACTIVE, Status.PENDING] } });
+    return userRepository.findOne({ where: { id, status: In([Status.ACTIVE, Status.PENDING]) } });
   } catch (error: any) {
     throw new Error(error);
   }
@@ -58,9 +59,9 @@ export async function checkValidUser(_id: string) {
 
 export async function checkLogin(payload: LoginPayload) {
   try {
-    const user = await User.findOne({ email: payload.email, status: { $in: [Status.ACTIVE, Status.PENDING] } });
+    const user = await userRepository.findOne({ where: { email: payload.email, status: In([Status.ACTIVE, Status.PENDING]) } });
 
-    if (user?.comparePassword(payload.password)) {
+    if (user && bcrypt.compareSync(payload.password, user.password)) {
       return user;
     }
 
@@ -71,19 +72,19 @@ export async function checkLogin(payload: LoginPayload) {
   }
 }
 
-export async function softDeleteUser(_id: string, deletedBy: string) {
+export async function softDeleteUser(id: string, deletedBy: string) {
   try {
-    return await User.findByIdAndUpdate(_id, { $set: { status: Status.DELETED, deletedAt: Date.now(), deletedBy } });
+    return userRepository.update(id, { status: Status.DELETED, deletedAt: new Date(), deletedBy });
   } catch (error) {
     throw error;
   }
 }
 
-export function generateTokens(user: UserDocument) {
+export function generateTokens(user: any) {
   try {
     return {
-      accessToken: createAccessToken({ userId: user._id, permission: user.permission }),
-      refreshToken: createRefreshToken({ userId: user._id }),
+      accessToken: createAccessToken({ userId: user.id, permission: user.permission }),
+      refreshToken: createRefreshToken({ userId: user.id }),
     }
   } catch (error) {
     throw error;
