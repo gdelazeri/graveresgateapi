@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK, UNAUTHORIZED } from 'http-status';
-import { GenericErrorCodes, UserErrorCodes } from '../enum/ErrorCodes';
-import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, findUserByPage, softDeleteUser, generateTokens } from '../services/user.service';
+import { UserErrorCodes } from '../enum/ErrorCodes';
+import { createUser, updateUser, findUserByEmail, checkLogin, findUserById, softDeleteUser, generateTokens, findUsers } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
 import { GetListUsers, LoginPayload, PostUserPayload, PutOwnUserPayload, PutUserPayload, UserIdParams } from '../interfaces/User';
 import { User } from '../models/user.model';
@@ -56,15 +56,7 @@ export async function listUsers(req: Request<unknown, unknown, unknown, GetListU
     #swagger.responses['500']
   */
   try {
-    const { pageNumber, pageSize } = req.query;
-
-    if (parseInt(pageNumber, 10) < 1 || parseInt(pageSize, 10) > 20) {
-      return res.status(BAD_REQUEST).send(
-        new ResponseData(null, GenericErrorCodes.PaginationInvalid)
-      );
-    }
-
-    const list = await findUserByPage(parseInt(pageNumber, 10), parseInt(pageSize, 10));
+    const list = await findUsers();
   
     return res.status(OK).send(
       new ResponseData(list)

@@ -13,5 +13,5 @@ export default new DataSource({
   logging: true,
   entities: [User],
   subscribers: [],
-  migrations: [],
+  migrations: []
 })

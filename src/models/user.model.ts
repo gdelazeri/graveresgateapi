@@ -25,13 +25,13 @@ export class User {
   password: string
 
   @Column({ nullable: false, enum: Permission, default: Permission.TRAINEE })
-  permission: Permission = Permission.TRAINEE
+  permission: Permission
 
   @Column({ nullable: false, enum: Status, default: Status.PENDING })
-  status: Status = Status.PENDING
+  status: Status
 
   @Column({ nullable: false, default: false })
-  isDriver: boolean = false
+  isDriver: boolean
 
   @Column({ nullable: true })
   imageUrl: string
@@ -43,7 +43,7 @@ export class User {
   deletedBy: string
 
   @Column({ nullable: true, default: new Date() })
-  createdAt: Date = new Date()
+  createdAt: Date
 
   @BeforeInsert()
   hashPasswordInsert(): void {

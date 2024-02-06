@@ -41,9 +41,13 @@ export async function findUserById(id: string) {
   }
 }
 
-export async function findUserByPage(pageNumber: number, pageSize: number) {
+export async function findUsers() {
   try {
-    return userRepository.find({ skip: (pageNumber - 1) * pageSize, take: pageSize, select: { password: false } });
+    return userRepository.find({
+      where: { status: In([Status.ACTIVE, Status.PENDING]) },
+      select: ['id', 'name', 'imageUrl'],
+      order: { name: 'ASC' }
+    });
   } catch (error: any) {
     throw new Error(error);
   }

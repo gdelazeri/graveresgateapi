@@ -8,13 +8,6 @@ export const getOwnUserSchema = object({
   body: object({ }).noUnknown(true).strict()
 }).noUnknown(true).strict();
 
-export const listUsersSchema = object({
-  query: object({
-    pageNumber: string().required(),
-    pageSize: string().required(),
-  }).noUnknown(true).strict()
-});
-
 export const postUserSchema = object({
   body: object({
     name: string().required("Name is required"),
