@@ -45,7 +45,7 @@ export async function findUsers() {
   try {
     return userRepository.find({
       where: { status: In([Status.ACTIVE, Status.PENDING]) },
-      select: ['id', 'name', 'imageUrl'],
+      select: ['id', 'name', 'email', 'imageUrl'],
       order: { name: 'ASC' }
     });
   } catch (error: any) {

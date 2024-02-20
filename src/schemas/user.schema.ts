@@ -8,6 +8,12 @@ export const getOwnUserSchema = object({
   body: object({ }).noUnknown(true).strict()
 }).noUnknown(true).strict();
 
+export const getByIdUserSchema = object({
+  params: object({
+    id: string().required(),
+  }).noUnknown(true).strict(),
+});
+
 export const postUserSchema = object({
   body: object({
     name: string().required("Name is required"),

@@ -1,7 +1,7 @@
 import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
-import { postUser, postLogin, putUser, deleteUser, putOwnUser, getOwnUser, listUsers } from '../controllers/user.controller';
-import { postUserSchema, postLoginSchema, putUserSchema, deleteUserSchema, putOwnUserSchema, getOwnUserSchema } from '../schemas/user.schema';
+import { postUser, postLogin, putUser, deleteUser, putOwnUser, getOwnUser, getUserById, listUsers } from '../controllers/user.controller';
+import { postUserSchema, postLoginSchema, putUserSchema, deleteUserSchema, putOwnUserSchema, getOwnUserSchema, getByIdUserSchema } from '../schemas/user.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
 
@@ -12,6 +12,13 @@ router.get(
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
   validateRequest(getOwnUserSchema),
   getOwnUser,
+);
+
+router.get(
+  '/getById/:id',
+  requiresAuth([Permission.ADMIN]),
+  validateRequest(getByIdUserSchema),
+  getUserById,
 );
 
 router.get(

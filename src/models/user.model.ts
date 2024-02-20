@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryColumn, Generated, BeforeInsert, BeforeUpdate } from "typeorm"
+import { Entity, Column, PrimaryColumn, Generated, BeforeInsert } from "typeorm"
 import bcrypt from 'bcrypt';
 import Permission from "../enum/user/UserPermission"
 import Status from "../enum/user/UserStatus"

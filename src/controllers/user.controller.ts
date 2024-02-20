@@ -34,6 +34,34 @@ export async function getOwnUser(req: Request, res: Response) {
   }
 }
 
+export async function getUserById(req: Request, res: Response) {
+  /* 	
+    #swagger.tags = ['User']
+    #swagger.description = 'Get data from user by id'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200'] = {
+      schema: { $ref: "#/definitions/ResponseUser" }
+    }
+    #swagger.responses['404']
+    #swagger.responses['500']
+  */
+  try {
+    const { params: { id } } = req;
+
+    const user = await findUserById(id);
+
+    if (!user) {
+      return res.sendStatus(NOT_FOUND);
+    }
+  
+    return res.status(OK).send(
+      new ResponseData(user)
+    );
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
 export async function listUsers(req: Request<unknown, unknown, unknown, GetListUsers>, res: Response) {
   /* 	
     #swagger.tags = ['User']
