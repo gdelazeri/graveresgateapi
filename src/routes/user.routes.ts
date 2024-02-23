@@ -34,7 +34,7 @@ router.post(
 );
 
 router.put(
-  '/:_id',
+  '/:id',
   requiresAuth([Permission.ADMIN]),
   validateRequest(putUserSchema),
   putUser,

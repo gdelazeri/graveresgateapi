@@ -1,4 +1,4 @@
-import { object, string } from "yup";
+import { boolean, object, string } from "yup";
 import Permission from "../enum/user/UserPermission";
 import Status from "../enum/user/UserStatus";
 
@@ -31,16 +31,18 @@ export const postUserSchema = object({
 
 export const putUserSchema = object({
   params: object({
-    _id: string().required(),
+    id: string().required(),
   }).noUnknown(true).strict(),
   body: object({
-    registrationId: string().optional(),
-    name: string().optional(),
+    registrationId: string().optional().nullable(),
+    name: string().optional().nullable(),
     email: string()
       .email("Must be a valid email")
-      .optional(),
-    permission: string().oneOf(Object.values(Permission)).optional(),
-    status: string().oneOf(Object.values(Status)).optional(),
+      .optional().nullable(),
+    phone: string().optional().nullable(),
+    isDriver: boolean().optional().nullable(),
+    permission: string().oneOf(Object.values(Permission)).optional().nullable(),
+    status: string().oneOf(Object.values(Status)).optional().nullable(),
   }).noUnknown(true).strict()
 });
 

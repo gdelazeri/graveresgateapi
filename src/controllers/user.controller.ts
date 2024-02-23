@@ -134,7 +134,7 @@ export async function putUser(req: Request<UserIdParams, unknown, PutUserPayload
     #swagger.tags = ['User']
     #swagger.description = 'Update an user'
     #swagger.security = [{ "Bearer": [ ] }]
-    #swagger.parameters['_id'] = {
+    #swagger.parameters['id'] = {
       in: 'params',
       description: 'User id',
       required: true,
@@ -151,15 +151,15 @@ export async function putUser(req: Request<UserIdParams, unknown, PutUserPayload
     #swagger.responses['500']
   */
   try {
-    const { body, params: { _id } } = req;
+    const { body, params: { id } } = req;
 
-    if (!await findUserById(_id)) {
+    if (!await findUserById(id)) {
       return res.status(NOT_FOUND).send(
         new ResponseData(null, UserErrorCodes.UserInexistent)
       );
     }
   
-    await updateUser(_id, body as User);
+    await updateUser(id, body as User);
   
     return res.sendStatus(NO_CONTENT);
   } catch (error) {
