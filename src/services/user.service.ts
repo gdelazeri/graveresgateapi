@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import Status from '../enum/user/UserStatus';
 import { LoginPayload } from '../interfaces/User';
 import { User } from '../models/user.model';
-import DataSource from '../models';
+import DataSource from '../dataSource';
 import { createAccessToken, createRefreshToken } from '../utils/JsonWebToken';
 
 const userRepository = DataSource.getRepository(User);

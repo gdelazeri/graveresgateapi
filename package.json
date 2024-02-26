@@ -8,7 +8,8 @@
     "build": "rm -rf build/ && prettier --write src/ && tsc",
     "test": "jest",
     "swagger": "ts-node swagger && yarn run dev",
-    "test:coverage": "jest --collectCoverage"
+    "test:coverage": "jest --collectCoverage",
+    "typeorm": "typeorm-ts-node-commonjs"
   },
   "repository": {
     "type": "git",

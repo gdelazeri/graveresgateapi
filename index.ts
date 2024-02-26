@@ -6,7 +6,7 @@ import { NOT_FOUND } from 'http-status';
 import { PORT } from './src/config/environment';
 import swaggerFile from './swagger_output.json';
 import routes from './src/routes/index.routes';
-import dataSource from './src/config/dataSource';
+import dataSource from './src/dataSource';
 import log from './src/config/log';
 
 async function connectDatabase() {
