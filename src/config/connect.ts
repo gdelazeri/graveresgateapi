@@ -10,11 +10,11 @@ async function connect() {
       useFindAndModify: false,
     })
     .then(() => {
-      log.info("Database connected");
+      log.info('Database connected');
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
-      log.error("Database not connected");
+      log.error('Database not connected');
       process.exit(1);
     });
 }

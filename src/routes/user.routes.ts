@@ -1,7 +1,24 @@
 import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
-import { postUser, postLogin, putUser, deleteUser, putOwnUser, getOwnUser, getUserById, listUsers } from '../controllers/user.controller';
-import { postUserSchema, postLoginSchema, putUserSchema, deleteUserSchema, putOwnUserSchema, getOwnUserSchema, getByIdUserSchema } from '../schemas/user.schema';
+import {
+  postUser,
+  postLogin,
+  putUser,
+  deleteUser,
+  putOwnUser,
+  getOwnUser,
+  getUserById,
+  listUsers,
+} from '../controllers/user.controller';
+import {
+  postUserSchema,
+  postLoginSchema,
+  putUserSchema,
+  deleteUserSchema,
+  putOwnUserSchema,
+  getOwnUserSchema,
+  getByIdUserSchema,
+} from '../schemas/user.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
 
@@ -27,11 +44,7 @@ router.get(
   listUsers,
 );
 
-router.post(
-  '',
-  validateRequest(postUserSchema),
-  postUser,
-);
+router.post('', validateRequest(postUserSchema), postUser);
 
 router.put(
   '/:id',
@@ -54,10 +67,6 @@ router.delete(
   deleteUser,
 );
 
-router.post(
-  '/login',
-  validateRequest(postLoginSchema),
-  postLogin,
-);
+router.post('/login', validateRequest(postLoginSchema), postLogin);
 
 export default router;

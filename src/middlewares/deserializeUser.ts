@@ -1,9 +1,9 @@
-import { get } from "lodash";
-import { Request, Response, NextFunction } from "express";
+import { get } from 'lodash';
+import { Request, Response, NextFunction } from 'express';
 import { createAccessToken, decodeToken } from '../utils/JsonWebToken';
-import Permission from "../enum/user/UserPermission";
-import { checkValidUser } from "../services/user.service";
-import { UNAUTHORIZED } from "http-status";
+import Permission from '../enum/user/UserPermission';
+import { checkValidUser } from '../services/user.service';
+import { UNAUTHORIZED } from 'http-status';
 
 declare global {
   namespace Express {
@@ -17,13 +17,13 @@ declare global {
 const deserializeUser = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const accessToken = get(req, "headers.authorization", "").replace(
+  const accessToken = get(req, 'headers.authorization', '').replace(
     /^Bearer\s/,
-    ""
+    '',
   );
-  const refreshToken = get(req, "headers.x-refresh-token") as string;
+  const refreshToken = get(req, 'headers.x-refresh-token') as string;
 
   if (!accessToken) return next();
 
@@ -37,15 +37,21 @@ const deserializeUser = async (
   }
 
   if (expired && refreshToken) {
-    const { valid, decoded: { userId } } = decodeToken(refreshToken);
+    const {
+      valid,
+      decoded: { userId },
+    } = decodeToken(refreshToken);
 
     if (valid) {
       const user = await checkValidUser(userId);
 
       if (user) {
-        const newAccessToken = createAccessToken({ userId, permission: user.permission });
-        res.setHeader("x-access-token", newAccessToken);
-  
+        const newAccessToken = createAccessToken({
+          userId,
+          permission: user.permission,
+        });
+        res.setHeader('x-access-token', newAccessToken);
+
         req.userId = userId;
         req.permission = user.permission;
         return next();

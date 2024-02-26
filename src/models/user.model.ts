@@ -1,49 +1,55 @@
-import { Entity, Column, PrimaryColumn, Generated, BeforeInsert } from "typeorm"
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  Generated,
+  BeforeInsert,
+} from 'typeorm';
 import bcrypt from 'bcrypt';
-import Permission from "../enum/user/UserPermission"
-import Status from "../enum/user/UserStatus"
+import Permission from '../enum/user/UserPermission';
+import Status from '../enum/user/UserStatus';
 
-@Entity("user")
+@Entity('user')
 export class User {
   @PrimaryColumn()
-  @Generated("uuid")
-  id: string
+  @Generated('uuid')
+  id: string;
 
   @Column({ nullable: true })
-  registrationId: string
+  registrationId: string;
 
   @Column({ nullable: false })
-  name: string
+  name: string;
 
   @Column({ unique: true, nullable: false })
-  email: string
+  email: string;
 
   @Column({ nullable: false })
-  phone: string
+  phone: string;
 
   @Column({ nullable: false })
-  password: string
+  password: string;
 
   @Column({ nullable: false, enum: Permission, default: Permission.TRAINEE })
-  permission: Permission
+  permission: Permission;
 
   @Column({ nullable: false, enum: Status, default: Status.PENDING })
-  status: Status
+  status: Status;
 
   @Column({ nullable: false, default: false })
-  isDriver: boolean
+  isDriver: boolean;
 
   @Column({ nullable: true })
-  imageUrl: string
+  imageUrl: string;
 
   @Column({ nullable: true })
-  deletedAt: Date
+  deletedAt: Date;
 
   @Column({ nullable: true })
-  deletedBy: string
+  deletedBy: string;
 
   @Column({ nullable: true, default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 
   @BeforeInsert()
   hashPasswordInsert(): void {

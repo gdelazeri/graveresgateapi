@@ -1,4 +1,3 @@
-
 import express from 'express';
 import deserializeUser from '../middlewares/deserializeUser';
 import User from './user.routes';

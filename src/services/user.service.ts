@@ -7,7 +7,7 @@ import { User } from '../models/user.model';
 import DataSource from '../models';
 import { createAccessToken, createRefreshToken } from '../utils/JsonWebToken';
 
-const userRepository = DataSource.getRepository(User)
+const userRepository = DataSource.getRepository(User);
 
 export async function createUser(input: any) {
   try {
@@ -35,7 +35,10 @@ export async function findUserByEmail(email: string) {
 
 export async function findUserById(id: string) {
   try {
-    return userRepository.findOne({ where: { id }, select: { password: false } });
+    return userRepository.findOne({
+      where: { id },
+      select: { password: false },
+    });
   } catch (error: any) {
     throw new Error(error);
   }
@@ -46,7 +49,7 @@ export async function findUsers() {
     return userRepository.find({
       where: { status: In([Status.ACTIVE, Status.PENDING]) },
       select: ['id', 'name', 'email', 'imageUrl'],
-      order: { name: 'ASC' }
+      order: { name: 'ASC' },
     });
   } catch (error: any) {
     throw new Error(error);
@@ -55,7 +58,9 @@ export async function findUsers() {
 
 export async function checkValidUser(id: string) {
   try {
-    return userRepository.findOne({ where: { id, status: In([Status.ACTIVE, Status.PENDING]) } });
+    return userRepository.findOne({
+      where: { id, status: In([Status.ACTIVE, Status.PENDING]) },
+    });
   } catch (error: any) {
     throw new Error(error);
   }
@@ -63,14 +68,18 @@ export async function checkValidUser(id: string) {
 
 export async function checkLogin(payload: LoginPayload) {
   try {
-    const user = await userRepository.findOne({ where: { email: payload.email, status: In([Status.ACTIVE, Status.PENDING]) } });
+    const user = await userRepository.findOne({
+      where: {
+        email: payload.email,
+        status: In([Status.ACTIVE, Status.PENDING]),
+      },
+    });
 
     if (user && bcrypt.compareSync(payload.password, user.password)) {
       return user;
     }
 
     return null;
-
   } catch (error: any) {
     throw new Error(error);
   }
@@ -78,7 +87,11 @@ export async function checkLogin(payload: LoginPayload) {
 
 export async function softDeleteUser(id: string, deletedBy: string) {
   try {
-    return userRepository.update(id, { status: Status.DELETED, deletedAt: new Date(), deletedBy });
+    return userRepository.update(id, {
+      status: Status.DELETED,
+      deletedAt: new Date(),
+      deletedBy,
+    });
   } catch (error) {
     throw error;
   }
@@ -87,9 +100,12 @@ export async function softDeleteUser(id: string, deletedBy: string) {
 export function generateTokens(user: any) {
   try {
     return {
-      accessToken: createAccessToken({ userId: user.id, permission: user.permission }),
+      accessToken: createAccessToken({
+        userId: user.id,
+        permission: user.permission,
+      }),
       refreshToken: createRefreshToken({ userId: user.id }),
-    }
+    };
   } catch (error) {
     throw error;
   }

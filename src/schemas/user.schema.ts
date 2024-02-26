@@ -1,72 +1,83 @@
-import { boolean, object, string } from "yup";
-import Permission from "../enum/user/UserPermission";
-import Status from "../enum/user/UserStatus";
+import { boolean, object, string } from 'yup';
+import Permission from '../enum/user/UserPermission';
+import Status from '../enum/user/UserStatus';
 
 export const getOwnUserSchema = object({
-  query: object({ }).noUnknown(true).strict(),
-  params: object({ }).noUnknown(true).strict(),
-  body: object({ }).noUnknown(true).strict()
-}).noUnknown(true).strict();
+  query: object({}).noUnknown(true).strict(),
+  params: object({}).noUnknown(true).strict(),
+  body: object({}).noUnknown(true).strict(),
+})
+  .noUnknown(true)
+  .strict();
 
 export const getByIdUserSchema = object({
   params: object({
     id: string().required(),
-  }).noUnknown(true).strict(),
+  })
+    .noUnknown(true)
+    .strict(),
 });
 
 export const postUserSchema = object({
   body: object({
-    name: string().required("Name is required"),
+    name: string().required('Name is required'),
     email: string()
-      .email("Must be a valid email")
-      .required("Email is required"),
+      .email('Must be a valid email')
+      .required('Email is required'),
     phone: string()
-      .required("Phone is required")
-      .min(11, "Phone is too short - should be 11 chars minimum."),
+      .required('Phone is required')
+      .min(11, 'Phone is too short - should be 11 chars minimum.'),
     password: string()
-      .required("Password is required")
-      .min(8, "Password is too short - should be 8 chars minimum."),
-  }).noUnknown(true).strict()
+      .required('Password is required')
+      .min(8, 'Password is too short - should be 8 chars minimum.'),
+  })
+    .noUnknown(true)
+    .strict(),
 });
 
 export const putUserSchema = object({
   params: object({
     id: string().required(),
-  }).noUnknown(true).strict(),
+  })
+    .noUnknown(true)
+    .strict(),
   body: object({
     registrationId: string().optional().nullable(),
     name: string().optional().nullable(),
-    email: string()
-      .email("Must be a valid email")
-      .optional().nullable(),
+    email: string().email('Must be a valid email').optional().nullable(),
     phone: string().optional().nullable(),
     isDriver: boolean().optional().nullable(),
     permission: string().oneOf(Object.values(Permission)).optional().nullable(),
     status: string().oneOf(Object.values(Status)).optional().nullable(),
-  }).noUnknown(true).strict()
+  })
+    .noUnknown(true)
+    .strict(),
 });
 
 export const putOwnUserSchema = object({
   body: object({
     name: string().optional(),
-    email: string()
-      .email("Must be a valid email")
-      .optional(),
-  }).noUnknown(true).strict(),
+    email: string().email('Must be a valid email').optional(),
+  })
+    .noUnknown(true)
+    .strict(),
 });
 
 export const deleteUserSchema = object({
   params: object({
     _id: string().required(),
-  }).noUnknown(true).strict(),
+  })
+    .noUnknown(true)
+    .strict(),
 });
 
 export const postLoginSchema = object({
   body: object({
     email: string()
-      .email("Must be a valid email")
-      .required("Email is required"),
-    password: string()
-      .required("Password is required"),
-  }).noUnknown(true).strict(),
+      .email('Must be a valid email')
+      .required('Email is required'),
+    password: string().required('Password is required'),
+  })
+    .noUnknown(true)
+    .strict(),
 });
