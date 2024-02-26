@@ -10,6 +10,7 @@ import ResponseData from '../utils/ResponseData';
 import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest } from '../interfaces/DutyRequest';
 import { create, findByDateAndShift, findById, update, softDelete, findByUser } from '../services/dutyRequest.service';
 import { DutyRequest } from '../models/dutyRequest.model';
+import { createDutyRequestPosition, deleteByDutyRequestId } from '../services/dutyRequestPosition.service';
 
 export async function getById(
   req: Request<DutyRequestParams, unknown, unknown>,
@@ -118,11 +119,19 @@ export async function postDutyRequest(
   try {
     const { body, userId } = req;
     const payload = {
-      ...body,
+      date: body.date,
+      shift: body.shift,
+      startAt: body.startAt,
+      endAt: body.endAt,
+      note: body.note,
       userId,
     }
 
     const dutyRequest = await create(payload);
+    
+    for (const position of body.positions) {
+      await createDutyRequestPosition({ position, dutyRequestId: dutyRequest.id });
+    }
 
     return res.status(OK).send(new ResponseData(dutyRequest));
   } catch (error) {
@@ -162,7 +171,11 @@ export async function putDutyRequest(
     } = req;
 
     const payload = {
-      ...body,
+      date: body.date,
+      shift: body.shift,
+      startAt: body.startAt,
+      endAt: body.endAt,
+      note: body.note,
       userId,
     }
 
@@ -172,7 +185,11 @@ export async function putDutyRequest(
         .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent));
     }
 
+    await deleteByDutyRequestId(id);
     await update(id, payload as DutyRequest);
+    for (const position of body.positions) {
+      await createDutyRequestPosition({ position, dutyRequestId: id });
+    }
 
     return res.sendStatus(NO_CONTENT);
   } catch (error) {

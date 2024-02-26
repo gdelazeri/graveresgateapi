@@ -1,11 +1,9 @@
-enum Position {
+enum DutyPosition {
   DRIVER = 'DRIVER',
   LEADER = 'LEADER',
-  FIRST_RESCUER = 'FIRST_RESCUER',
-  SECOND_RESCUER = 'SECOND_RESCUER',
+  RESCUER = 'RESCUER',
   RADIO_OPERATOR = 'RADIO_OPERATOR',
-  RADIO_OPERATOR_ASSISTANT = 'RADIO_OPERATOR_ASSISTANT',
   TRAINEE = 'TRAINEE',
 }
 
-export default Position;
+export default DutyPosition;

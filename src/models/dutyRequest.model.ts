@@ -6,7 +6,7 @@ import {
 } from 'typeorm';
 import DutyShift from '../enum/duty/DutyShift';
 
-@Entity('duty_request')
+@Entity('dutyRequest')
 export class DutyRequest {
   @PrimaryColumn()
   @Generated('uuid')

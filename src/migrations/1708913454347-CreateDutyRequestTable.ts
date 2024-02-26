@@ -5,7 +5,7 @@ export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'duty_request',
+        name: 'dutyRequest',
         columns: [
           {
             name: 'id',
@@ -71,6 +71,6 @@ export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('duty_request');
+    await queryRunner.dropTable('dutyRequest');
   }
 }

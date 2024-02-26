@@ -1,4 +1,3 @@
-import { Error } from 'mongoose';
 import { In } from 'typeorm';
 import bcrypt from 'bcrypt';
 import Status from '../enum/user/UserStatus';
@@ -28,8 +27,8 @@ export async function updateUser(id: string, input: User) {
 export async function findUserByEmail(email: string) {
   try {
     return userRepository.findOne({ where: { email } });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -39,8 +38,8 @@ export async function findUserById(id: string) {
       where: { id },
       select: { password: false },
     });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -51,8 +50,8 @@ export async function findUsers() {
       select: ['id', 'name', 'email', 'imageUrl'],
       order: { name: 'ASC' },
     });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -61,8 +60,8 @@ export async function checkValidUser(id: string) {
     return userRepository.findOne({
       where: { id, status: In([Status.ACTIVE, Status.PENDING]) },
     });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -80,8 +79,8 @@ export async function checkLogin(payload: LoginPayload) {
     }
 
     return null;
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (error) {
+    throw error;
   }
 }
 

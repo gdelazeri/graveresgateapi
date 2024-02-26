@@ -1,5 +1,6 @@
-import { object, string } from 'yup';
+import { object, string, array } from 'yup';
 import DutyShift from '../enum/duty/DutyShift';
+import DutyPosition from '../enum/duty/DutyPosition';
 
 export const getByIdSchema = object({
   params: object({
@@ -23,6 +24,7 @@ export const postDutyRequestSchema = object({
     startAt: string().required(),
     endAt: string().required(),
     note: string().optional().nullable(),
+    positions: array().of(string().oneOf(Object.values(DutyPosition))).required().min(1),
   })
 });
 
@@ -38,6 +40,7 @@ export const putDutyRequestSchema = object({
     startAt: string().required(),
     endAt: string().required(),
     note: string().optional().nullable(),
+    positions: array().of(string().oneOf(Object.values(DutyPosition))).required().min(1),
   })
 });
 

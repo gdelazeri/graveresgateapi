@@ -7,9 +7,7 @@ import { PORT } from './src/config/environment';
 import swaggerFile from './swagger_output.json';
 import routes from './src/routes/index.routes';
 import dataSource from './src/dataSource';
-import { create } from './src/services/dutyRequest.service';
 import log from './src/config/log';
-import DutyShift from './src/enum/duty/DutyShift';
 
 async function connectDatabase() {
 	log.info(`Checking database connection...`);
