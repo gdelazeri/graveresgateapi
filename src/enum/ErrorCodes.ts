@@ -4,6 +4,10 @@ export enum UserErrorCodes {
   UserInexistent = 'USER_0003',
 }
 
+export enum DutyRequestErrorCodes {
+  DutyRequestInexistent = 'DR_0001',
+}
+
 export enum GenericErrorCodes {
   WrongFields = 'ERROR_0001',
   PaginationInvalid = 'ERROR_0002',

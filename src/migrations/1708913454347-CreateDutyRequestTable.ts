@@ -2,7 +2,6 @@ import { MigrationInterface, QueryRunner, Table } from "typeorm";
 import DutyShift from "../enum/duty/DutyShift";
 
 export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
-
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -74,5 +73,4 @@ export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('duty_request');
   }
-
 }

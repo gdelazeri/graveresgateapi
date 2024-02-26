@@ -1,0 +1,219 @@
+import { Request, Response } from 'express';
+import {
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+  NO_CONTENT,
+  OK,
+} from 'http-status';
+import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
+import ResponseData from '../utils/ResponseData';
+import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest } from '../interfaces/DutyRequest';
+import { create, findByDateAndShift, findById, update, softDelete, findByUser } from '../services/dutyRequest.service';
+import { DutyRequest } from '../models/dutyRequest.model';
+
+export async function getById(
+  req: Request<DutyRequestParams, unknown, unknown>,
+  res: Response
+) {
+  /* 	
+    #swagger.tags = ['DutyRequest']
+    #swagger.description = 'Get duty request data by id'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200']
+    #swagger.responses['404']
+    #swagger.responses['500']
+  */
+  try {
+    const {
+      params: { id },
+    } = req;
+
+    const dutyRequest = await findById(id);
+
+    if (!dutyRequest) {
+      return res.sendStatus(NOT_FOUND);
+    }
+
+    return res.status(OK).send(new ResponseData(dutyRequest));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function listByDateAndShift(
+  req: Request<unknown, unknown, unknown, ListDutyRequest>,
+  res: Response,
+) {
+  /* 	
+    #swagger.tags = ['DutyRequest']
+    #swagger.description = 'List duty requests by date and shift'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.parameters['date'] = {
+      in: 'query',
+      description: 'Date of the duty request',
+      required: true,
+      type: 'string',
+    }
+    #swagger.parameters['shift'] = {
+      in: 'query',
+      description: 'Shift of the duty request',
+      required: true,
+      type: 'string',
+    }
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const { date, shift } = req.query;
+
+    const list = await findByDateAndShift(date, shift);
+
+    return res.status(OK).send(new ResponseData(list));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function listByUser(
+  req: Request,
+  res: Response,
+) {
+  /* 	
+    #swagger.tags = ['DutyRequest']
+    #swagger.description = 'List duty requests by user'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const { userId } = req;
+
+    const list = await findByUser(userId);
+
+    return res.status(OK).send(new ResponseData(list));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function postDutyRequest(
+  req: Request<unknown, unknown, PostDutyRequestPayload>,
+  res: Response,
+) {
+  /*
+    #swagger.tags = ['DutyRequest']
+    #swagger.description = 'Register a new duty request'
+    #swagger.parameters['payload'] = {
+      in: 'body',
+      required: true,
+      type: 'object',
+      schema: { $ref: "#/definitions/PostNewDutyRequest" }
+    }
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const { body, userId } = req;
+    const payload = {
+      ...body,
+      userId,
+    }
+
+    const dutyRequest = await create(payload);
+
+    return res.status(OK).send(new ResponseData(dutyRequest));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function putDutyRequest(
+  req: Request<DutyRequestParams, unknown, PostDutyRequestPayload>,
+  res: Response,
+) {
+  /*
+    #swagger.tags = ['DutyRequest']
+    #swagger.description = 'Update a duty request'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.parameters['id'] = {
+      in: 'params',
+      description: 'DutyRequest id',
+      required: true,
+      type: 'string',
+    }
+    #swagger.parameters['payload'] = {
+      in: 'body',
+      required: true,
+      type: 'object',
+      schema: { $ref: "#/definitions/PostNewDutyRequest" }
+    }
+    #swagger.responses['204']
+    #swagger.responses['404']
+    #swagger.responses['500']
+  */
+  try {
+    const {
+      body,
+      userId,
+      params: { id },
+    } = req;
+
+    const payload = {
+      ...body,
+      userId,
+    }
+
+    if (!(await findById(id))) {
+      return res
+        .status(NOT_FOUND)
+        .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent));
+    }
+
+    await update(id, payload as DutyRequest);
+
+    return res.sendStatus(NO_CONTENT);
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function deleteDutyRequest(
+  req: Request<DutyRequestParams>,
+  res: Response
+) {
+  /*
+    #swagger.tags = ['DutyRequest']
+    #swagger.description = 'Delete a duty request'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.parameters['id'] = {
+      in: 'params',
+      required: true,
+      description: 'DutyRequest id',
+      type: 'string',
+    }
+    #swagger.responses['200']
+    #swagger.responses['404']
+    #swagger.responses['500']
+  */
+  try {
+    const {
+      params: { id },
+      userId,
+    } = req;
+
+    if (!(await findById(id))) {
+      return res
+        .status(NOT_FOUND)
+        .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent));
+    }
+
+    await softDelete(id, userId);
+
+    return res.sendStatus(OK);
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}

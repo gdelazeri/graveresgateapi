@@ -22,6 +22,13 @@ const payloads = {
     email: 'string',
     password: 'string',
   },
+  PostNewDutyRequest: {
+    date: "string",
+    shift: "string",
+    startAt: "string",
+    endAt: "string",
+    note: "string",
+  },
 }
 
 export default payloads;
