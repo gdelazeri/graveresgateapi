@@ -7,10 +7,10 @@ import {
 } from 'http-status';
 import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
-import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest } from '../interfaces/DutyRequest';
+import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyReponse } from '../interfaces/DutyRequest';
 import { create, findByDateAndShift, findById, update, softDelete, findByUser } from '../services/dutyRequest.service';
 import { DutyRequest } from '../models/dutyRequest.model';
-import { createDutyRequestPosition, deleteByDutyRequestId } from '../services/dutyRequestPosition.service';
+import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
 
 export async function getById(
   req: Request<DutyRequestParams, unknown, unknown>,
@@ -35,7 +35,18 @@ export async function getById(
       return res.sendStatus(NOT_FOUND);
     }
 
-    return res.status(OK).send(new ResponseData(dutyRequest));
+    const dutyRequestPositions = await findByDutyRequestId(id);
+    const response = {
+      date: dutyRequest.date,
+      shift: dutyRequest.shift,
+      userId: dutyRequest.userId,
+      startAt: dutyRequest.startAt,
+      endAt: dutyRequest.endAt,
+      note: dutyRequest.note,
+      positions: dutyRequestPositions.map((item) => item.position),
+    } as DutyReponse;
+
+    return res.status(OK).send(new ResponseData(response));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -68,9 +79,23 @@ export async function listByDateAndShift(
   try {
     const { date, shift } = req.query;
 
-    const list = await findByDateAndShift(date, shift);
+    const list = await findByDateAndShift(date, shift)
+    const response: DutyReponse[] = [];
 
-    return res.status(OK).send(new ResponseData(list));
+    for (const item of list) {
+      const dutyRequestPositions = await findByDutyRequestId(item.id);
+      response.push({
+        date: item.date,
+        shift: item.shift,
+        userId: item.userId,
+        startAt: item.startAt,
+        endAt: item.endAt,
+        note: item.note,
+        positions: dutyRequestPositions.map((item) => item.position),
+      });
+    }
+
+    return res.status(OK).send(new ResponseData(response));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -93,7 +118,22 @@ export async function listByUser(
 
     const list = await findByUser(userId);
 
-    return res.status(OK).send(new ResponseData(list));
+    const response: DutyReponse[] = [];
+
+    for (const item of list) {
+      const dutyRequestPositions = await findByDutyRequestId(item.id);
+      response.push({
+        date: item.date,
+        shift: item.shift,
+        userId: item.userId,
+        startAt: item.startAt,
+        endAt: item.endAt,
+        note: item.note,
+        positions: dutyRequestPositions.map((item) => item.position),
+      });
+    }
+
+    return res.status(OK).send(new ResponseData(response));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }

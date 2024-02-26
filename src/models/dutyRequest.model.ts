@@ -16,7 +16,7 @@ export class DutyRequest {
   date: string;
 
   @Column({ nullable: false, enum: DutyShift })
-  shift: string;
+  shift: DutyShift;
 
   @Column({ nullable: false })
   userId: string;

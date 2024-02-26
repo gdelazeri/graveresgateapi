@@ -16,5 +16,5 @@ export class DutyRequestPosition {
   dutyRequestId: string;
 
   @Column({ nullable: false, enum: DutyPosition })
-  position: string;
+  position: DutyPosition;
 }
