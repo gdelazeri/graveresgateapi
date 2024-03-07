@@ -5,8 +5,8 @@ import DutyPosition from '../enum/duty/DutyPosition';
 export interface PostDutyRequestPayload {
   date: string;
   shift: DutyShift;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
   note: string;
   positions: DutyPosition[]
 }
@@ -24,8 +24,8 @@ export interface DutyReponse {
   date: string;
   shift: DutyShift;
   userId: string;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
   note: string;
   positions: DutyPosition[];
 }

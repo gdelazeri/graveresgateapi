@@ -13,7 +13,7 @@ export async function create(input: any) {
   }
 }
 
-export async function update(id: string, input: DutyRequest) {
+export async function update(id: string, input: any) {
   try {
     return dutyRequestRepository.update(id, input);
   } catch (error) {

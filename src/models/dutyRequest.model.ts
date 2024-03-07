@@ -22,10 +22,10 @@ export class DutyRequest {
   userId: string;
 
   @Column({ nullable: false })
-  startAt: Date;
+  startAt: string;
 
   @Column({ nullable: false })
-  endAt: Date;
+  endAt: string;
 
   @Column({ nullable: true })
   note: string;

@@ -226,7 +226,7 @@ export async function putDutyRequest(
     }
 
     await deleteByDutyRequestId(id);
-    await update(id, payload as DutyRequest);
+    await update(id, payload);
     for (const position of body.positions) {
       await createDutyRequestPosition({ position, dutyRequestId: id });
     }
