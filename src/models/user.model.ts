@@ -39,6 +39,9 @@ export class User {
   @Column({ nullable: false, default: false })
   isDriver: boolean;
 
+  @Column({ nullable: false, default: false })
+  isLeader: boolean;
+
   @Column({ nullable: true })
   imageUrl: string;
 

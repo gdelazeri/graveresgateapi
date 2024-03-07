@@ -47,6 +47,7 @@ export const putUserSchema = object({
     email: string().email('Must be a valid email').optional().nullable(),
     phone: string().optional().nullable(),
     isDriver: boolean().optional().nullable(),
+    isLeader: boolean().optional().nullable(),
     permission: string().oneOf(Object.values(Permission)).optional().nullable(),
     status: string().oneOf(Object.values(Status)).optional().nullable(),
   })
