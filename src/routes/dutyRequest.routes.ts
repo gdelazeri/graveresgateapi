@@ -32,7 +32,7 @@ router.get(
 );
 
 router.get(
-  '/listByUser',
+  '/requests',
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
   listByUser,
 );
