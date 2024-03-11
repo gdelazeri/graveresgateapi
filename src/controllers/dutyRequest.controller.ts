@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import {
+  BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
   NO_CONTENT,
@@ -8,7 +9,7 @@ import {
 import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
 import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyRequestReponse } from '../interfaces/DutyRequest';
-import { create, findByDateAndShift, findById, update, softDelete, findByUser } from '../services/dutyRequest.service';
+import { create, findByDateAndShift, findById, update, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
 import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
 
 export async function getById(
@@ -163,6 +164,13 @@ export async function postDutyRequest(
   */
   try {
     const { body, userId } = req;
+    const dutyRequestExists = await findExistent(body.date, body.shift, userId);
+    if (dutyRequestExists) {
+      return res
+        .status(BAD_REQUEST)
+        .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestExistent));
+    }
+
     const payload = {
       date: body.date,
       shift: body.shift,

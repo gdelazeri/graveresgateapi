@@ -6,6 +6,7 @@ export enum UserErrorCodes {
 
 export enum DutyRequestErrorCodes {
   DutyRequestInexistent = 'DR_0001',
+  DutyRequestExistent = 'DR_0002',
 }
 
 export enum GenericErrorCodes {

@@ -73,10 +73,18 @@ export async function findByDateAndShift(date: string, shift: DutyShift) {
   }
 }
 
+export async function findExistent(date: string, shift: DutyShift, userId: string) {
+  try {
+    return dutyRequestRepository.findOne({ where: { date, shift, userId, deletedAt: IsNull() }});
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function findByUser(userId: string) {
   try {
     const date = new Date();
-    date.setDate(date.getDate() - 2);
+    date.setDate(date.getDate() - 1);
     const startDate = date.toISOString().substring(0, 10)
 
     return dutyRequestRepository.query(`
