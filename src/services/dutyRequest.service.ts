@@ -23,7 +23,35 @@ export async function update(id: string, input: any) {
 
 export async function findById(id: string) {
   try {
-    return dutyRequestRepository.findOneBy({ id });
+    const dutyList = await dutyRequestRepository.query(`
+      SELECT
+        id,
+        date,
+        shift,
+        "userId",
+        "startAt",
+        "endAt",
+        note,
+        CASE WHEN EXISTS (
+          SELECT 1
+          FROM duty d
+          WHERE dr."date" = d."date" 
+            AND d.shift = dr.shift
+            AND (dr."userId" = d."leaderId"
+              OR dr."userId" = d."driverId"
+              OR dr."userId" = d."firstRescuerId"
+              OR dr."userId" = d."secondRescuerId"
+              OR dr."userId" = d."radioOperatorId"
+              OR dr."userId" = d."assistantRadioOperatorId"
+              OR dr."userId" = d."traineeId"
+            )
+          ) THEN 'APPROVED' ELSE 'PENDING' END AS status
+      FROM "dutyRequest" dr
+      WHERE dr.id = '${id}'
+    `)
+
+    if (dutyList.length === 1) return dutyList[0]
+    return null
   } catch (error) {
     throw error;
   }
@@ -78,6 +106,7 @@ export async function findByUser(userId: string) {
       WHERE dr."userId" = '${userId}'
         AND dr."deletedAt" IS NULL
         AND dr."date" >= '${startDate}'
+      ORDER BY dr."date" ASC
     `, [])
   } catch (error) {
     throw error;

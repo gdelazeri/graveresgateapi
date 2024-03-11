@@ -44,6 +44,7 @@ export async function getById(
       endAt: dutyRequest.endAt,
       note: dutyRequest.note,
       positions: dutyRequestPositions.map((item) => item.position),
+      status: dutyRequest.status,
     } as DutyReponse;
 
     return res.status(OK).send(new ResponseData(response));
