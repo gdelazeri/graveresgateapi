@@ -1,15 +1,11 @@
 import { Request, Response } from 'express';
 import {
-  BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   OK,
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
 import { ListDutyQuery } from '../interfaces/Duty';
-import { findPaginated } from '../services/duty.service';
-import { GenericErrorCodes } from '../enum/ErrorCodes';
-
-const MAX_PAGE_SIZE = 20
+import { listDutyByPeriod } from '../services/duty.service';
 
 export async function list(
   req: Request<unknown, unknown, unknown, ListDutyQuery>,
@@ -26,17 +22,7 @@ export async function list(
   try {
     const { query } = req;
 
-    if (parseInt(query.page) < 1 || parseInt(query.pageSize) > MAX_PAGE_SIZE) {
-      return res
-        .status(BAD_REQUEST)
-        .send(new ResponseData(null, GenericErrorCodes.PaginationInvalid));
-    }
-
-    const response = await findPaginated({
-      page: parseInt(query.page),
-      pageSize: parseInt(query.pageSize),
-      type: query.type,
-    });
+    const response = await listDutyByPeriod({ period: query.period });
 
     return res.status(OK).send(new ResponseData(response));
   } catch (error) {
