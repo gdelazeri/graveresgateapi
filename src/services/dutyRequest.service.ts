@@ -47,8 +47,12 @@ export async function findByDateAndShift(date: string, shift: DutyShift) {
 
 export async function findByUser(userId: string) {
   try {
+    const date = new Date();
+    date.setDate(date.getDate() - 2);
+    const startDate = date.toISOString().substring(0, 10)
+
     return dutyRequestRepository.find({
-      where: { userId, deletedAt: IsNull(), date: MoreThanOrEqual(new Date().toISOString().substring(0, 10)) },
+      where: { userId, deletedAt: IsNull(), date: MoreThanOrEqual(startDate) },
       order: { date: 'ASC', shift: 'ASC' },
     })
   } catch (error) {

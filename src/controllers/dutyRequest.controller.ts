@@ -9,7 +9,6 @@ import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
 import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyReponse } from '../interfaces/DutyRequest';
 import { create, findByDateAndShift, findById, update, softDelete, findByUser } from '../services/dutyRequest.service';
-import { DutyRequest } from '../models/dutyRequest.model';
 import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
 
 export async function getById(
@@ -85,6 +84,7 @@ export async function listByDateAndShift(
     for (const item of list) {
       const dutyRequestPositions = await findByDutyRequestId(item.id);
       response.push({
+        id: item.id,
         date: item.date,
         shift: item.shift,
         userId: item.userId,
@@ -92,6 +92,7 @@ export async function listByDateAndShift(
         endAt: item.endAt,
         note: item.note,
         positions: dutyRequestPositions.map((item) => item.position),
+        status: 'PENDING',
       });
     }
 
@@ -123,6 +124,7 @@ export async function listByUser(
     for (const item of list) {
       const dutyRequestPositions = await findByDutyRequestId(item.id);
       response.push({
+        id: item.id,
         date: item.date,
         shift: item.shift,
         userId: item.userId,
@@ -130,6 +132,7 @@ export async function listByUser(
         endAt: item.endAt,
         note: item.note,
         positions: dutyRequestPositions.map((item) => item.position),
+        status: 'PENDING',
       });
     }
 

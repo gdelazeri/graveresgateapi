@@ -53,7 +53,7 @@ router.put(
 
 router.delete(
   '/:id',
-  requiresAuth([Permission.ADMIN]),
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
   validateRequest(deleteDutyRequestSchema),
   deleteDutyRequest,
 );

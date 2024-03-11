@@ -21,6 +21,7 @@ export interface ListDutyRequest extends core.Query {
 }
 
 export interface DutyReponse {
+  id: string;
   date: string;
   shift: DutyShift;
   userId: string;
@@ -28,4 +29,5 @@ export interface DutyReponse {
   endAt: string;
   note: string;
   positions: DutyPosition[];
+  status: string;
 }
