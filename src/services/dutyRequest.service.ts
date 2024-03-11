@@ -51,10 +51,34 @@ export async function findByUser(userId: string) {
     date.setDate(date.getDate() - 2);
     const startDate = date.toISOString().substring(0, 10)
 
-    return dutyRequestRepository.find({
-      where: { userId, deletedAt: IsNull(), date: MoreThanOrEqual(startDate) },
-      order: { date: 'ASC', shift: 'ASC' },
-    })
+    return dutyRequestRepository.query(`
+      SELECT
+        id,
+        date,
+        shift,
+        "userId",
+        "startAt",
+        "endAt",
+        note,
+        CASE WHEN EXISTS (
+          SELECT 1
+          FROM duty d
+          WHERE dr."date" = d."date" 
+            AND d.shift = dr.shift
+            AND (dr."userId" = d."leaderId"
+              OR dr."userId" = d."driverId"
+              OR dr."userId" = d."firstRescuerId"
+              OR dr."userId" = d."secondRescuerId"
+              OR dr."userId" = d."radioOperatorId"
+              OR dr."userId" = d."assistantRadioOperatorId"
+              OR dr."userId" = d."traineeId"
+            )
+          ) THEN 'APPROVED' ELSE 'PENDING' END AS status
+      FROM "dutyRequest" dr
+      WHERE dr."userId" = '${userId}'
+        AND dr."deletedAt" IS NULL
+        AND dr."date" >= '${startDate}'
+    `, [])
   } catch (error) {
     throw error;
   }

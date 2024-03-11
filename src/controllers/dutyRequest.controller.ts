@@ -36,6 +36,7 @@ export async function getById(
 
     const dutyRequestPositions = await findByDutyRequestId(id);
     const response = {
+      id: dutyRequest.id,
       date: dutyRequest.date,
       shift: dutyRequest.shift,
       userId: dutyRequest.userId,
@@ -132,7 +133,7 @@ export async function listByUser(
         endAt: item.endAt,
         note: item.note,
         positions: dutyRequestPositions.map((item) => item.position),
-        status: 'PENDING',
+        status: item.status,
       });
     }
 
