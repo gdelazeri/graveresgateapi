@@ -20,7 +20,7 @@ export interface ListDutyRequest extends core.Query {
   shift: DutyShift;
 }
 
-export interface DutyReponse {
+export interface DutyRequestReponse {
   id: string;
   date: string;
   shift: DutyShift;

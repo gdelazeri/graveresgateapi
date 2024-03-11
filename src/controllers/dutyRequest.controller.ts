@@ -7,7 +7,7 @@ import {
 } from 'http-status';
 import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
-import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyReponse } from '../interfaces/DutyRequest';
+import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyRequestReponse } from '../interfaces/DutyRequest';
 import { create, findByDateAndShift, findById, update, softDelete, findByUser } from '../services/dutyRequest.service';
 import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
 
@@ -45,7 +45,7 @@ export async function getById(
       note: dutyRequest.note,
       positions: dutyRequestPositions.map((item) => item.position),
       status: dutyRequest.status,
-    } as DutyReponse;
+    } as DutyRequestReponse;
 
     return res.status(OK).send(new ResponseData(response));
   } catch (error) {
@@ -81,7 +81,7 @@ export async function listByDateAndShift(
     const { date, shift } = req.query;
 
     const list = await findByDateAndShift(date, shift)
-    const response: DutyReponse[] = [];
+    const response: DutyRequestReponse[] = [];
 
     for (const item of list) {
       const dutyRequestPositions = await findByDutyRequestId(item.id);
@@ -121,7 +121,7 @@ export async function listByUser(
 
     const list = await findByUser(userId);
 
-    const response: DutyReponse[] = [];
+    const response: DutyRequestReponse[] = [];
 
     for (const item of list) {
       const dutyRequestPositions = await findByDutyRequestId(item.id);
