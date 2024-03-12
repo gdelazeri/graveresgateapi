@@ -5,7 +5,7 @@ import DutyShift from '../enum/duty/DutyShift';
 
 const dutyRequestRepository = DataSource.getRepository(DutyRequest);
 
-export async function create(input: any) {
+export async function createDutyRequest(input: any) {
   try {
     return dutyRequestRepository.save(dutyRequestRepository.create(input)) as unknown as Promise<DutyRequest>;
   } catch (error) {

@@ -2,10 +2,11 @@ import moment from 'moment';
 import DataSource from '../dataSource';
 import { ListDutyPeriod } from '../interfaces/Duty';
 import { Duty } from '../models/duty.model';
+import DutyShift from '../enum/duty/DutyShift';
 
 const dutyRepository = DataSource.getRepository(Duty);
 
-export async function create(input: any) {
+export async function createDuty(input: any) {
   try {
     return dutyRepository.save(dutyRepository.create(input)) as unknown as Promise<Duty>;
   } catch (error) {
@@ -24,6 +25,14 @@ export async function update(id: string, input: any) {
 export async function findById(id: string) {
   try {
     return dutyRepository.findOne({ where: { id } });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function findDutyByDateAndShift(date: string, shift: DutyShift) {
+  try {
+    return dutyRepository.findOne({ where: { date, shift } });
   } catch (error) {
     throw error;
   }

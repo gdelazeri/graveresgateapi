@@ -9,8 +9,9 @@ import {
 import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
 import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyRequestReponse } from '../interfaces/DutyRequest';
-import { create, findByDateAndShift, findById, update, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
+import { createDutyRequest, findByDateAndShift, findById, update, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
 import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
+import { createDuty, findDutyByDateAndShift } from '../services/duty.service';
 
 export async function getById(
   req: Request<DutyRequestParams, unknown, unknown>,
@@ -180,10 +181,14 @@ export async function postDutyRequest(
       userId,
     }
 
-    const dutyRequest = await create(payload);
+    const dutyRequest = await createDutyRequest(payload);
     
     for (const position of body.positions) {
       await createDutyRequestPosition({ position, dutyRequestId: dutyRequest.id });
+    }
+
+    if (!await findDutyByDateAndShift(body.date, body.shift)) {
+      await createDuty({ date: body.date, shift: body.shift });
     }
 
     return res.status(OK).send(new ResponseData(dutyRequest));
