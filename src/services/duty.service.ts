@@ -42,7 +42,7 @@ export async function listDutyByMonth({
   month,
 }: {
   month: ListDutyMonth
-}) {
+}): Promise<Duty[]> {
   try {
     let conditions = '1=1';
 
@@ -102,7 +102,7 @@ export async function listPreviousDuty({
 }: {
   page: number,
   pageSize: number
-}) {
+}): Promise<Duty[]> {
   try {
     const dateMax = moment().startOf('month').format('YYYY-MM-DD')
 

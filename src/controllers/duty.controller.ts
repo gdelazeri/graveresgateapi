@@ -1,14 +1,18 @@
 import { Request, Response } from 'express';
+import moment from 'moment';
 import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   OK,
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { ListDutyByMonthParams, ListDutyPreviousQuery } from '../interfaces/Duty';
+import { ListDutyByMonthParams, ListDutyMonth, ListDutyPreviousQuery } from '../interfaces/Duty';
 import { listDutyByMonth, listPreviousDuty } from '../services/duty.service';
 import { GenericErrorCodes } from '../enum/ErrorCodes';
 import { MAX_PAGE_SIZE } from '../enum/Constants';
+import DutyWeekDay from '../enum/duty/DutyWeekDay';
+import DutyShift from '../enum/duty/DutyShift';
+import { Duty } from '../models/duty.model';
 
 export async function listByMonth(
   req: Request<ListDutyByMonthParams, unknown, unknown, unknown>,
@@ -25,7 +29,42 @@ export async function listByMonth(
   try {
     const { month } = req.params;
 
-    const response = await listDutyByMonth({ month });
+    const dutyList = await listDutyByMonth({ month });
+
+    const monthDays = [];
+    const date = moment().add(month === ListDutyMonth.NEXT ? 1 : 0, 'month').startOf('month');
+    const lastMonthDay = moment().add(month === ListDutyMonth.NEXT ? 1 : 0, 'month').endOf('month');
+
+    while (date.format('YYYY-MM-DD') <= lastMonthDay.format('YYYY-MM-DD')) {
+      switch (date.weekday()) {
+        case DutyWeekDay.THURSDAY:
+          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.NIGHT });
+          break;
+        case DutyWeekDay.FRIDAY:
+          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.DAY });
+          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.NIGHT });
+          break;
+        case DutyWeekDay.SATURDAY:
+          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.DAY });
+          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.NIGHT });
+          break;
+        case DutyWeekDay.SUNDAY:
+          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.DAY });
+          break;
+      }
+      date.add(1, 'day');
+    }
+
+    const response: Duty[] = [];
+
+    for (const day of monthDays) {
+      const duty = dutyList.find((duty) => duty.date === day.date && duty.shift === day.shift);
+      if (duty) {
+        response.push({ ...duty });
+      } else {
+        response.push({ date: day.date, shift: day.shift } as any);
+      }
+    }
 
     return res.status(OK).send(new ResponseData(response));
   } catch (error) {
