@@ -3,17 +3,25 @@ import validateRequest from '../middlewares/validateRequest';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
 import {
-  list
+  listByMonth,
+  listPrevious
 } from '../controllers/duty.controller';
-import { listSchema } from '../schemas/duty.schema';
+import { listByMonthSchema, listPreviousSchema } from '../schemas/duty.schema';
 
 const router = express.Router();
 
 router.get(
-  '/list',
+  '/listByMonth/:month',
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
-  validateRequest(listSchema),
-  list,
+  validateRequest(listByMonthSchema),
+  listByMonth,
+);
+
+router.get(
+  '/listPrevious',
+  requiresAuth([Permission.ADMIN]),
+  validateRequest(listPreviousSchema),
+  listPrevious,
 );
 
 export default router;

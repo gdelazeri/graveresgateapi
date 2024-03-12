@@ -1,28 +1,63 @@
 import { Request, Response } from 'express';
 import {
+  BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   OK,
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { ListDutyQuery } from '../interfaces/Duty';
-import { listDutyByPeriod } from '../services/duty.service';
+import { ListDutyByMonthParams, ListDutyPreviousQuery } from '../interfaces/Duty';
+import { listDutyByMonth, listPreviousDuty } from '../services/duty.service';
+import { GenericErrorCodes } from '../enum/ErrorCodes';
+import { MAX_PAGE_SIZE } from '../enum/Constants';
 
-export async function list(
-  req: Request<unknown, unknown, unknown, ListDutyQuery>,
+export async function listByMonth(
+  req: Request<ListDutyByMonthParams, unknown, unknown, unknown>,
   res: Response,
 ) {
   /* 	
     #swagger.tags = ['Duty']
-    #swagger.description = 'List duty'
+    #swagger.description = 'List duty by month'
     #swagger.security = [{ "Bearer": [ ] }]
     #swagger.responses['200']
     #swagger.responses['400']
     #swagger.responses['500']
   */
   try {
-    const { query } = req;
+    const { month } = req.params;
 
-    const response = await listDutyByPeriod({ period: query.period });
+    const response = await listDutyByMonth({ month });
+
+    return res.status(OK).send(new ResponseData(response));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function listPrevious(
+  req: Request<unknown, unknown, unknown, ListDutyPreviousQuery>,
+  res: Response,
+) {
+  /* 	
+    #swagger.tags = ['Duty']
+    #swagger.description = 'List previous duty'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const { page, pageSize } = req.query;
+
+    if (parseInt(page) < 1 || parseInt(pageSize) > MAX_PAGE_SIZE) {
+      return res
+        .status(BAD_REQUEST)
+        .send(new ResponseData(null, GenericErrorCodes.PaginationInvalid));
+    }
+
+    const response = await listPreviousDuty({
+      page: parseInt(page),
+      pageSize: parseInt(pageSize)
+    });
 
     return res.status(OK).send(new ResponseData(response));
   } catch (error) {

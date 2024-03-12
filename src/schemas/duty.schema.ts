@@ -1,8 +1,15 @@
 import { object, string } from 'yup';
-import { ListDutyPeriod } from '../interfaces/Duty';
+import { ListDutyMonth } from '../interfaces/Duty';
 
-export const listSchema = object({
+export const listByMonthSchema = object({
+  params: object({
+    month: string().required().oneOf(Object.values(ListDutyMonth)),
+  })
+});
+
+export const listPreviousSchema = object({
   query: object({
-    period: string().required().oneOf(Object.values(ListDutyPeriod)),
+    page: string().required(),
+    pageSize: string().required()
   })
 });

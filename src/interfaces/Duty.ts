@@ -5,14 +5,18 @@ export interface DutyParams extends core.ParamsDictionary {
   id: string
 }
 
-export enum ListDutyPeriod {
-  PAST = 'PAST',
+export enum ListDutyMonth {
   CURRENT = 'CURRENT',
-  FUTURE = 'FUTURE',
+  NEXT = 'NEXT',
 }
 
-export interface ListDutyQuery extends core.Query {
-  period: ListDutyPeriod;
+export interface ListDutyByMonthParams extends core.ParamsDictionary {
+  month: ListDutyMonth;
+}
+
+export interface ListDutyPreviousQuery extends core.Query {
+  page: string;
+  pageSize: string;
 }
 
 export interface DutyReponse {
