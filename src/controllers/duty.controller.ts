@@ -6,8 +6,8 @@ import {
   OK,
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { ListDutyByMonthParams, ListDutyMonth, ListDutyPreviousQuery } from '../interfaces/Duty';
-import { listDutyByMonth, listPreviousDuty } from '../services/duty.service';
+import { DutyPayload, GetDutyParams, ListDutyByMonthParams, ListDutyMonth, ListDutyPreviousQuery } from '../interfaces/Duty';
+import { listDutyByMonth, listPreviousDuty, getDutyByDateAndShift, updateDuty, createDuty, getDutyByDateAndShiftWithUserNames } from '../services/duty.service';
 import { GenericErrorCodes } from '../enum/ErrorCodes';
 import { MAX_PAGE_SIZE } from '../enum/Constants';
 import DutyWeekDay from '../enum/duty/DutyWeekDay';
@@ -104,100 +104,69 @@ export async function listPrevious(
   }
 }
 
-// export async function postDutyRequest(
-//   req: Request<unknown, unknown, PostDutyRequestPayload>,
-//   res: Response,
-// ) {
-//   /*
-//     #swagger.tags = ['DutyRequest']
-//     #swagger.description = 'Register a new duty request'
-//     #swagger.parameters['payload'] = {
-//       in: 'body',
-//       required: true,
-//       type: 'object',
-//       schema: { $ref: "#/definitions/PostNewDutyRequest" }
-//     }
-//     #swagger.responses['200']
-//     #swagger.responses['400']
-//     #swagger.responses['500']
-//   */
-//   try {
-//     const { body, userId } = req;
-//     const payload = {
-//       date: body.date,
-//       shift: body.shift,
-//       startAt: body.startAt,
-//       endAt: body.endAt,
-//       note: body.note,
-//       userId,
-//     }
+export async function getDuty(
+  req: Request<GetDutyParams, unknown, unknown, unknown>,
+  res: Response,
+) {
+  /* 	
+    #swagger.tags = ['Duty']
+    #swagger.description = 'Get duty information'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const { date, shift } = req.params;
 
-//     const dutyRequest = await create(payload);
-    
-//     for (const position of body.positions) {
-//       await createDutyRequestPosition({ position, dutyRequestId: dutyRequest.id });
-//     }
+    const duty = await getDutyByDateAndShiftWithUserNames(date, shift);
+    let response = {};
 
-//     return res.status(OK).send(new ResponseData(dutyRequest));
-//   } catch (error) {
-//     res.sendStatus(INTERNAL_SERVER_ERROR);
-//   }
-// }
+    if (duty) {
+      response = { ...duty };
+    } else {
+      response = { date, shift };
+    }
 
-// export async function putDutyRequest(
-//   req: Request<DutyRequestParams, unknown, PostDutyRequestPayload>,
-//   res: Response,
-// ) {
-//   /*
-//     #swagger.tags = ['DutyRequest']
-//     #swagger.description = 'Update a duty request'
-//     #swagger.security = [{ "Bearer": [ ] }]
-//     #swagger.parameters['id'] = {
-//       in: 'params',
-//       description: 'DutyRequest id',
-//       required: true,
-//       type: 'string',
-//     }
-//     #swagger.parameters['payload'] = {
-//       in: 'body',
-//       required: true,
-//       type: 'object',
-//       schema: { $ref: "#/definitions/PostNewDutyRequest" }
-//     }
-//     #swagger.responses['204']
-//     #swagger.responses['404']
-//     #swagger.responses['500']
-//   */
-//   try {
-//     const {
-//       body,
-//       userId,
-//       params: { id },
-//     } = req;
+    return res.status(OK).send(new ResponseData(response));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
 
-//     const payload = {
-//       date: body.date,
-//       shift: body.shift,
-//       startAt: body.startAt,
-//       endAt: body.endAt,
-//       note: body.note,
-//       userId,
-//     }
+export async function postDuty(
+  req: Request<unknown, unknown, DutyPayload>,
+  res: Response,
+) {
+  /*
+    #swagger.tags = ['Duty']
+    #swagger.description = 'Create/update a new duty'
+    #swagger.parameters['payload'] = {
+      in: 'body',
+      required: true,
+      type: 'object',
+      schema: { $ref: "#/definitions/PostDuty" }
+    }
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const { body } = req;
+    const payload = { ...body }
 
-//     if (!(await findById(id))) {
-//       return res
-//         .status(NOT_FOUND)
-//         .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent));
-//     }
+    const duty = await getDutyByDateAndShift(payload.date, payload.shift);
 
-//     await deleteByDutyRequestId(id);
-//     await update(id, payload);
-//     for (const position of body.positions) {
-//       await createDutyRequestPosition({ position, dutyRequestId: id });
-//     }
+    if (duty) {
+      await updateDuty(duty.id, payload);
+    } else {
+      await createDuty(payload);
+    }
 
-//     return res.sendStatus(NO_CONTENT);
-//   } catch (error) {
-//     res.sendStatus(INTERNAL_SERVER_ERROR);
-//   }
-// }
+    const response = await getDutyByDateAndShiftWithUserNames(payload.date, payload.shift);
+
+    return res.status(OK).send(new ResponseData(response));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}

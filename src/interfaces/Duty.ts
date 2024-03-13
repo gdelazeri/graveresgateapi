@@ -19,6 +19,23 @@ export interface ListDutyPreviousQuery extends core.Query {
   pageSize: string;
 }
 
+export interface GetDutyParams extends core.ParamsDictionary {
+  date: string;
+  shift: DutyShift;
+}
+
+export interface DutyPayload {
+  date: string;
+  shift: DutyShift;
+  leaderId: string;
+  driverId: string;
+  firstRescuerId: string;
+  secondRescuerId: string;
+  radioOperatorId: string;
+  assistantRadioOperatorId: string;
+  traineeId: string;
+}
+
 export interface DutyReponse {
   id: string;
   date: string;

@@ -29,6 +29,17 @@ const payloads = {
     endAt: "string",
     note: "string",
   },
+  PostDuty: {
+    date: "string",
+    shift: "string",
+    leaderId: "string",
+    driverId: "string",
+    firstRescuerId: "string",
+    secondRescuerId: "string",
+    radioOperatorId: "string",
+    assistantRadioOperatorId: "string",
+    traineeId: "string",
+  }
 }
 
 export default payloads;

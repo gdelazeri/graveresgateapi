@@ -14,7 +14,7 @@ export async function createDuty(input: any) {
   }
 }
 
-export async function update(id: string, input: any) {
+export async function updateDuty(id: string, input: any) {
   try {
     return dutyRepository.update(id, input);
   } catch (error) {
@@ -30,9 +30,51 @@ export async function findById(id: string) {
   }
 }
 
-export async function findDutyByDateAndShift(date: string, shift: DutyShift) {
+export async function getDutyByDateAndShift(date: string, shift: DutyShift) {
   try {
     return dutyRepository.findOne({ where: { date, shift } });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getDutyByDateAndShiftWithUserNames(date: string, shift: DutyShift) {
+  try {
+    const duty = await dutyRepository.query(`
+      SELECT
+        d.id,
+        TO_CHAR("date" , 'YYYY-MM-DD') as "date",
+        d.shift,
+        d."leaderId",
+        u.name as "leaderName",
+        d."driverId",
+        u2."name" as "driverName",
+        d."firstRescuerId",
+        u3."name" as "firstRescuerName",
+        d."secondRescuerId",
+        u4."name" as "secondRescuerName",
+        d."radioOperatorId",
+        u5."name" as "radioOperatorName",
+        d."assistantRadioOperatorId",
+        u6."name" as "assistantRadioOperatorName",
+        d."traineeId",
+        u7."name" as "traineeName"
+      FROM duty d
+        left join "user" u on u.id = "leaderId"
+        left join "user" u2 on u2.id = "driverId"
+        left join "user" u3 on u3.id = "firstRescuerId"
+        left join "user" u4 on u4.id = "secondRescuerId"
+        left join "user" u5 on u5.id = "radioOperatorId"
+        left join "user" u6 on u6.id = "assistantRadioOperatorId"
+        left join "user" u7 on u7.id = "traineeId"
+      WHERE date = '${date}' AND shift = '${shift}'
+      LIMIT 1
+    `);
+
+    if (duty.length > 0) {
+      return duty[0];
+    }
+    return null;
   } catch (error) {
     throw error;
   }

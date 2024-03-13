@@ -11,7 +11,7 @@ import ResponseData from '../utils/ResponseData';
 import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyRequestReponse } from '../interfaces/DutyRequest';
 import { createDutyRequest, findByDateAndShift, findById, update, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
 import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
-import { createDuty, findDutyByDateAndShift } from '../services/duty.service';
+import { createDuty, getDutyByDateAndShift } from '../services/duty.service';
 
 export async function getById(
   req: Request<DutyRequestParams, unknown, unknown>,
@@ -187,7 +187,7 @@ export async function postDutyRequest(
       await createDutyRequestPosition({ position, dutyRequestId: dutyRequest.id });
     }
 
-    if (!await findDutyByDateAndShift(body.date, body.shift)) {
+    if (!await getDutyByDateAndShift(body.date, body.shift)) {
       await createDuty({ date: body.date, shift: body.shift });
     }
 
