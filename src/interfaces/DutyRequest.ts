@@ -15,7 +15,7 @@ export interface DutyRequestParams extends core.ParamsDictionary {
   id: string
 }
 
-export interface ListDutyRequest extends core.Query {
+export interface ListDutyRequest extends core.ParamsDictionary {
   date: string;
   shift: DutyShift;
 }

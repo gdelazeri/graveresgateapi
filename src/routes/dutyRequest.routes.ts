@@ -25,7 +25,7 @@ router.get(
 );
 
 router.get(
-  '/listByDateAndShift',
+  '/list/:date/:shift',
   requiresAuth([Permission.ADMIN]),
   validateRequest(listByDateAndShiftSchema),
   listByDateAndShift,

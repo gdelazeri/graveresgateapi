@@ -56,7 +56,7 @@ export async function getById(
 }
 
 export async function listByDateAndShift(
-  req: Request<unknown, unknown, unknown, ListDutyRequest>,
+  req: Request<ListDutyRequest, unknown, unknown, unknown>,
   res: Response,
 ) {
   /* 	
@@ -80,7 +80,7 @@ export async function listByDateAndShift(
     #swagger.responses['500']
   */
   try {
-    const { date, shift } = req.query;
+    const { date, shift } = req.params;
 
     const list = await findByDateAndShift(date, shift)
     const response: DutyRequestReponse[] = [];

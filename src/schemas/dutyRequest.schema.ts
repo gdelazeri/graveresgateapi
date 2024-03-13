@@ -11,7 +11,7 @@ export const getByIdSchema = object({
 });
 
 export const listByDateAndShiftSchema = object({
-  query: object({
+  params: object({
     date: string().required(),
     shift: string().oneOf(Object.values(DutyShift)),
   })
