@@ -5,6 +5,8 @@ import { LoginPayload } from '../interfaces/User';
 import { User } from '../models/user.model';
 import DataSource from '../dataSource';
 import { createAccessToken, createRefreshToken } from '../utils/JsonWebToken';
+import Permission from '../enum/user/UserPermission';
+import { isString } from 'lodash';
 
 const userRepository = DataSource.getRepository(User);
 
@@ -43,7 +45,35 @@ export async function findUserById(id: string) {
   }
 }
 
-export async function findUsers() {
+export async function findUsers({
+  isLeader,
+  isDriver,
+  permission,
+  statusList,
+}: {
+  isLeader?: boolean,
+  isDriver?: boolean,
+  permission?: Permission,
+  statusList: Status[],
+}) {
+  try {
+    const condition: any = { status: In(statusList) };
+
+    if (typeof isLeader === 'boolean') condition['isLeader'] = isLeader;
+    if (typeof isDriver === 'boolean') condition['isDriver'] = isDriver;
+    if (isString(permission)) condition['permission'] = permission;
+    
+    return userRepository.find({
+      where: condition,
+      select: ['id', 'name', 'imageUrl'],
+      order: { name: 'ASC' },
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function findAllUsers() {
   try {
     return userRepository.find({
       where: { status: In([Status.ACTIVE, Status.PENDING]) },

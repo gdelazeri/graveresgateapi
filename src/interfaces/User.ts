@@ -1,4 +1,5 @@
 import * as core from 'express-serve-static-core';
+import Permission from '../enum/user/UserPermission';
 
 export interface UserIdParams extends core.ParamsDictionary {
   _id: string;
@@ -32,6 +33,7 @@ export interface PutOwnUserPayload {
 }
 
 export interface GetListUsers extends core.Query {
-  pageNumber: string;
-  pageSize: string;
+  isLeader?: string;
+  isDriver?: string;
+  permission?: Permission;
 }

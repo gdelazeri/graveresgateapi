@@ -9,6 +9,7 @@ import {
   getOwnUser,
   getUserById,
   listUsers,
+  listAllUsers,
 } from '../controllers/user.controller';
 import {
   postUserSchema,
@@ -18,6 +19,7 @@ import {
   putOwnUserSchema,
   getOwnUserSchema,
   getByIdUserSchema,
+  listUsersSchema,
 } from '../schemas/user.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
@@ -41,7 +43,14 @@ router.get(
 router.get(
   '/list',
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
+  validateRequest(listUsersSchema),
   listUsers,
+);
+
+router.get(
+  '/list/all',
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
+  listAllUsers,
 );
 
 router.post('', validateRequest(postUserSchema), postUser);
