@@ -65,7 +65,7 @@ export async function findUsers({
     
     return userRepository.find({
       where: condition,
-      select: ['id', 'name', 'imageUrl'],
+      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver'],
       order: { name: 'ASC' },
     });
   } catch (error) {
@@ -77,7 +77,7 @@ export async function findAllUsers() {
   try {
     return userRepository.find({
       where: { status: In([Status.ACTIVE, Status.PENDING]) },
-      select: ['id', 'name', 'imageUrl'],
+      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver'],
       order: { name: 'ASC' },
     });
   } catch (error) {

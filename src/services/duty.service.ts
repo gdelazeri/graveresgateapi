@@ -47,18 +47,25 @@ export async function getDutyByDateAndShiftWithUserNames(date: string, shift: Du
         d.shift,
         d."leaderId",
         u.name as "leaderName",
+        u."imageUrl" as "leaderImageUrl",
         d."driverId",
         u2."name" as "driverName",
+        u2."imageUrl" as "driverImageUrl",
         d."firstRescuerId",
         u3."name" as "firstRescuerName",
+        u3."imageUrl" as "firstRescuerImageUrl",
         d."secondRescuerId",
         u4."name" as "secondRescuerName",
+        u4."imageUrl" as "secondRescuerImageUrl",
         d."radioOperatorId",
         u5."name" as "radioOperatorName",
+        u5."imageUrl" as "radioOperatorImageUrl",
         d."assistantRadioOperatorId",
         u6."name" as "assistantRadioOperatorName",
+        u6."imageUrl" as "assistantRadioOperatorImageUrl",
         d."traineeId",
-        u7."name" as "traineeName"
+        u7."name" as "traineeName",
+        u7."imageUrl" as "traineeImageUrl"
       FROM duty d
         left join "user" u on u.id = "leaderId"
         left join "user" u2 on u2.id = "driverId"
