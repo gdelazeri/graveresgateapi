@@ -45,38 +45,10 @@ export async function findUserById(id: string) {
   }
 }
 
-export async function findUsers({
-  isLeader,
-  isDriver,
-  permission,
-  statusList,
-}: {
-  isLeader?: boolean,
-  isDriver?: boolean,
-  permission?: Permission,
-  statusList: Status[],
-}) {
-  try {
-    const condition: any = { status: In(statusList) };
-
-    if (typeof isLeader === 'boolean') condition['isLeader'] = isLeader;
-    if (typeof isDriver === 'boolean') condition['isDriver'] = isDriver;
-    if (isString(permission)) condition['permission'] = permission;
-    
-    return userRepository.find({
-      where: condition,
-      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver'],
-      order: { name: 'ASC' },
-    });
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function findAllUsers() {
+export async function findUsers(statusList: Status[]) {
   try {
     return userRepository.find({
-      where: { status: In([Status.ACTIVE, Status.PENDING]) },
+      where: { status: In(statusList) },
       select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver'],
       order: { name: 'ASC' },
     });

@@ -18,14 +18,6 @@ export const getByIdUserSchema = object({
     .strict(),
 });
 
-export const listUsersSchema = object({
-  query: object({
-    isDriver: boolean().optional().nullable(),
-    isLeader: boolean().optional().nullable(),
-    permission: string().oneOf(Object.values(Permission)).optional().nullable(),
-  })
-});
-
 export const postUserSchema = object({
   body: object({
     name: string().required('Name is required'),

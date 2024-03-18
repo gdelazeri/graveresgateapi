@@ -8,7 +8,7 @@ import {
   putOwnUser,
   getOwnUser,
   getUserById,
-  listUsers,
+  listActiveUsers,
   listAllUsers,
 } from '../controllers/user.controller';
 import {
@@ -19,7 +19,6 @@ import {
   putOwnUserSchema,
   getOwnUserSchema,
   getByIdUserSchema,
-  listUsersSchema,
 } from '../schemas/user.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
@@ -41,10 +40,9 @@ router.get(
 );
 
 router.get(
-  '/list',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
-  validateRequest(listUsersSchema),
-  listUsers,
+  '/list/active',
+  requiresAuth([Permission.ADMIN]),
+  listActiveUsers,
 );
 
 router.get(

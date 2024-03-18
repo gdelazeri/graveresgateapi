@@ -17,7 +17,6 @@ import {
   softDeleteUser,
   generateTokens,
   findUsers,
-  findAllUsers,
 } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
 import {
@@ -29,7 +28,6 @@ import {
   UserIdParams,
 } from '../interfaces/User';
 import { User } from '../models/user.model';
-import { isString } from 'lodash';
 import Status from '../enum/user/UserStatus';
 
 export async function getOwnUser(req: Request, res: Response) {
@@ -86,45 +84,20 @@ export async function getUserById(req: Request, res: Response) {
   }
 }
 
-export async function listUsers(
+export async function listActiveUsers(
   req: Request<unknown, unknown, unknown, GetListUsers>,
   res: Response,
 ) {
   /* 	
     #swagger.tags = ['User']
-    #swagger.description = 'List users with filters'
+    #swagger.description = 'List active users'
     #swagger.security = [{ "Bearer": [ ] }]
-    #swagger.parameters['isLeader'] = {
-      in: 'query',
-      description: 'Inform if the user is a leader',
-      required: false,
-      type: 'boolean',
-    }
-    #swagger.parameters['isDriver'] = {
-      in: 'query',
-      description: 'Inform if the user is a driver',
-      required: false,
-      type: 'boolean',
-    }
-    #swagger.parameters['permission'] = {
-      in: 'query',
-      description: 'User permission',
-      required: false,
-      type: 'string',
-    }
     #swagger.responses['200']
     #swagger.responses['400']
     #swagger.responses['500']
   */
   try {
-    const { isLeader, isDriver, permission } = req.query;
-
-    const list = await findUsers({
-      isLeader: isString(isLeader) ? isLeader === 'true' : undefined,
-      isDriver: isString(isDriver) ? isDriver === 'true' : undefined,
-      permission,
-      statusList: [Status.ACTIVE],
-    });
+    const list = await findUsers([Status.ACTIVE]);
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -145,7 +118,7 @@ export async function listAllUsers(
     #swagger.responses['500']
   */
   try {
-    const list = await findAllUsers();
+    const list = await findUsers([Status.ACTIVE, Status.PENDING]);
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
