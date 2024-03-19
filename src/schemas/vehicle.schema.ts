@@ -1,6 +1,4 @@
-import { object, string, array } from 'yup';
-import DutyShift from '../enum/duty/DutyShift';
-import DutyPosition from '../enum/duty/DutyPosition';
+import { object, string } from 'yup';
 
 export const getByIdSchema = object({
   params: object({
@@ -14,6 +12,9 @@ export const postVehicleSchema = object({
   body: object({
     name: string().required(),
     licensePlate: string().required(),
+    brand: string().required(),
+    model: string().required(),
+    year: string().required(),
   })
 });
 
@@ -26,6 +27,9 @@ export const putVehicleSchema = object({
   body: object({
     name: string().required(),
     licensePlate: string().required(),
+    brand: string().required(),
+    model: string().required(),
+    year: string().required(),
   })
 });
 

@@ -80,7 +80,10 @@ export async function postVehicle(
 
     const payload = {
       name: body.name,
-      licensePlate: body.licensePlate
+      licensePlate: body.licensePlate,
+      brand: body.brand,
+      model: body.model,
+      year: body.year,
     }
 
     const vehicle = await createVehicle(payload);
@@ -123,7 +126,10 @@ export async function putVehicle(
 
     const payload = {
       name: body.name,
-      licensePlate: body.licensePlate
+      licensePlate: body.licensePlate,
+      brand: body.brand,
+      model: body.model,
+      year: body.year,
     }
 
     if (!(await findById(id))) {

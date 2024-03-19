@@ -17,6 +17,15 @@ export class Vehicle {
   @Column({ nullable: false })
   licensePlate: string;
 
+  @Column({ nullable: false })
+  brand: string;
+
+  @Column({ nullable: false })
+  model: string;
+
+  @Column({ nullable: false })
+  year: string;
+
   @Column({ nullable: true })
   deletedAt: Date;
 

@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateVehicleTable1710808690341 implements MigrationInterface {
+export class CreateVehicleTable1710815663277 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -19,6 +19,21 @@ export class CreateVehicleTable1710808690341 implements MigrationInterface {
           },
           {
             name: 'licensePlate',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'brand',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'model',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'year',
             type: 'varchar',
             isNullable: false,
           },
