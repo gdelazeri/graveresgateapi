@@ -13,3 +13,7 @@ export enum GenericErrorCodes {
   WrongFields = 'ERROR_0001',
   PaginationInvalid = 'ERROR_0002',
 }
+
+export enum VehicleErrorCodes {
+  VehicleInexistent = 'V_0001',
+}

@@ -39,6 +39,10 @@ const payloads = {
     radioOperatorId: "string",
     assistantRadioOperatorId: "string",
     traineeId: "string",
+  },
+  PostVehicle: {
+    name: "string",
+    licensePlate: "string",
   }
 }
 
