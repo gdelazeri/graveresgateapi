@@ -26,6 +26,9 @@ export class Vehicle {
   @Column({ nullable: false })
   year: string;
 
+  @Column({ nullable: false })
+  isAvailable: boolean;
+
   @Column({ nullable: true })
   deletedAt: Date;
 

@@ -10,4 +10,5 @@ export interface PostVehiclePayload {
   brand: string;
   model: string;
   year: string;
+  isAvailable: boolean;
 }

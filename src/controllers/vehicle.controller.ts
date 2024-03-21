@@ -84,6 +84,7 @@ export async function postVehicle(
       brand: body.brand,
       model: body.model,
       year: body.year,
+      isAvailable: body.isAvailable,
     }
 
     const vehicle = await createVehicle(payload);
@@ -130,6 +131,7 @@ export async function putVehicle(
       brand: body.brand,
       model: body.model,
       year: body.year,
+      isAvailable: body.isAvailable,
     }
 
     if (!(await findById(id))) {

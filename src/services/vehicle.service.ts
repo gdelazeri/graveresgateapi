@@ -30,7 +30,7 @@ export async function findById(id: string) {
 
 export async function findAll() {
   try {
-    return vehicleRepository.find({ where: { deletedAt: IsNull() } });
+    return vehicleRepository.find({ where: { deletedAt: IsNull() }, order: { isAvailable: 'DESC', name: 'ASC' } });
   } catch (error) {
     throw error;
   }

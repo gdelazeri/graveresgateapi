@@ -1,4 +1,4 @@
-import { object, string } from 'yup';
+import { boolean, object, string } from 'yup';
 
 export const getByIdSchema = object({
   params: object({
@@ -11,10 +11,11 @@ export const getByIdSchema = object({
 export const postVehicleSchema = object({
   body: object({
     name: string().required(),
-    licensePlate: string().required(),
-    brand: string().required(),
+    licensePlate: string().optional(),
+    brand: string().optional(),
     model: string().required(),
-    year: string().required(),
+    year: string().optional(),
+    isAvailable: boolean().required(),
   })
 });
 
@@ -26,10 +27,11 @@ export const putVehicleSchema = object({
     .strict(),
   body: object({
     name: string().required(),
-    licensePlate: string().required(),
-    brand: string().required(),
+    licensePlate: string().optional(),
+    brand: string().optional(),
     model: string().required(),
-    year: string().required(),
+    year: string().optional(),
+    isAvailable: boolean().required(),
   })
 });
 

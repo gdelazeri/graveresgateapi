@@ -6,6 +6,7 @@ import { AlterTimeDutyRequestTable1709840694000 } from './1709840694000-AlterTim
 import { CreateDutyTable1710122109904 } from './1710122109904-CreateDutyTable'
 import { AlterDutyTableColumn1710124685627 } from './1710124685627-AlterDutyTableColumn'
 import { CreateVehicleTable1710815663277 } from './1710815663277-CreateVehicleTable'
+import { AddAvailableColumnVehicleTable1710963385395 } from './1710963385395-AddAvailableColumnVehicleTable'
 
 export default [
   CreateDutyRequestTable1708913454347,
@@ -15,5 +16,6 @@ export default [
   AlterTimeDutyRequestTable1709840694000,
   CreateDutyTable1710122109904,
   AlterDutyTableColumn1710124685627,
-  CreateVehicleTable1710815663277
+  CreateVehicleTable1710815663277,
+  AddAvailableColumnVehicleTable1710963385395
 ]
