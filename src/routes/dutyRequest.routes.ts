@@ -2,7 +2,7 @@ import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
 import {
   deleteDutyRequestSchema,
-  getByIdSchema, listByDateAndShiftSchema, postDutyRequestSchema, putDutyRequestSchema,
+  getByIdSchema, listByDateAndShiftSchema, postDutyRequestSchema
 } from '../schemas/dutyRequest.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
@@ -12,14 +12,13 @@ import {
   listByDateAndShift,
   listByUser,
   postDutyRequest,
-  putDutyRequest
 } from '../controllers/dutyRequest.controller';
 
 const router = express.Router();
 
 router.get(
   '/getById/:id',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   validateRequest(getByIdSchema),
   getById,
 );
@@ -33,27 +32,20 @@ router.get(
 
 router.get(
   '/requests',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   listByUser,
 );
 
 router.post(
   '',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   validateRequest(postDutyRequestSchema),
   postDutyRequest
 );
 
-router.put(
-  '/:id',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
-  validateRequest(putDutyRequestSchema),
-  putDutyRequest,
-);
-
 router.delete(
   '/:id',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   validateRequest(deleteDutyRequestSchema),
   deleteDutyRequest,
 );

@@ -67,6 +67,16 @@ export async function checkValidUser(id: string) {
   }
 }
 
+export async function checkUserActive(id: string) {
+  try {
+    return userRepository.findOne({
+      where: { id, status: Status.ACTIVE },
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function checkLogin(payload: LoginPayload) {
   try {
     const user = await userRepository.findOne({

@@ -28,22 +28,6 @@ export const postDutyRequestSchema = object({
   })
 });
 
-export const putDutyRequestSchema = object({
-  params: object({
-    id: string().required(),
-  })
-    .noUnknown(true)
-    .strict(),
-  body: object({
-    date: string().required(),
-    shift: string().oneOf(Object.values(DutyShift)),
-    startAt: string().required(),
-    endAt: string().required(),
-    note: string().optional().nullable(),
-    positions: array().of(string().oneOf(Object.values(DutyPosition))).required().min(1),
-  })
-});
-
 export const deleteDutyRequestSchema = object({
   params: object({
     id: string().required(),

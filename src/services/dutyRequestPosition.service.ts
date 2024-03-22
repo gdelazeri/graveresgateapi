@@ -11,14 +11,6 @@ export async function createDutyRequestPosition(input: any) {
   }
 }
 
-export async function deleteByDutyRequestId(dutyRequestId: string) {
-  try {
-    return dutyRequestPositionRepository.delete({ dutyRequestId });
-  } catch (error) {
-    throw error;
-  }
-}
-
 export async function findByDutyRequestId(dutyRequestId: string) {
   try {
     return dutyRequestPositionRepository.findBy({ dutyRequestId });

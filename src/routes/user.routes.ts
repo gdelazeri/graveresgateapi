@@ -29,7 +29,7 @@ const router = express.Router();
 
 router.get(
   '',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   validateRequest(getOwnUserSchema),
   getOwnUser,
 );
@@ -43,7 +43,7 @@ router.get(
 
 router.get(
   '/list/active',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   listActiveUsers,
 );
 
@@ -64,7 +64,7 @@ router.put(
 
 router.put(
   '',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   validateRequest(putOwnUserSchema),
   putOwnUser,
 );

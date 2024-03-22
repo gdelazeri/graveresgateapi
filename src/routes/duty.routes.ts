@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.get(
   '/listByMonth/:month',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
+  requiresAuth([]),
   validateRequest(listByMonthSchema),
   listByMonth,
 );

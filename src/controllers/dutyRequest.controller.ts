@@ -3,14 +3,14 @@ import {
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
-  NO_CONTENT,
   OK,
 } from 'http-status';
-import { DutyRequestErrorCodes } from '../enum/ErrorCodes';
+import { DutyRequestErrorCodes, UserErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
 import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyRequestReponse } from '../interfaces/DutyRequest';
-import { createDutyRequest, findByDateAndShift, findById, update, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
-import { createDutyRequestPosition, deleteByDutyRequestId, findByDutyRequestId } from '../services/dutyRequestPosition.service';
+import { createDutyRequest, findByDateAndShift, findById, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
+import { createDutyRequestPosition, findByDutyRequestId } from '../services/dutyRequestPosition.service';
+import { checkUserActive } from '../services/user.service';
 import { createDuty, getDutyByDateAndShift } from '../services/duty.service';
 
 export async function getById(
@@ -165,6 +165,14 @@ export async function postDutyRequest(
   */
   try {
     const { body, userId } = req;
+
+    const user = await checkUserActive(userId);
+    if (!user) {
+      return res
+        .status(BAD_REQUEST)
+        .send(new ResponseData(null, UserErrorCodes.UserInactive));
+    }
+
     const dutyRequestExists = await findExistent(body.date, body.shift, userId);
     if (dutyRequestExists) {
       return res
@@ -192,64 +200,6 @@ export async function postDutyRequest(
     }
 
     return res.status(OK).send(new ResponseData(dutyRequest));
-  } catch (error) {
-    res.sendStatus(INTERNAL_SERVER_ERROR);
-  }
-}
-
-export async function putDutyRequest(
-  req: Request<DutyRequestParams, unknown, PostDutyRequestPayload>,
-  res: Response,
-) {
-  /*
-    #swagger.tags = ['DutyRequest']
-    #swagger.description = 'Update a duty request'
-    #swagger.security = [{ "Bearer": [ ] }]
-    #swagger.parameters['id'] = {
-      in: 'params',
-      description: 'DutyRequest id',
-      required: true,
-      type: 'string',
-    }
-    #swagger.parameters['payload'] = {
-      in: 'body',
-      required: true,
-      type: 'object',
-      schema: { $ref: "#/definitions/PostNewDutyRequest" }
-    }
-    #swagger.responses['204']
-    #swagger.responses['404']
-    #swagger.responses['500']
-  */
-  try {
-    const {
-      body,
-      userId,
-      params: { id },
-    } = req;
-
-    const payload = {
-      date: body.date,
-      shift: body.shift,
-      startAt: body.startAt,
-      endAt: body.endAt,
-      note: body.note,
-      userId,
-    }
-
-    if (!(await findById(id))) {
-      return res
-        .status(NOT_FOUND)
-        .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent));
-    }
-
-    await deleteByDutyRequestId(id);
-    await update(id, payload);
-    for (const position of body.positions) {
-      await createDutyRequestPosition({ position, dutyRequestId: id });
-    }
-
-    return res.sendStatus(NO_CONTENT);
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
