@@ -10,6 +10,7 @@ import {
   getUserById,
   listActiveUsers,
   listAllUsers,
+  approveUser,
 } from '../controllers/user.controller';
 import {
   postUserSchema,
@@ -19,6 +20,7 @@ import {
   putOwnUserSchema,
   getOwnUserSchema,
   getByIdUserSchema,
+  approveUserSchema,
 } from '../schemas/user.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
@@ -41,13 +43,13 @@ router.get(
 
 router.get(
   '/list/active',
-  requiresAuth([Permission.ADMIN]),
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY, Permission.TRAINEE]),
   listActiveUsers,
 );
 
 router.get(
   '/list/all',
-  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
+  requiresAuth([Permission.ADMIN]),
   listAllUsers,
 );
 
@@ -68,12 +70,20 @@ router.put(
 );
 
 router.delete(
-  '/:_id',
+  '/:id',
   requiresAuth([Permission.ADMIN]),
   validateRequest(deleteUserSchema),
   deleteUser,
 );
 
 router.post('/login', validateRequest(postLoginSchema), postLogin);
+
+router.patch(
+  '/:id/approve',
+  requiresAuth([Permission.ADMIN]),
+  validateRequest(approveUserSchema),
+  approveUser,
+);
+
 
 export default router;

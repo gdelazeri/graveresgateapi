@@ -17,6 +17,7 @@ import {
   softDeleteUser,
   generateTokens,
   findUsers,
+  findLatestRegistrationId,
 } from '../services/user.service';
 import ResponseData from '../utils/ResponseData';
 import {
@@ -118,7 +119,7 @@ export async function listAllUsers(
     #swagger.responses['500']
   */
   try {
-    const list = await findUsers([Status.ACTIVE, Status.PENDING]);
+    const list = await findUsers([Status.ACTIVE, Status.PENDING, Status.SUSPENDED]);
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -258,17 +259,17 @@ export async function deleteUser(req: Request<UserIdParams>, res: Response) {
   */
   try {
     const {
-      params: { _id },
+      params: { id },
       userId,
     } = req;
 
-    if (!(await findUserById(_id))) {
+    if (!(await findUserById(id))) {
       return res
         .status(NOT_FOUND)
         .send(new ResponseData(null, UserErrorCodes.UserInexistent));
     }
 
-    await softDeleteUser(_id, userId);
+    await softDeleteUser(id, userId);
 
     return res.sendStatus(OK);
   } catch (error) {
@@ -306,6 +307,41 @@ export async function postLogin(
     }
 
     return res.status(OK).send(new ResponseData(generateTokens(user)));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function approveUser(req: Request<UserIdParams>, res: Response) {
+  /*
+    #swagger.tags = ['User']
+    #swagger.description = '[ADMIN] Approve an user'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.parameters['id'] = {
+      in: 'params',
+      required: true,
+      description: 'User id',
+      type: 'string',
+    }
+    #swagger.responses['200']
+    #swagger.responses['404']
+    #swagger.responses['500']
+  */
+  try {
+    const {
+      params: { id },
+      userId,
+    } = req;
+
+    if (!(await findUserById(id))) {
+      return res
+        .status(NOT_FOUND)
+        .send(new ResponseData(null, UserErrorCodes.UserInexistent));
+    }
+
+    await updateUser(id, { status: Status.ACTIVE, approvedBy: userId } as User);
+
+    return res.sendStatus(OK);
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }

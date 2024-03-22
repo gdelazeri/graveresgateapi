@@ -2,7 +2,7 @@ import * as core from 'express-serve-static-core';
 import Permission from '../enum/user/UserPermission';
 
 export interface UserIdParams extends core.ParamsDictionary {
-  _id: string;
+  id: string;
 }
 
 export interface LoginPayload {

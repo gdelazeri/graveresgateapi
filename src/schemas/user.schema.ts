@@ -72,7 +72,7 @@ export const putOwnUserSchema = object({
 
 export const deleteUserSchema = object({
   params: object({
-    _id: string().required(),
+    id: string().required(),
   })
     .noUnknown(true)
     .strict(),
@@ -84,6 +84,14 @@ export const postLoginSchema = object({
       .email('Must be a valid email')
       .required('Email is required'),
     password: string().required('Password is required'),
+  })
+    .noUnknown(true)
+    .strict(),
+});
+
+export const approveUserSchema = object({
+  params: object({
+    id: string().required(),
   })
     .noUnknown(true)
     .strict(),

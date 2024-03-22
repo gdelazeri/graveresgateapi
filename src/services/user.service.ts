@@ -1,4 +1,4 @@
-import { In } from 'typeorm';
+import { In, IsNull, Not } from 'typeorm';
 import bcrypt from 'bcrypt';
 import Status from '../enum/user/UserStatus';
 import { LoginPayload } from '../interfaces/User';
@@ -49,7 +49,7 @@ export async function findUsers(statusList: Status[]) {
   try {
     return userRepository.find({
       where: { status: In(statusList) },
-      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver'],
+      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver', 'status'],
       order: { name: 'ASC' },
     });
   } catch (error) {
@@ -97,6 +97,19 @@ export async function softDeleteUser(id: string, deletedBy: string) {
     throw error;
   }
 }
+
+export async function findLatestRegistrationId() {
+  try {
+    return userRepository.findOne({
+      where: { registrationId: Not(IsNull()) },
+      select: { registrationId: true },
+      order: { registrationId: 'DESC' },
+    });
+  } catch (error) {
+    throw error;
+  }
+}
+
 
 export function generateTokens(user: any) {
   try {
