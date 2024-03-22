@@ -5,8 +5,6 @@ import { LoginPayload } from '../interfaces/User';
 import { User } from '../models/user.model';
 import DataSource from '../dataSource';
 import { createAccessToken, createRefreshToken } from '../utils/JsonWebToken';
-import Permission from '../enum/user/UserPermission';
-import { isString } from 'lodash';
 
 const userRepository = DataSource.getRepository(User);
 
@@ -28,7 +26,7 @@ export async function updateUser(id: string, input: User) {
 
 export async function findUserByEmail(email: string) {
   try {
-    return userRepository.findOne({ where: { email } });
+    return userRepository.findOne({ where: { email, deletedAt: IsNull() } });
   } catch (error) {
     throw error;
   }
@@ -37,7 +35,7 @@ export async function findUserByEmail(email: string) {
 export async function findUserById(id: string) {
   try {
     return userRepository.findOne({
-      where: { id },
+      where: { id, deletedAt: IsNull() },
       select: { password: false },
     });
   } catch (error) {
@@ -48,7 +46,7 @@ export async function findUserById(id: string) {
 export async function findUsers(statusList: Status[]) {
   try {
     return userRepository.find({
-      where: { status: In(statusList) },
+      where: { status: In(statusList), deletedAt: IsNull() },
       select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver', 'status'],
       order: { name: 'ASC' },
     });
@@ -60,7 +58,7 @@ export async function findUsers(statusList: Status[]) {
 export async function checkValidUser(id: string) {
   try {
     return userRepository.findOne({
-      where: { id, status: In([Status.ACTIVE, Status.PENDING]) },
+      where: { id, status: In([Status.ACTIVE, Status.PENDING]), deletedAt: IsNull() },
     });
   } catch (error) {
     throw error;
@@ -70,7 +68,7 @@ export async function checkValidUser(id: string) {
 export async function checkUserActive(id: string) {
   try {
     return userRepository.findOne({
-      where: { id, status: Status.ACTIVE },
+      where: { id, status: Status.ACTIVE, deletedAt: IsNull() },
     });
   } catch (error) {
     throw error;
@@ -83,6 +81,7 @@ export async function checkLogin(payload: LoginPayload) {
       where: {
         email: payload.email,
         status: In([Status.ACTIVE, Status.PENDING]),
+        deletedAt: IsNull(),
       },
     });
 
@@ -111,7 +110,7 @@ export async function softDeleteUser(id: string, deletedBy: string) {
 export async function findLatestRegistrationId() {
   try {
     return userRepository.findOne({
-      where: { registrationId: Not(IsNull()) },
+      where: { registrationId: Not(IsNull()), deletedAt: IsNull() },
       select: { registrationId: true },
       order: { registrationId: 'DESC' },
     });

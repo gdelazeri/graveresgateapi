@@ -47,7 +47,7 @@ export async function getOwnUser(req: Request, res: Response) {
 
     const user = await findUserById(userId);
 
-    if (!user) {
+    if (!user || ![Status.ACTIVE, Status.PENDING].includes(user.status)) {
       return res.sendStatus(NOT_FOUND);
     }
 
