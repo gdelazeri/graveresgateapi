@@ -1,4 +1,4 @@
-import { IsNull, MoreThanOrEqual } from 'typeorm';
+import { IsNull } from 'typeorm';
 import DataSource from '../dataSource';
 import { DutyRequest } from '../models/dutyRequest.model';
 import DutyShift from '../enum/duty/DutyShift';
@@ -67,7 +67,10 @@ export async function findAll() {
 
 export async function findByDateAndShift(date: string, shift: DutyShift) {
   try {
-    return dutyRequestRepository.find({ where: { date, shift, deletedAt: IsNull() }});
+    return dutyRequestRepository.find({
+      where: { date, shift, deletedAt: IsNull() },
+      order: { createdAt: 'ASC' },
+    });
   } catch (error) {
     throw error;
   }
@@ -96,6 +99,7 @@ export async function findByUser(userId: string) {
         "startAt",
         "endAt",
         note,
+        "createdAt",
         CASE WHEN EXISTS (
           SELECT 1
           FROM duty d

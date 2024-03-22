@@ -95,6 +95,7 @@ export async function listByDateAndShift(
         startAt: item.startAt,
         endAt: item.endAt,
         note: item.note,
+        createdAt: String(item.createdAt),
         positions: dutyRequestPositions.map((item) => item.position),
         status: 'PENDING',
       });
@@ -137,6 +138,7 @@ export async function listByUser(
         note: item.note,
         positions: dutyRequestPositions.map((item) => item.position),
         status: item.status,
+        createdAt: item.createdAt,
       });
     }
 

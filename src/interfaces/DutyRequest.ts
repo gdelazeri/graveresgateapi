@@ -30,4 +30,5 @@ export interface DutyRequestReponse {
   note: string;
   positions: DutyPosition[];
   status: string;
+  createdAt: string;
 }
