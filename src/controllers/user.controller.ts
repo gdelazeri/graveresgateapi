@@ -198,7 +198,7 @@ export async function putUser(
         .send(new ResponseData(null, UserErrorCodes.UserInexistent));
     }
 
-    await updateUser(id, body as User);
+    await updateUser(id, body as unknown as User);
 
     return res.sendStatus(NO_CONTENT);
   } catch (error) {

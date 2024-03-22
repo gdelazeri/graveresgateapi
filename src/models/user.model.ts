@@ -54,6 +54,15 @@ export class User {
   @Column({ nullable: true, default: new Date() })
   createdAt: Date;
 
+  @Column({ nullable: true })
+  birthDate: string;
+
+  @Column({ nullable: true })
+  courseEdition: number;
+
+  @Column({ nullable: true })
+  approvedBy: string;
+
   @BeforeInsert()
   hashPasswordInsert(): void {
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync());

@@ -1,4 +1,4 @@
-import { boolean, object, string } from 'yup';
+import { boolean, number, object, string } from 'yup';
 import Permission from '../enum/user/UserPermission';
 import Status from '../enum/user/UserStatus';
 
@@ -24,12 +24,16 @@ export const postUserSchema = object({
     email: string()
       .email('Must be a valid email')
       .required('Email is required'),
+    birthDate: string()
+      .required('Birth date is required')
+      .length(10, 'Birth date is too short - should be exacly 10 chars with format.'),
     phone: string()
       .required('Phone is required')
       .min(11, 'Phone is too short - should be 11 chars minimum.'),
     password: string()
       .required('Password is required')
       .min(8, 'Password is too short - should be 8 chars minimum.'),
+    courseEdition: number().optional().nullable(),
   })
     .noUnknown(true)
     .strict(),
@@ -50,6 +54,8 @@ export const putUserSchema = object({
     isLeader: boolean().optional().nullable(),
     permission: string().oneOf(Object.values(Permission)).optional().nullable(),
     status: string().oneOf(Object.values(Status)).optional().nullable(),
+    birthDate: string().optional().nullable(),
+    courseEdition: number().optional().nullable(),
   })
     .noUnknown(true)
     .strict(),

@@ -6,6 +6,8 @@ const payloads = {
     name: 'string',
     email: 'string',
     password: 'string',
+    birthDate: 'string',
+    courseEdition: 'number',
   },
   PutUser: {
     registrationId: 'string',
@@ -13,6 +15,8 @@ const payloads = {
     email: 'string',
     permission: Object.values(Permission).join(' | '),
     status: Object.values(Status).join(' | '),
+    birthDate: 'string',
+    courseEdition: 'number',
   },
   PutOwnUser: {
     name: 'string',
