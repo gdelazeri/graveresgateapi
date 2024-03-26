@@ -33,7 +33,7 @@ export const postUserSchema = object({
     password: string()
       .required('Password is required')
       .min(8, 'Password is too short - should be 8 chars minimum.'),
-    courseEdition: number().optional().nullable(),
+    courseId: string().optional().nullable(),
   })
     .noUnknown(true)
     .strict(),
@@ -55,7 +55,7 @@ export const putUserSchema = object({
     permission: string().oneOf(Object.values(Permission)).optional().nullable(),
     status: string().oneOf(Object.values(Status)).optional().nullable(),
     birthDate: string().optional().nullable(),
-    courseEdition: number().optional().nullable(),
+    courseId: string().optional().nullable(),
   })
     .noUnknown(true)
     .strict(),

@@ -16,7 +16,7 @@ export interface PostUserPayload {
   phone: string;
   password: string;
   birthDate: string;
-  courseEdition: string;
+  courseId: string;
 }
 
 export interface PutUserPayload {
@@ -28,7 +28,7 @@ export interface PutUserPayload {
   status: string;
   isDriver: boolean;
   birthDate: string;
-  courseEdition: string;
+  courseId: string;
 }
 
 export interface PutOwnUserPayload {

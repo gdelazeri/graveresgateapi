@@ -58,7 +58,7 @@ export class User {
   birthDate: string;
 
   @Column({ nullable: true })
-  courseEdition: number;
+  courseId: string;
 
   @Column({ nullable: true })
   approvedBy: string;
