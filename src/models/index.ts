@@ -3,6 +3,7 @@ import { DutyRequest } from './dutyRequest.model';
 import { DutyRequestPosition } from './dutyRequestPosition.model';
 import { Duty } from './duty.model';
 import { Vehicle } from './vehicle.model';
+import { Course } from './course.model';
 
 export default [
   User,
@@ -10,4 +11,5 @@ export default [
   DutyRequestPosition,
   Duty,
   Vehicle,
+  Course,
 ]

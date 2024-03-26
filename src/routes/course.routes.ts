@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   list,
-} from '../controllers/vehicle.controller';
+} from '../controllers/course.controller';
 
 const router = express.Router();
 
