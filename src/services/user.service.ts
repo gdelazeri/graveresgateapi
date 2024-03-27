@@ -37,6 +37,7 @@ export async function findUserById(id: string) {
     return userRepository.findOne({
       where: { id, deletedAt: IsNull() },
       select: { password: false },
+      relations: { course: true }
     });
   } catch (error) {
     throw error;

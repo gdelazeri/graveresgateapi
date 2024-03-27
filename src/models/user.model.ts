@@ -4,10 +4,14 @@ import {
   PrimaryColumn,
   Generated,
   BeforeInsert,
+  Relation,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 import Permission from '../enum/user/UserPermission';
 import Status from '../enum/user/UserStatus';
+import { Course } from './course.model';
 
 @Entity('user')
 export class User {
@@ -59,6 +63,10 @@ export class User {
 
   @Column({ nullable: true })
   courseId: string;
+
+  @OneToOne(() => Course, (course) => course.id)
+  @JoinColumn()
+  course: Relation<Course>
 
   @Column({ nullable: true })
   approvedBy: string;

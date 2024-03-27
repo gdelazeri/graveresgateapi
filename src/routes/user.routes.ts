@@ -10,7 +10,6 @@ import {
   getUserById,
   listActiveUsers,
   listAllUsers,
-  approveUser,
 } from '../controllers/user.controller';
 import {
   postUserSchema,
@@ -20,7 +19,6 @@ import {
   putOwnUserSchema,
   getOwnUserSchema,
   getByIdUserSchema,
-  approveUserSchema,
 } from '../schemas/user.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
@@ -77,13 +75,5 @@ router.delete(
 );
 
 router.post('/login', validateRequest(postLoginSchema), postLogin);
-
-router.patch(
-  '/:id/approve',
-  requiresAuth([Permission.ADMIN]),
-  validateRequest(approveUserSchema),
-  approveUser,
-);
-
 
 export default router;

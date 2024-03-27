@@ -88,11 +88,3 @@ export const postLoginSchema = object({
     .noUnknown(true)
     .strict(),
 });
-
-export const approveUserSchema = object({
-  params: object({
-    id: string().required(),
-  })
-    .noUnknown(true)
-    .strict(),
-});

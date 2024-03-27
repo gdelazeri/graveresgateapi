@@ -30,6 +30,8 @@ import {
 } from '../interfaces/User';
 import { User } from '../models/user.model';
 import Status from '../enum/user/UserStatus';
+import { REGISTRATION_PREFIX } from '../enum/Constants';
+import { generateRegistrationId } from '../utils/UserHelper';
 
 export async function getOwnUser(req: Request, res: Response) {
   /* 	
@@ -79,7 +81,9 @@ export async function getUserById(req: Request, res: Response) {
       return res.sendStatus(NOT_FOUND);
     }
 
-    return res.status(OK).send(new ResponseData(user));
+    const userData = { ...user, password: null };
+
+    return res.status(OK).send(new ResponseData(userData));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -193,10 +197,17 @@ export async function putUser(
       params: { id },
     } = req;
 
-    if (!(await findUserById(id))) {
+    const user = await findUserById(id);
+
+    if (!user) {
       return res
         .status(NOT_FOUND)
         .send(new ResponseData(null, UserErrorCodes.UserInexistent));
+    }
+
+    if (user.registrationId === null && user.status === Status.PENDING && body.status === Status.ACTIVE) {
+      const registration = await findLatestRegistrationId();
+      body.registrationId = generateRegistrationId(registration?.registrationId);
     }
 
     await updateUser(id, body as unknown as User);
@@ -307,41 +318,6 @@ export async function postLogin(
     }
 
     return res.status(OK).send(new ResponseData(generateTokens(user)));
-  } catch (error) {
-    res.sendStatus(INTERNAL_SERVER_ERROR);
-  }
-}
-
-export async function approveUser(req: Request<UserIdParams>, res: Response) {
-  /*
-    #swagger.tags = ['User']
-    #swagger.description = '[ADMIN] Approve an user'
-    #swagger.security = [{ "Bearer": [ ] }]
-    #swagger.parameters['id'] = {
-      in: 'params',
-      required: true,
-      description: 'User id',
-      type: 'string',
-    }
-    #swagger.responses['200']
-    #swagger.responses['404']
-    #swagger.responses['500']
-  */
-  try {
-    const {
-      params: { id },
-      userId,
-    } = req;
-
-    if (!(await findUserById(id))) {
-      return res
-        .status(NOT_FOUND)
-        .send(new ResponseData(null, UserErrorCodes.UserInexistent));
-    }
-
-    await updateUser(id, { status: Status.ACTIVE, approvedBy: userId } as User);
-
-    return res.sendStatus(OK);
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
