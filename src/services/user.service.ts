@@ -44,12 +44,19 @@ export async function findUserById(id: string) {
   }
 }
 
-export async function findUsers(statusList: Status[]) {
+export async function findUsers(statusList: Status[], filters: any = {}) {
   try {
+    const where = {
+      status: In(statusList),
+      deletedAt: IsNull(),
+      ...filters
+    };
+
     return userRepository.find({
-      where: { status: In(statusList), deletedAt: IsNull() },
-      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver', 'status'],
+      where,
+      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver', 'status', 'permission'],
       order: { name: 'ASC' },
+      relations: { course: true }
     });
   } catch (error) {
     throw error;

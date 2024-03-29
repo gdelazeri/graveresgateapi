@@ -30,8 +30,9 @@ import {
 } from '../interfaces/User';
 import { User } from '../models/user.model';
 import Status from '../enum/user/UserStatus';
-import { REGISTRATION_PREFIX } from '../enum/Constants';
 import { generateRegistrationId } from '../utils/UserHelper';
+import { isString } from 'lodash';
+import Permission from '../enum/user/UserPermission';
 
 export async function getOwnUser(req: Request, res: Response) {
   /* 	
@@ -102,7 +103,21 @@ export async function listActiveUsers(
     #swagger.responses['500']
   */
   try {
-    const list = await findUsers([Status.ACTIVE]);
+    const { isLeader, isDriver, permission } = req.query;
+
+    const filters: any = {}
+
+    if (isString(isLeader)) {
+      filters.isLeader = isLeader === 'true';
+    }
+    if (isString(isDriver)) {
+      filters.isDriver = isDriver === 'true';
+    }
+    if (isString(permission) && permission in Permission) {
+      filters.permission = permission;
+    }
+
+    const list = await findUsers([Status.ACTIVE], filters);
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
