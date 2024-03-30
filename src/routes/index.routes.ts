@@ -5,6 +5,7 @@ import DutyRequest from './dutyRequest.routes';
 import Duty from './duty.routes';
 import Vehicle from './vehicle.routes';
 import Course from './course.routes';
+import VehicleTrip from './vehicleTrip.routes';
 
 export enum ROUTE_MAP {
   USER_V1 = '/v1/user',
@@ -12,6 +13,7 @@ export enum ROUTE_MAP {
   DUTY_V1 = '/v1/duty',
   VEHICLE_V1 = '/v1/vehicle',
   COURSE_V1 = '/v1/course',
+  VEHICLE_TRIP_V1 = '/v1/vehicle-trip',
 }
 
 const routes = express.Router();
@@ -25,5 +27,6 @@ routes.use(ROUTE_MAP.DUTY_REQUEST_V1, DutyRequest);
 routes.use(ROUTE_MAP.DUTY_V1, Duty);
 routes.use(ROUTE_MAP.VEHICLE_V1, Vehicle);
 routes.use(ROUTE_MAP.COURSE_V1, Course);
+routes.use(ROUTE_MAP.VEHICLE_TRIP_V1, VehicleTrip);
 
 export default routes;
