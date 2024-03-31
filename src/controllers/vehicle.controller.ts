@@ -7,7 +7,7 @@ import {
 } from 'http-status';
 import { VehicleErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
-import { createVehicle, findAll, findById, softDelete, updateVehicle } from '../services/vehicle.service';
+import { createVehicle, findAll, findAvailable, findById, softDelete, updateVehicle } from '../services/vehicle.service';
 import { PostVehiclePayload, VehicleParams } from '../interfaces/Vehicle';
 
 export async function getById(
@@ -51,6 +51,27 @@ export async function list(
   */
   try {
     const list = await findAll()
+
+    return res.status(OK).send(new ResponseData(list));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function listAvailable(
+  req: Request<unknown, unknown, unknown, unknown>,
+  res: Response,
+) {
+  /* 	
+    #swagger.tags = ['Vehicle']
+    #swagger.description = 'List available vehicles'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const list = await findAvailable()
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {

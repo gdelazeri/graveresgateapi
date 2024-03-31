@@ -27,10 +27,10 @@ export class VehicleTrip {
   kmFinal: string
 
   @Column({ nullable: false })
-  startTime: string
+  startAt: string
 
   @Column({ nullable: false })
-  endTime: string
+  endAt: string
 
   @Column({ nullable: false })
   place: string

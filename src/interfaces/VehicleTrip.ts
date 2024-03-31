@@ -14,8 +14,8 @@ export interface PostVehicleTripPayload {
   date: string;
   kmInitial: string;
   kmFinal: string;
-  startTime: string;
-  endTime: string;
+  startAt: string;
+  endAt: string;
   place: string;
   reason: string;
 }

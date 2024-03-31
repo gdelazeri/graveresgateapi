@@ -36,6 +36,14 @@ export async function findAll() {
   }
 }
 
+export async function findAvailable() {
+  try {
+    return vehicleRepository.find({ where: { isAvailable: true, deletedAt: IsNull() }, order: { name: 'ASC' } });
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function softDelete(id: string) {
   try {
     return vehicleRepository.update(id, { deletedAt: new Date() });

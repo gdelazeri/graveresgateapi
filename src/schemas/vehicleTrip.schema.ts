@@ -23,8 +23,8 @@ export const postVehicleTripSchema = object({
     date: string().required(),
     kmInitial: string().required(),
     kmFinal: string().required(),
-    startTime: string().required(),
-    endTime: string().required(),
+    startAt: string().required(),
+    endAt: string().required(),
     place: string().required(),
     reason: string().required(),
   })
@@ -41,8 +41,8 @@ export const putVehicleTripSchema = object({
     date: string().required(),
     kmInitial: string().required(),
     kmFinal: string().required(),
-    startTime: string().required(),
-    endTime: string().required(),
+    startAt: string().required(),
+    endAt: string().required(),
     place: string().required(),
     reason: string().required(),
   })

@@ -12,6 +12,7 @@ import {
   deleteVehicle,
   getById,
   list,
+  listAvailable,
   postVehicle,
   putVehicle,
 } from '../controllers/vehicle.controller';
@@ -29,6 +30,12 @@ router.get(
   '/list',
   requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
   list,
+);
+
+router.get(
+  '/list/available',
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
+  listAvailable,
 );
 
 router.post(
