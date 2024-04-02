@@ -3,7 +3,11 @@ import {
   Column,
   PrimaryColumn,
   Generated,
+  Relation,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.model';
 
 @Entity('vehicleTrip')
 export class VehicleTrip {
@@ -37,6 +41,13 @@ export class VehicleTrip {
 
   @Column({ nullable: false })
   reason: string
+
+  @Column({ nullable: false })
+  createdByUserId: string
+
+  @OneToOne(() => User, (user) => user.id)
+  @JoinColumn()
+  createdByUser: Relation<User>
 
   @Column({ nullable: false, default: new Date() })
   createdAt: Date;

@@ -39,12 +39,12 @@ export class CreateVehicleTripTable1711752341607 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'startTime',
+            name: 'startAt',
             type: 'time',
             isNullable: false,
           },
           {
-            name: 'endTime',
+            name: 'endAt',
             type: 'time',
             isNullable: false,
           },
@@ -59,6 +59,11 @@ export class CreateVehicleTripTable1711752341607 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'createdByUserId',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
             name: 'createdAt',
             type: 'date',
             isNullable: false,
@@ -68,6 +73,7 @@ export class CreateVehicleTripTable1711752341607 implements MigrationInterface {
         foreignKeys: [
           { columnNames: ['driverId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
           { columnNames: ['vehicleId'], referencedTableName: 'vehicle', referencedColumnNames: ['id'] },
+          { columnNames: ['createdByUserId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
         ],
       }),
     );

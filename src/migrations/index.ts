@@ -11,7 +11,6 @@ import { AddBirthdayAndCourseColumnsUserTable1711115503647 } from './17111155036
 import { UpdateDutyRequestPositionEnum1711133955603 } from './1711133955603-UpdateDutyRequestPositionEnum'
 import { CreateCourseEditionTable1711490843617 } from './1711490843617-CreateCourseEditionTable'
 import { CreateVehicleTripTable1711752341607 } from './1711752341607-CreateVehicleTripTable'
-import { AlterVehicleTripColumnTable1711851511352 } from './1711851511352-AlterVehicleTripColumnTable'
 
 export default [
   CreateDutyRequestTable1708913454347,
@@ -27,5 +26,4 @@ export default [
   UpdateDutyRequestPositionEnum1711133955603,
   CreateCourseEditionTable1711490843617,
   CreateVehicleTripTable1711752341607,
-  AlterVehicleTripColumnTable1711851511352
 ]

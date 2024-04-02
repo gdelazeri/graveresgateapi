@@ -85,7 +85,7 @@ export async function postVehicleTrip(
     #swagger.responses['500']
   */
   try {
-    const { body } = req;
+    const { body, userId } = req;
 
     if (!(await findVehicleById(body.vehicleId))) {
       return res.status(BAD_REQUEST)
@@ -98,7 +98,7 @@ export async function postVehicleTrip(
         .send(new ResponseData(null, VehicleTripErrorCodes.UserNotADriver));
     }
 
-    const vehicleTrip = await createVehicleTrip({ ...body });
+    const vehicleTrip = await createVehicleTrip({ ...body, createdBy: userId });
 
     return res.status(OK).send(new ResponseData(vehicleTrip));
   } catch (error) {
