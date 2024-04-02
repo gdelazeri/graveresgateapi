@@ -1,6 +1,7 @@
-import { object, string } from 'yup';
+import { number, object, string } from 'yup';
 import { ListDutyMonth } from '../interfaces/Duty';
 import DutyShift from '../enum/duty/DutyShift';
+import { MAX_PAGE_SIZE } from '../enum/Constants';
 
 export const listByMonthSchema = object({
   params: object({
@@ -10,8 +11,8 @@ export const listByMonthSchema = object({
 
 export const listPreviousSchema = object({
   query: object({
-    page: string().required(),
-    pageSize: string().required()
+    page: number().required().min(0),
+    pageSize: number().required().min(1).max(MAX_PAGE_SIZE),
   })
 });
 

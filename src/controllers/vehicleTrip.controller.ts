@@ -6,10 +6,10 @@ import {
   OK,
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { createVehicleTrip, findById, findByVehicle, updateVehicleTrip } from '../services/vehicleTrip.service';
+import { createVehicleTrip, findById, findPaged, updateVehicleTrip } from '../services/vehicleTrip.service';
 import { findById as findVehicleById } from '../services/vehicle.service';
 import { findUserById } from '../services/user.service';
-import { ListByVehicleParams, PostVehicleTripPayload, VehicleTripParams } from '../interfaces/VehicleTrip';
+import { ListQuery, PostVehicleTripPayload, VehicleTripParams } from '../interfaces/VehicleTrip';
 import { VehicleErrorCodes, VehicleTripErrorCodes } from '../enum/ErrorCodes';
 
 export async function getById(
@@ -40,7 +40,7 @@ export async function getById(
 }
 
 export async function list(
-  req: Request<ListByVehicleParams, unknown, unknown, unknown>,
+  req: Request<unknown, unknown, unknown, ListQuery>,
   res: Response,
 ) {
   /* 	
@@ -52,14 +52,14 @@ export async function list(
     #swagger.responses['500']
   */
   try {
-    const { params: { vehicleId } } = req;
+    const { query: { vehicleId, page, pageSize } } = req;
     
-    if (!(await findVehicleById(vehicleId))) {
+    if (vehicleId && !(await findVehicleById(vehicleId))) {
       return res.status(BAD_REQUEST)
         .send(new ResponseData(null, VehicleErrorCodes.VehicleInexistent));
     }
 
-    const list = await findByVehicle(vehicleId)
+    const list = await findPaged(parseInt(page), parseInt(pageSize), vehicleId)
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -98,7 +98,7 @@ export async function postVehicleTrip(
         .send(new ResponseData(null, VehicleTripErrorCodes.UserNotADriver));
     }
 
-    const vehicleTrip = await createVehicleTrip({ ...body, createdBy: userId });
+    const vehicleTrip = await createVehicleTrip({ ...body, createdByUserId: userId });
 
     return res.status(OK).send(new ResponseData(vehicleTrip));
   } catch (error) {

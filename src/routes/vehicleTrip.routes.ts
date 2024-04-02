@@ -2,7 +2,7 @@ import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
 import {
   getByIdSchema,
-  listByVehicleSchema,
+  listSchema,
   postVehicleTripSchema,
   putVehicleTripSchema,
 } from '../schemas/vehicleTrip.schema';
@@ -13,33 +13,34 @@ import {
   list,
   getById
 } from '../controllers/vehicleTrip.controller';
+import Permission from '../enum/user/UserPermission';
 
 const router = express.Router();
 
 router.get(
   '/getById/:id',
-  requiresAuth([]),
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
   validateRequest(getByIdSchema),
   getById,
 );
 
 router.get(
-  '/listByVehicle/:vehicleId',
-  requiresAuth([]),
-  validateRequest(listByVehicleSchema),
+  '/list',
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
+  validateRequest(listSchema),
   list,
 );
 
 router.post(
   '',
-  requiresAuth([]),
+  requiresAuth([Permission.ADMIN, Permission.VOLUNTARY]),
   validateRequest(postVehicleTripSchema),
   postVehicleTrip,
 );
 
 router.put(
   '/:id',
-  requiresAuth([]),
+  requiresAuth([Permission.ADMIN]),
   validateRequest(putVehicleTripSchema),
   putVehicleTrip,
 );

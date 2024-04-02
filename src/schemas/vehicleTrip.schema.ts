@@ -1,4 +1,5 @@
-import { object, string } from 'yup';
+import { number, object, string } from 'yup';
+import { MAX_PAGE_SIZE } from '../enum/Constants';
 
 export const getByIdSchema = object({
   params: object({
@@ -8,12 +9,12 @@ export const getByIdSchema = object({
     .strict(),
 });
 
-export const listByVehicleSchema = object({
-  params: object({
-    vehicleId: string().required(),
+export const listSchema = object({
+  query: object({
+    vehicleId: string().optional(),
+    page: number().required().min(0),
+    pageSize: number().required().min(1).max(MAX_PAGE_SIZE),
   })
-    .noUnknown(true)
-    .strict(),
 });
 
 export const postVehicleTripSchema = object({

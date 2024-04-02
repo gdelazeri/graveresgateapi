@@ -4,8 +4,10 @@ export interface VehicleTripParams extends core.ParamsDictionary {
   id: string
 }
 
-export interface ListByVehicleParams extends core.ParamsDictionary {
-  vehicleId: string
+export interface ListQuery extends core.Query {
+  vehicleId?: string
+  page: string
+  pageSize: string
 }
 
 export interface PostVehicleTripPayload {

@@ -87,12 +87,6 @@ export async function listPrevious(
   try {
     const { page, pageSize } = req.query;
 
-    if (parseInt(page) < 1 || parseInt(pageSize) > MAX_PAGE_SIZE) {
-      return res
-        .status(BAD_REQUEST)
-        .send(new ResponseData(null, GenericErrorCodes.PaginationInvalid));
-    }
-
     const response = await listPreviousDuty({
       page: parseInt(page),
       pageSize: parseInt(pageSize)

@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.model';
+import { Vehicle } from './vehicle.model';
 
 @Entity('vehicleTrip')
 export class VehicleTrip {
@@ -18,8 +19,16 @@ export class VehicleTrip {
   @Column({ nullable: false })
   vehicleId: string
 
+  @OneToOne(() => Vehicle, (vehicle) => vehicle.id)
+  @JoinColumn()
+  vehicle: Vehicle
+
   @Column({ nullable: false })
   driverId: string
+
+  @OneToOne(() => User, (user) => user.id)
+  @JoinColumn()
+  driver: User
 
   @Column({ nullable: false })
   date: string

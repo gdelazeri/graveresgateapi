@@ -65,7 +65,7 @@ export class CreateVehicleTripTable1711752341607 implements MigrationInterface {
           },
           {
             name: 'createdAt',
-            type: 'date',
+            type: 'timestamp',
             isNullable: false,
             default: 'now()'
           },

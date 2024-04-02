@@ -21,15 +21,23 @@ export async function updateVehicleTrip(id: string, input: any) {
 
 export async function findById(id: string) {
   try {
-    return repository.findOne({ where: { id } });
+    return repository.findOne({
+      where: { id },
+      relations: { createdByUser: true, driver: true, vehicle: true }
+    });
   } catch (error) {
     throw error;
   }
 }
 
-export async function findByVehicle(vehicleId: string) {
+export async function findPaged(page: number, pageSize: number, vehicleId?: string) {
   try {
-    return repository.find({ where: { vehicleId }, order: { createdAt: 'DESC' } });
+    let where = {};
+    if (vehicleId) {
+      where = { vehicleId };
+    }
+
+    return repository.find({ where, order: { createdAt: 'DESC' }, skip: page * pageSize, take: pageSize });
   } catch (error) {
     throw error;
   }
