@@ -11,7 +11,7 @@ export const listByMonthSchema = object({
 
 export const listPreviousSchema = object({
   query: object({
-    page: number().required().min(0),
+    page: number().required().min(1),
     pageSize: number().required().min(1).max(MAX_PAGE_SIZE),
   })
 });

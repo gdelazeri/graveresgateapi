@@ -12,7 +12,7 @@ export const getByIdSchema = object({
 export const listSchema = object({
   query: object({
     vehicleId: string().optional(),
-    page: number().required().min(0),
+    page: number().required().min(1),
     pageSize: number().required().min(1).max(MAX_PAGE_SIZE),
   })
 });

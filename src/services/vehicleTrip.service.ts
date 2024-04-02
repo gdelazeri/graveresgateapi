@@ -37,7 +37,7 @@ export async function findPaged(page: number, pageSize: number, vehicleId?: stri
       where = { vehicleId };
     }
 
-    return repository.find({ where, order: { createdAt: 'DESC' }, skip: page * pageSize, take: pageSize });
+    return repository.find({ where, order: { createdAt: 'DESC' }, skip: (page - 1) * pageSize, take: pageSize });
   } catch (error) {
     throw error;
   }
