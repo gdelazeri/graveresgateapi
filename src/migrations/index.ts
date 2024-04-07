@@ -13,6 +13,8 @@ import { CreateCourseEditionTable1711490843617 } from './1711490843617-CreateCou
 import { CreateVehicleTripTable1711752341607 } from './1711752341607-CreateVehicleTripTable'
 import { CreateDutyCareChecklistTable1712280741934 } from './1712280741934-CreateDutyCareChecklistTable'
 import { CreateChecklistTables1712283856794 } from './1712283856794-CreateChecklistTables'
+import { CreateChecklistTableNameEnum1712510343244 } from './1712510343244-CreateChecklistTableNameEnum'
+import { AddChecklistTableColumnHasOther1712511095577 } from './1712511095577-AddChecklistTableColumnHasOther'
 
 export default [
   CreateDutyRequestTable1708913454347,
@@ -29,5 +31,7 @@ export default [
   CreateCourseEditionTable1711490843617,
   CreateVehicleTripTable1711752341607,
   CreateDutyCareChecklistTable1712280741934,
-  CreateChecklistTables1712283856794
+  CreateChecklistTables1712283856794,
+  CreateChecklistTableNameEnum1712510343244,
+  AddChecklistTableColumnHasOther1712511095577
 ]
