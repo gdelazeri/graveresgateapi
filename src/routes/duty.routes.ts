@@ -8,7 +8,12 @@ import {
   getDuty,
   postDuty
 } from '../controllers/duty.controller';
-import { getSchema, listByMonthSchema, listPreviousSchema, postSchema } from '../schemas/duty.schema';
+import {
+  getSchema,
+  listByMonthSchema,
+  listPreviousSchema,
+  postSchema
+} from '../schemas/duty.schema';
 
 const router = express.Router();
 

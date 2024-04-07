@@ -13,7 +13,7 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'name',
+            name: 'type',
             type: 'varchar',
             isNullable: false,
           }
