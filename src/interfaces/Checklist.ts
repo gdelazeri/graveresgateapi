@@ -1,17 +1,10 @@
 import * as core from 'express-serve-static-core';
-
-export enum ChecklistType {
-  DUTY_CARE = 'DUTY_CARE',
-  DRIVER = 'DRIVER',
-  RESCUER = 'RESCUER',
-  RADIO_OPERATOR = 'RADIO_OPERATOR',
-}
+import ChecklistType from '../enum/checklist/ChecklistType';
+import ChecklistQuestionType from '../enum/checklist/ChecklistQuestionType';
 
 export interface GetChecklistParams extends core.ParamsDictionary {
   type: ChecklistType;
 }
-
-export type ChecklistQuestionType = 'TEXT' | 'OPTION'
 
 export interface ChecklistQuestion {
   id: string

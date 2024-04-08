@@ -11,12 +11,8 @@ import { AddBirthdayAndCourseColumnsUserTable1711115503647 } from './17111155036
 import { UpdateDutyRequestPositionEnum1711133955603 } from './1711133955603-UpdateDutyRequestPositionEnum'
 import { CreateCourseEditionTable1711490843617 } from './1711490843617-CreateCourseEditionTable'
 import { CreateVehicleTripTable1711752341607 } from './1711752341607-CreateVehicleTripTable'
-import { CreateDutyCareChecklistTable1712280741934 } from './1712280741934-CreateDutyCareChecklistTable'
 import { CreateChecklistTables1712283856794 } from './1712283856794-CreateChecklistTables'
-import { CreateChecklistTableNameEnum1712510343244 } from './1712510343244-CreateChecklistTableNameEnum'
-import { AddChecklistTableColumnHasOther1712511095577 } from './1712511095577-AddChecklistTableColumnHasOther'
-import { AddChecklistQuestionColumnRequired1712593701291 } from './1712593701291-AddChecklistQuestionColumnRequired'
-import { CreateChecklistFilledAnswerTable1712599670968 } from './1712599670968-CreateChecklistFilledAnswerTable'
+import { CreateDutyCareChecklistTable1712604348786 } from './1712604348786-CreateDutyCareChecklistTable'
 
 export default [
   CreateDutyRequestTable1708913454347,
@@ -32,10 +28,6 @@ export default [
   UpdateDutyRequestPositionEnum1711133955603,
   CreateCourseEditionTable1711490843617,
   CreateVehicleTripTable1711752341607,
-  CreateDutyCareChecklistTable1712280741934,
   CreateChecklistTables1712283856794,
-  CreateChecklistTableNameEnum1712510343244,
-  AddChecklistTableColumnHasOther1712511095577,
-  AddChecklistQuestionColumnRequired1712593701291,
-  CreateChecklistFilledAnswerTable1712599670968
+  CreateDutyCareChecklistTable1712604348786
 ]

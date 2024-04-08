@@ -1,7 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import ChecklistQuestionType from "../enum/checklist/ChecklistQuestionType";
+import ChecklistType from "../enum/checklist/ChecklistType";
 
 export class CreateChecklistTables1712283856794 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`CREATE TYPE checklist_type AS ENUM ('${ChecklistType.DUTY_CARE}', '${ChecklistType.DRIVER}', '${ChecklistType.RESCUER}', '${ChecklistType.RADIO_OPERATOR}');`)
     await queryRunner.createTable(
       new Table({
         name: 'checklist',
@@ -14,7 +17,17 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
           },
           {
             name: 'type',
+            type: 'checklist_type',
+            isNullable: false,
+          },
+          {
+            name: 'name',
             type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'order',
+            type: 'int',
             isNullable: false,
           }
         ],
@@ -42,8 +55,7 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
         ],
       }),
     )
-    await queryRunner.query('ALTER TABLE "dutyCareChecklist" ADD CONSTRAINT fk_checklist_filled FOREIGN KEY ("checklistFilledId") REFERENCES "checklistFilled" (id);');
-    await queryRunner.query("CREATE TYPE QuestionType AS ENUM ('TEXT', 'OPTION');")
+    await queryRunner.query(`CREATE TYPE question_type AS ENUM ('${ChecklistQuestionType.TEXT}', '${ChecklistQuestionType.OPTION}');`)
     await queryRunner.createTable(
       new Table({
         name: 'checklistQuestion',
@@ -71,9 +83,27 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
           },
           {
             name: 'type',
-            type: 'QuestionType',
+            type: 'question_type',
             isNullable: false,
-          }
+          },
+          {
+            name: 'hasOtherOption',
+            type: 'boolean',
+            isNullable: false,
+            default: false,
+          },
+          {
+            name: 'required',
+            type: 'boolean',
+            isNullable: false,
+            default: false,
+          },
+          {
+            name: 'multiple',
+            type: 'boolean',
+            isNullable: false,
+            default: false,
+          },
         ],
         foreignKeys: [
           { columnNames: ['checklistId'], referencedTableName: 'checklist', referencedColumnNames: ['id'] },
@@ -142,6 +172,55 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
         ],
       }),
     )
+    await queryRunner.createTable(
+      new Table({
+        name: 'checklistFilledAnswer',
+        columns: [
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+            default: 'uuid_generate_v4()',
+          },
+          {
+            name: 'checklistFilledId',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
+            name: 'checklistQuestionId',
+            type: 'uuid',
+            isNullable: false,
+          },
+          {
+            name: 'checklistQuestionItemId',
+            type: 'uuid',
+            isNullable: true,
+          },
+          {
+            name: 'checklistQuestionItemValue',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'checklistQuestionOptionId',
+            type: 'uuid',
+            isNullable: true,
+          },
+          {
+            name: 'checklistQuestionOptionValue',
+            type: 'varchar',
+            isNullable: false,
+          }
+        ],
+        foreignKeys: [
+          { columnNames: ['checklistFilledId'], referencedTableName: 'checklistFilled', referencedColumnNames: ['id'] },
+          { columnNames: ['checklistQuestionId'], referencedTableName: 'checklistQuestion', referencedColumnNames: ['id'] },
+          { columnNames: ['checklistQuestionItemId'], referencedTableName: 'checklistQuestionItem', referencedColumnNames: ['id'] },
+          { columnNames: ['checklistQuestionOptionId'], referencedTableName: 'checklistQuestionOption', referencedColumnNames: ['id'] },
+        ],
+      }),
+    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -150,5 +229,6 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
     await queryRunner.dropTable('checklistQuestion')
     await queryRunner.dropTable('checklistQuestionItem')
     await queryRunner.dropTable('checklistQuestionOption')
+    await queryRunner.dropTable('checklistFilledAnswer')
   }
 }

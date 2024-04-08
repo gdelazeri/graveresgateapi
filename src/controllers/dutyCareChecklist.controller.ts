@@ -2,13 +2,15 @@ import { Request, Response } from "express";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from "http-status";
 import { PostDutyCareChecklistPayload } from "../interfaces/DutyCareChecklist";
 import { getChecklist } from "../services/checklist.service";
-import { ChecklistType } from "../interfaces/Checklist";
-import { ChecklistErrorCodes } from "../enum/ErrorCodes";
+import ChecklistType from '../enum/checklist/ChecklistType';
+import { ChecklistErrorCodes, DutyErrorCodes, VehicleErrorCodes } from "../enum/ErrorCodes";
 import ResponseData from "../utils/ResponseData";
 import dataSource from "../dataSource";
 import { ChecklistFilled } from "../models/checklistFilled.model";
 import { ChecklistFilledAnswer } from "../models/checklistFilledAnswer.model";
 import { DutyCareChecklist } from "../models/dutyCareChecklist.model";
+import { findById as findVehicleById } from "../services/vehicle.service";
+import { findById as findDutyById } from "../services/duty.service";
 
 export async function post(
   req: Request<unknown, unknown, PostDutyCareChecklistPayload>,
@@ -27,9 +29,18 @@ export async function post(
     const { body, userId } = req;
 
     const checklist = await getChecklist(ChecklistType.DUTY_CARE);
-
     if (!checklist) {
       return res.status(BAD_REQUEST).send(ChecklistErrorCodes.NotFound);
+    }
+
+    const vehicle = await findVehicleById(body.vehicleId);
+    if (!vehicle) {
+      return res.status(BAD_REQUEST).send(VehicleErrorCodes.VehicleInexistent);
+    }
+
+    const duty = await findDutyById(body.dutyId);
+    if (!duty) {
+      return res.status(BAD_REQUEST).send(DutyErrorCodes.NotFound);
     }
 
     await queryRunner.startTransaction();

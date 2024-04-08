@@ -1,5 +1,5 @@
 import { object, string } from 'yup';
-import { ChecklistType } from '../interfaces/Checklist';
+import ChecklistType from '../enum/checklist/ChecklistType';
 
 export const getChecklistQuestion = object({
   params: object({

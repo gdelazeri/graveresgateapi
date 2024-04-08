@@ -4,7 +4,7 @@ import {
   PrimaryColumn,
   Generated,
 } from 'typeorm';
-import { ChecklistType } from '../interfaces/Checklist';
+import ChecklistType from '../enum/checklist/ChecklistType';
 
 @Entity('checklist')
 export class Checklist {
@@ -14,4 +14,10 @@ export class Checklist {
 
   @Column({ nullable: false, enum: ChecklistType })
   type: ChecklistType;
+
+  @Column({ nullable: false })
+  name: string;
+
+  @Column({ nullable: false })
+  order: number;
 }

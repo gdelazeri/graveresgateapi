@@ -1,7 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import DutyCareChecklistIncidentContinuation from "../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation";
 
-export class CreateDutyCareChecklistTable1712280741934 implements MigrationInterface {
+export class CreateDutyCareChecklistTable1712604348786 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
+      CREATE TYPE incident_continuation
+      AS ENUM ('${DutyCareChecklistIncidentContinuation.REMOVAL}', '${DutyCareChecklistIncidentContinuation.REFUSED}');
+    `)
     await queryRunner.createTable(
       new Table({
         name: 'dutyCareChecklist',
@@ -13,19 +18,14 @@ export class CreateDutyCareChecklistTable1712280741934 implements MigrationInter
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'checklistFilledId',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
-            name: 'vehicleId',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
             name: 'dutyId',
             type: 'uuid',
             isNullable: false,
+          },
+          {
+            name: 'note',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'date',
@@ -38,22 +38,12 @@ export class CreateDutyCareChecklistTable1712280741934 implements MigrationInter
             isNullable: false,
           },
           {
-            name: 'note',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'address',
-            type: 'varchar',
+            name: 'vehicleId',
+            type: 'uuid',
             isNullable: false,
           },
           {
-            name: 'addressNeighborhood',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'addressCity',
+            name: 'reason',
             type: 'varchar',
             isNullable: false,
           },
@@ -68,64 +58,44 @@ export class CreateDutyCareChecklistTable1712280741934 implements MigrationInter
             isNullable: false,
           },
           {
-            name: 'victimDocument',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
             name: 'victimAge',
             type: 'int',
             isNullable: false,
           },
           {
-            name: 'victimPhone',
+            name: 'victimDocument',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'victimAddress',
+            name: 'incidentAddress',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'victimAddressNeighborhood',
+            name: 'incidentAddressDistrict',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'victimAddressCity',
+            name: 'incidentAddressCity',
             type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'victimDestination',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'victimState',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'victimSituation',
-            type: 'varchar',
-            isNullable: false,
-          },
-          {
-            name: 'arrivalTime',
-            type: 'time',
             isNullable: false,
           },
           {
             name: 'incidentContinuation',
+            type: 'incident_continuation',
+            isNullable: false,
+          },
+          {
+            name: 'incidentEvolution',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'serviceEvolution',
-            type: 'varchar',
-            isNullable: false,
+            name: 'checklistFilledId',
+            type: 'uuid',
+            isNullable: true,
           },
           {
             name: 'createdByUserId',
@@ -142,6 +112,7 @@ export class CreateDutyCareChecklistTable1712280741934 implements MigrationInter
         foreignKeys: [
           { columnNames: ['vehicleId'], referencedTableName: 'vehicle', referencedColumnNames: ['id'] },
           { columnNames: ['createdByUserId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
+          { columnNames: ['checklistFilledId'], referencedTableName: 'checklistFilled', referencedColumnNames: ['id'] },
         ],
       }),
     );

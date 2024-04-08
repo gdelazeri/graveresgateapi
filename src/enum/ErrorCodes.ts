@@ -19,6 +19,10 @@ export enum VehicleErrorCodes {
   VehicleInexistent = 'V_0001',
 }
 
+export enum DutyErrorCodes {
+  NotFound = 'D_0001',
+}
+
 export enum VehicleTripErrorCodes {
   UserNotADriver = 'VT_0001',
   VehicleTripInexistent = 'VT_0002',

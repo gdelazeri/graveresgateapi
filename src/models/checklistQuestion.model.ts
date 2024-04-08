@@ -4,7 +4,7 @@ import {
   PrimaryColumn,
   Generated,
 } from 'typeorm';
-import { ChecklistQuestionType } from '../interfaces/Checklist';
+import ChecklistQuestionType from '../enum/checklist/ChecklistQuestionType';
 
 @Entity('checklistQuestion')
 export class ChecklistQuestion {
@@ -25,5 +25,11 @@ export class ChecklistQuestion {
   type: ChecklistQuestionType;
 
   @Column({ nullable: false, default: false })
+  hasOtherOption: boolean;
+
+  @Column({ nullable: false, default: false })
   required: boolean;
+
+  @Column({ nullable: false, default: false })
+  multiple: boolean;
 }
