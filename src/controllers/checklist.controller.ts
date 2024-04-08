@@ -9,8 +9,8 @@ export async function getQuestions(
   res: Response,
 ) {
   /* 	
-    #swagger.tags = ['Course']
-    #swagger.description = 'List courses'
+    #swagger.tags = ['Checklist']
+    #swagger.description = 'List questions for a checklist type'
     #swagger.security = [{ "Bearer": [ ] }]
     #swagger.responses['200']
     #swagger.responses['400']

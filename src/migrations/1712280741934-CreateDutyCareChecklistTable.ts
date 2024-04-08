@@ -15,7 +15,7 @@ export class CreateDutyCareChecklistTable1712280741934 implements MigrationInter
           {
             name: 'checklistFilledId',
             type: 'uuid',
-            isNullable: true,
+            isNullable: false,
           },
           {
             name: 'vehicleId',

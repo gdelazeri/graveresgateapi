@@ -6,12 +6,24 @@ import {
   ChecklistType
 } from '../interfaces/Checklist';
 import { Checklist } from '../models/checklist.model';
+import { ChecklistFilled } from '../models/checklistFilled.model';
+import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
 
-const repository = DataSource.getRepository(Checklist);
+const checklistRepository = DataSource.getRepository(Checklist);
+const checklistFilledRepository = DataSource.getRepository(ChecklistFilled);
+const checklistFilledAnswerRepository = DataSource.getRepository(ChecklistFilledAnswer);
+
+export async function getChecklist(type: ChecklistType): Promise<Checklist | null> {
+  try {
+    return checklistRepository.findOne({ where: { type } });
+  } catch (error) {
+    throw error;
+  }
+}
 
 export async function getChecklistQuestions(type: ChecklistType): Promise<ChecklistQuestion[]> {
   try {
-    return repository.query(`
+    return checklistRepository.query(`
       SELECT cq.id, cq."text", cq."type", cq."hasOtherOption" 
       FROM "checklistQuestion" cq
       LEFT JOIN checklist c ON c.id = cq."checklistId"
@@ -25,7 +37,7 @@ export async function getChecklistQuestions(type: ChecklistType): Promise<Checkl
 
 export async function getChecklistQuestionItems(type: ChecklistType): Promise<ChecklistQuestionItem[]> {
   try {
-    return repository.query(`
+    return checklistRepository.query(`
       SELECT cqi.id, cqi."checklistQuestionId", cqi.text
       FROM "checklistQuestionItem" cqi
       LEFT JOIN "checklistQuestion" cq ON cq.id = cqi."checklistQuestionId"
@@ -40,7 +52,7 @@ export async function getChecklistQuestionItems(type: ChecklistType): Promise<Ch
 
 export async function getChecklistQuestionOptions(type: ChecklistType): Promise<ChecklistQuestionOption[]> {
   try {
-    return repository.query(`
+    return checklistRepository.query(`
       SELECT cqo.id, cqo."checklistQuestionId", cqo.text
       FROM "checklistQuestionOption" cqo
       LEFT JOIN "checklistQuestion" cq ON cq.id = cqo."checklistQuestionId"

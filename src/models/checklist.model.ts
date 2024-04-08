@@ -13,5 +13,5 @@ export class Checklist {
   id: string;
 
   @Column({ nullable: false, enum: ChecklistType })
-  name: ChecklistType;
+  type: ChecklistType;
 }

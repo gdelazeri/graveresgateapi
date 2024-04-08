@@ -7,6 +7,11 @@ import { Course } from './course.model';
 import { VehicleTrip } from './vehicleTrip.model';
 import { DutyCareChecklist } from './dutyCareChecklist.model';
 import { Checklist } from './checklist.model';
+import { ChecklistFilled } from './checklistFilled.model';
+import { ChecklistQuestion } from './checklistQuestion.model';
+import { ChecklistQuestionItem } from './checklistQuestionItem.model';
+import { ChecklistQuestionOption } from './checklistQuestionOption.model';
+import { ChecklistFilledAnswer } from './checklistFilledAnswer.model';
 
 export default [
   User,
@@ -17,5 +22,10 @@ export default [
   Course,
   VehicleTrip,
   DutyCareChecklist,
-  Checklist
+  Checklist,
+  ChecklistFilled,
+  ChecklistQuestion,
+  ChecklistQuestionItem,
+  ChecklistQuestionOption,
+  ChecklistFilledAnswer,
 ]

@@ -23,3 +23,7 @@ export enum VehicleTripErrorCodes {
   UserNotADriver = 'VT_0001',
   VehicleTripInexistent = 'VT_0002',
 }
+
+export enum ChecklistErrorCodes {
+  NotFound = 'C_0001',
+}

@@ -42,9 +42,6 @@ export class DutyCareChecklist {
   address: string;
   
   @Column({ nullable: false })
-  assistantRadioOperatorId: string;
-  
-  @Column({ nullable: false })
   addressNeighborhood: string;
   
   @Column({ nullable: false })
@@ -60,7 +57,7 @@ export class DutyCareChecklist {
   victimDocument: string
 
   @Column({ nullable: false })
-  victimAge: string
+  victimAge: number
 
   @Column({ nullable: false })
   victimPhone: string

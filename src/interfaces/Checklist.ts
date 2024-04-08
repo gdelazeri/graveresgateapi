@@ -36,3 +36,9 @@ export interface ChecklistQuestionOption {
   text: string
   order: number
 }
+
+export interface ChecklistFilledAnswer {
+  checklistQuestionId: string
+  checklistQuestionItemId?: string
+  answerValue: string
+}
