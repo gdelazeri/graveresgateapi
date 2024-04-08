@@ -28,7 +28,9 @@ export const postSchema = object({
       object().shape({
         checklistQuestionId: string().required(),
         checklistQuestionItemId: string().optional().nullable(),
-        answerValue: string().required(),
+        checklistQuestionItemValue: string().optional().nullable(),
+        checklistQuestionOptionId: string().optional().nullable(),
+        checklistQuestionOptionValue: string().required(),
       })
     )
   })

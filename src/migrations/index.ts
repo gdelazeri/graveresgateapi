@@ -15,8 +15,8 @@ import { CreateDutyCareChecklistTable1712280741934 } from './1712280741934-Creat
 import { CreateChecklistTables1712283856794 } from './1712283856794-CreateChecklistTables'
 import { CreateChecklistTableNameEnum1712510343244 } from './1712510343244-CreateChecklistTableNameEnum'
 import { AddChecklistTableColumnHasOther1712511095577 } from './1712511095577-AddChecklistTableColumnHasOther'
-import { AlterChecklistQuestionAnswerTable1712590736798 } from './1712590736798-AlterChecklistQuestionAnswerTable'
 import { AddChecklistQuestionColumnRequired1712593701291 } from './1712593701291-AddChecklistQuestionColumnRequired'
+import { CreateChecklistFilledAnswerTable1712599670968 } from './1712599670968-CreateChecklistFilledAnswerTable'
 
 export default [
   CreateDutyRequestTable1708913454347,
@@ -36,6 +36,6 @@ export default [
   CreateChecklistTables1712283856794,
   CreateChecklistTableNameEnum1712510343244,
   AddChecklistTableColumnHasOther1712511095577,
-  AlterChecklistQuestionAnswerTable1712590736798,
-  AddChecklistQuestionColumnRequired1712593701291
+  AddChecklistQuestionColumnRequired1712593701291,
+  CreateChecklistFilledAnswerTable1712599670968
 ]

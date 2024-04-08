@@ -142,44 +142,6 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
         ],
       }),
     )
-    await queryRunner.createTable(
-      new Table({
-        name: 'checklistFilledAnswer',
-        columns: [
-          {
-            name: 'id',
-            type: 'uuid',
-            isPrimary: true,
-            default: 'uuid_generate_v4()',
-          },
-          {
-            name: 'checklistQuestionId',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
-            name: 'checklistQuestionItemId',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
-            name: 'checklistFilledId',
-            type: 'uuid',
-            isNullable: false,
-          },
-          {
-            name: 'answerValue',
-            type: 'varchar',
-            isNullable: false,
-          }
-        ],
-        foreignKeys: [
-          { columnNames: ['checklistQuestionId'], referencedTableName: 'checklistQuestion', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistQuestionItemId'], referencedTableName: 'checklistQuestionItem', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistFilledId'], referencedTableName: 'checklistFilled', referencedColumnNames: ['id'] },
-        ],
-      }),
-    )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -188,6 +150,5 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
     await queryRunner.dropTable('checklistQuestion')
     await queryRunner.dropTable('checklistQuestionItem')
     await queryRunner.dropTable('checklistQuestionOption')
-    await queryRunner.dropTable('checklistFilledAnswer')
   }
 }

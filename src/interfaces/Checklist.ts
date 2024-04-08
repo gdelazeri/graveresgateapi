@@ -41,5 +41,7 @@ export interface ChecklistQuestionOption {
 export interface ChecklistFilledAnswer {
   checklistQuestionId: string
   checklistQuestionItemId?: string
-  answerValue: string
+  checklistQuestionItemValue?: string
+  checklistQuestionOptionId?: string
+  checklistQuestionOptionValue: string
 }

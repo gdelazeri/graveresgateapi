@@ -46,7 +46,8 @@ export async function post(
         await queryRunner.manager.save(
           ChecklistFilledAnswer,
           queryRunner.manager.create(ChecklistFilledAnswer, {
-            ...answer, checklistFilledId
+            ...answer,
+            checklistFilledId
           })
         );
       }
