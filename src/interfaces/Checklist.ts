@@ -20,6 +20,7 @@ export interface ChecklistQuestion {
   order: number
   type: ChecklistQuestionType
   hasOtherOption: boolean
+  required: boolean
   options: ChecklistQuestionOption[]
 }
 

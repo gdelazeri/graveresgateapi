@@ -5,7 +5,7 @@ export interface PostDutyCareChecklistPayload {
   dutyId: string;
   date: string;
   time: string;
-  note: string;
+  note?: string;
   address: string;
   addressNeighborhood: string;
   addressCity: string;

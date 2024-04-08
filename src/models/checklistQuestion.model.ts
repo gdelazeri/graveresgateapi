@@ -23,4 +23,7 @@ export class ChecklistQuestion {
 
   @Column({ nullable: false })
   type: ChecklistQuestionType;
+
+  @Column({ nullable: false, default: false })
+  required: boolean;
 }

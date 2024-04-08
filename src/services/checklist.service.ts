@@ -24,7 +24,7 @@ export async function getChecklist(type: ChecklistType): Promise<Checklist | nul
 export async function getChecklistQuestions(type: ChecklistType): Promise<ChecklistQuestion[]> {
   try {
     return checklistRepository.query(`
-      SELECT cq.id, cq."text", cq."type", cq."hasOtherOption" 
+      SELECT cq.id, cq."text", cq."type", cq."hasOtherOption", cq."required" 
       FROM "checklistQuestion" cq
       LEFT JOIN checklist c ON c.id = cq."checklistId"
       WHERE c."type" = '${type}'

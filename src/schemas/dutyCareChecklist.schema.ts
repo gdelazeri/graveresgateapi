@@ -6,7 +6,7 @@ export const postSchema = object({
     dutyId: string().required(),
     date: string().required(),
     time: string().required(),
-    note: string().required(),
+    note: string().optional().nullable(),
     address: string().required(),
     addressNeighborhood: string().required(),
     addressCity: string().required(),

@@ -35,8 +35,8 @@ export class DutyCareChecklist {
   @Column({ nullable: false })
   time: string;
   
-  @Column({ nullable: false })
-  note: string;
+  @Column({ nullable: true })
+  note?: string;
   
   @Column({ nullable: false })
   address: string;
