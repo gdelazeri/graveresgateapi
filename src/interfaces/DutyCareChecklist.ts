@@ -1,27 +1,21 @@
+import DutyCareChecklistIncidentContinuation from '../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation';
 import { ChecklistFilledAnswer } from './Checklist';
 
 export interface PostDutyCareChecklistPayload {
-  vehicleId: string;
   dutyId: string;
+  note?: string;
   date: string;
   time: string;
-  note?: string;
-  address: string;
-  addressNeighborhood: string;
-  addressCity: string;
+  vehicleId: string;
+  reason: string;
   victimName: string
   victimGender: string
-  victimDocument: string
   victimAge: number
-  victimPhone: string
-  victimAddress: string
-  victimAddressNeighborhood: string
-  victimAddressCity: string
-  victimDestination: string
-  victimState: string
-  victimSituation: string
-  arrivalTime: string
-  incidentContinuation: string
-  serviceEvolution: string
+  victimDocument: string
+  incidentAddress: string;
+  incidentAddressDistrict: string;
+  incidentAddressCity: string;
+  incidentContinuation: DutyCareChecklistIncidentContinuation;
+  incidentEvolution: string;
   checklistAnswers?: ChecklistFilledAnswer[]
 }

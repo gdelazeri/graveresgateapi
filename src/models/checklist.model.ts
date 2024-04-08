@@ -14,10 +14,4 @@ export class Checklist {
 
   @Column({ nullable: false, enum: ChecklistType })
   type: ChecklistType;
-
-  @Column({ nullable: false })
-  name: string;
-
-  @Column({ nullable: false })
-  order: number;
 }

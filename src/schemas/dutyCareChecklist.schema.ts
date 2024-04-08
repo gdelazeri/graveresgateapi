@@ -1,29 +1,23 @@
 import { array, number, object, string } from 'yup';
+import DutyCareChecklistIncidentContinuation from '../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation';
 
 export const postSchema = object({
   body: object({
-    vehicleId: string().required(),
     dutyId: string().required(),
+    note: string().optional().nullable(),
     date: string().required(),
     time: string().required(),
-    note: string().optional().nullable(),
-    address: string().required(),
-    addressNeighborhood: string().required(),
-    addressCity: string().required(),
+    vehicleId: string().required(),
+    reason: string().required(),
     victimName: string().required(),
     victimGender: string().required(),
-    victimDocument: string().required(),
     victimAge: number().required().min(0),
-    victimPhone: string().required(),
-    victimAddress: string().required(),
-    victimAddressNeighborhood: string().required(),
-    victimAddressCity: string().required(),
-    victimDestination: string().required(),
-    victimState: string().required(),
-    victimSituation: string().required(),
-    arrivalTime: string().required(),
-    incidentContinuation: string().required(),
-    serviceEvolution: string().required(),
+    victimDocument: string().required(),
+    incidentAddress: string().required(),
+    incidentAddressDistrict: string().required(),
+    incidentAddressCity: string().required(),
+    incidentContinuation: string().required().oneOf(Object.values(DutyCareChecklistIncidentContinuation)),
+    incidentEvolution: string().required(),
     checklistAnswers: array().of(
       object().shape({
         checklistQuestionId: string().required(),

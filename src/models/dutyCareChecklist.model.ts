@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { User } from './user.model';
 import { Vehicle } from './vehicle.model';
+import { Duty } from './duty.model';
+import DutyCareChecklistIncidentContinuation from '../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation';
 
 @Entity('dutyCareChecklist')
 export class DutyCareChecklist {
@@ -17,8 +19,21 @@ export class DutyCareChecklist {
   id: string;
 
   @Column({ nullable: false })
-  checklistFilledId: string;
+  dutyId: string;
 
+  @OneToOne(() => Duty, (duty) => duty.id)
+  @JoinColumn()
+  duty: Duty;
+
+  @Column({ nullable: true })
+  note?: string;
+
+  @Column({ nullable: false })
+  date: string;
+  
+  @Column({ nullable: false })
+  time: string;
+  
   @Column({ nullable: false })
   vehicleId: string;
 
@@ -27,26 +42,8 @@ export class DutyCareChecklist {
   vehicle: Relation<Vehicle>
 
   @Column({ nullable: false })
-  dutyId: string;
-  
-  @Column({ nullable: false })
-  date: string;
-  
-  @Column({ nullable: false })
-  time: string;
-  
-  @Column({ nullable: true })
-  note?: string;
-  
-  @Column({ nullable: false })
-  address: string;
-  
-  @Column({ nullable: false })
-  addressNeighborhood: string;
-  
-  @Column({ nullable: false })
-  addressCity: string;
-  
+  reason: string;
+
   @Column({ nullable: false })
   victimName: string
 
@@ -54,40 +51,28 @@ export class DutyCareChecklist {
   victimGender: string
 
   @Column({ nullable: false })
-  victimDocument: string
-
-  @Column({ nullable: false })
   victimAge: number
 
   @Column({ nullable: false })
-  victimPhone: string
+  victimDocument: string
 
   @Column({ nullable: false })
-  victimAddress: string
+  incidentAddress: string;
+  
+  @Column({ nullable: false })
+  incidentAddressDistrict: string;
+  
+  @Column({ nullable: false })
+  incidentAddressCity: string;
+
+  @Column({ nullable: false, enum: DutyCareChecklistIncidentContinuation })
+  incidentContinuation: DutyCareChecklistIncidentContinuation;
 
   @Column({ nullable: false })
-  victimAddressNeighborhood: string
+  incidentEvolution: string;
 
   @Column({ nullable: false })
-  victimAddressCity: string
-
-  @Column({ nullable: false })
-  victimDestination: string
-
-  @Column({ nullable: false })
-  victimState: string
-
-  @Column({ nullable: false })
-  victimSituation: string
-
-  @Column({ nullable: false })
-  arrivalTime: string
-
-  @Column({ nullable: false })
-  incidentContinuation: string
-
-  @Column({ nullable: false })
-  serviceEvolution: string
+  checklistFilledId: string;
 
   @Column({ nullable: false })
   createdByUserId: string

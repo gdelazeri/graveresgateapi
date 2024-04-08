@@ -5,7 +5,7 @@ import {
 import validateRequest from '../middlewares/validateRequest';
 import requiresAuth from '../middlewares/requiresAuth';
 import {
-  getChecklistQuestion
+  getChecklistQuestionSchema
 } from '../schemas/checklist.schema';
 
 const router = express.Router();
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get(
   '/questions/:type',
   requiresAuth([]),
-  validateRequest(getChecklistQuestion),
+  validateRequest(getChecklistQuestionSchema),
   getQuestions,
 );
 

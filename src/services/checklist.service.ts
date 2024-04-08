@@ -1,17 +1,13 @@
 import DataSource from '../dataSource';
+import ChecklistType from '../enum/checklist/ChecklistType';
 import {
   ChecklistQuestion,
   ChecklistQuestionItem,
   ChecklistQuestionOption,
-  ChecklistType
 } from '../interfaces/Checklist';
 import { Checklist } from '../models/checklist.model';
-import { ChecklistFilled } from '../models/checklistFilled.model';
-import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
 
 const checklistRepository = DataSource.getRepository(Checklist);
-const checklistFilledRepository = DataSource.getRepository(ChecklistFilled);
-const checklistFilledAnswerRepository = DataSource.getRepository(ChecklistFilledAnswer);
 
 export async function getChecklist(type: ChecklistType): Promise<Checklist | null> {
   try {
@@ -24,7 +20,7 @@ export async function getChecklist(type: ChecklistType): Promise<Checklist | nul
 export async function getChecklistQuestions(type: ChecklistType): Promise<ChecklistQuestion[]> {
   try {
     return checklistRepository.query(`
-      SELECT cq.id, cq."text", cq."type", cq."hasOtherOption", cq."required" 
+      SELECT cq.id, cq."text", cq."type", cq."hasOtherOption", cq."required", cq."multiple"
       FROM "checklistQuestion" cq
       LEFT JOIN checklist c ON c.id = cq."checklistId"
       WHERE c."type" = '${type}'
