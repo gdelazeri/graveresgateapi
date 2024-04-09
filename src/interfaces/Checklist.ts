@@ -14,6 +14,7 @@ export interface ChecklistQuestion {
   type: ChecklistQuestionType
   hasOtherOption: boolean
   required: boolean
+  items: ChecklistQuestionItem[]
   options: ChecklistQuestionOption[]
 }
 
