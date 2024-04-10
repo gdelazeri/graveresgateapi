@@ -1,15 +1,12 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
 import {
-  BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
   OK,
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
 import { DutyPayload, GetDutyParams, ListDutyByMonthParams, ListDutyMonth, ListDutyPreviousQuery } from '../interfaces/Duty';
 import { listDutyByMonth, listPreviousDuty, getDutyByDateAndShift, updateDuty, createDuty, getDutyByDateAndShiftWithUserNames } from '../services/duty.service';
-import { GenericErrorCodes } from '../enum/ErrorCodes';
-import { MAX_PAGE_SIZE } from '../enum/Constants';
 import DutyWeekDay from '../enum/duty/DutyWeekDay';
 import DutyShift from '../enum/duty/DutyShift';
 import { Duty } from '../models/duty.model';
