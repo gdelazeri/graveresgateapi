@@ -18,14 +18,11 @@ export class ChecklistFilledAnswer {
   checklistQuestionId: string;
 
   @Column({ nullable: true })
-  checklistQuestionItemId?: string;
+  checklistQuestion: string;
 
   @Column({ nullable: true })
-  checklistQuestionItemValue?: string;
+  checklistQuestionItem?: string;
 
   @Column({ nullable: false })
-  checklistQuestionOptionId?: string;
-
-  @Column({ nullable: false })
-  checklistQuestionOptionValue: string;
+  checklistQuestionOption: string;
 }

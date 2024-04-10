@@ -188,31 +188,23 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'checklistQuestionItemId',
-            type: 'uuid',
-            isNullable: true,
+            name: 'checklistQuestion',
+            type: 'varchar',
+            isNullable: false,
           },
           {
-            name: 'checklistQuestionItemValue',
+            name: 'checklistQuestionItem',
             type: 'varchar',
             isNullable: true,
           },
           {
-            name: 'checklistQuestionOptionId',
-            type: 'uuid',
-            isNullable: true,
-          },
-          {
-            name: 'checklistQuestionOptionValue',
+            name: 'checklistQuestionOption',
             type: 'varchar',
             isNullable: false,
           }
         ],
         foreignKeys: [
           { columnNames: ['checklistFilledId'], referencedTableName: 'checklistFilled', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistQuestionId'], referencedTableName: 'checklistQuestion', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistQuestionItemId'], referencedTableName: 'checklistQuestionItem', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistQuestionOptionId'], referencedTableName: 'checklistQuestionOption', referencedColumnNames: ['id'] },
         ],
       }),
     )
