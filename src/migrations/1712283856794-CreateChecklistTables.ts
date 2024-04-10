@@ -19,6 +19,11 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
             name: 'type',
             type: 'checklist_type',
             isNullable: false,
+          },
+          {
+            name: 'name',
+            type: 'varchar',
+            isNullable: false,
           }
         ],
         foreignKeys: [],
