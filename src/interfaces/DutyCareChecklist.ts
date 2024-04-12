@@ -11,7 +11,7 @@ export interface PostDutyCareChecklistPayload {
   victimName: string
   victimGender: string
   victimAge: number
-  victimDocument: string
+  victimDocument?: string
   incidentAddress: string;
   incidentAddressDistrict: string;
   incidentAddressCity: string;

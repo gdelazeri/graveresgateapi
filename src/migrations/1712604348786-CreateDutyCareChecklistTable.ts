@@ -65,7 +65,7 @@ export class CreateDutyCareChecklistTable1712604348786 implements MigrationInter
           {
             name: 'victimDocument',
             type: 'varchar',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'incidentAddress',

@@ -53,7 +53,7 @@ export class DutyCareChecklist {
   @Column({ nullable: false })
   victimAge: number
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   victimDocument: string
 
   @Column({ nullable: false })

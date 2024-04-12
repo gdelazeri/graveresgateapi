@@ -12,7 +12,7 @@ export const postSchema = object({
     victimName: string().required(),
     victimGender: string().required(),
     victimAge: number().required().min(0),
-    victimDocument: string().required(),
+    victimDocument: string().optional(),
     incidentAddress: string().required(),
     incidentAddressDistrict: string().required(),
     incidentAddressCity: string().required(),
