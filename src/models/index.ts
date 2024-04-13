@@ -12,6 +12,7 @@ import { ChecklistQuestion } from './checklistQuestion.model';
 import { ChecklistQuestionItem } from './checklistQuestionItem.model';
 import { ChecklistQuestionOption } from './checklistQuestionOption.model';
 import { ChecklistFilledAnswer } from './checklistFilledAnswer.model';
+import { Setting } from './setting.model';
 
 export default [
   User,
@@ -28,4 +29,5 @@ export default [
   ChecklistQuestionItem,
   ChecklistQuestionOption,
   ChecklistFilledAnswer,
+  Setting
 ]

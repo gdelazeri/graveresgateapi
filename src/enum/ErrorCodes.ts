@@ -31,3 +31,7 @@ export enum VehicleTripErrorCodes {
 export enum ChecklistErrorCodes {
   NotFound = 'C_0001',
 }
+
+export enum SettingErrorCodes {
+  NotFound = 'S_0001',
+}
