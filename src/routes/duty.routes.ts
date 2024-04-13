@@ -6,7 +6,8 @@ import {
   listByMonth,
   listPrevious,
   getDuty,
-  postDuty
+  postDuty,
+  listDutiesForChecklist
 } from '../controllers/duty.controller';
 import {
   getSchema,
@@ -25,11 +26,18 @@ router.get(
 );
 
 router.get(
-  '/listPrevious',
+  '/list/previous',
   requiresAuth([Permission.ADMIN]),
   validateRequest(listPreviousSchema),
   listPrevious,
 );
+
+router.get(
+  '/list/checklist',
+  requiresAuth([]),
+  listDutiesForChecklist,
+);
+
 
 router.get(
   '/get/:date/:shift',

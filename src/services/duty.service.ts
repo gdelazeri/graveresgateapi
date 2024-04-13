@@ -190,3 +190,46 @@ export async function listPreviousDuty({
     throw error;
   }
 }
+
+export async function listDutiesByDate({
+  dateMin,
+  dateMax
+}: {
+  dateMin: string,
+  dateMax: string
+}): Promise<Duty[]> {
+  try {
+    return dutyRepository.query(`
+      SELECT
+        d.id,
+        TO_CHAR("date" , 'YYYY-MM-DD') as "date",
+        d.shift,
+        d."leaderId",
+        u.name as "leaderName",
+        d."driverId",
+        u2."name" as "driverName",
+        d."firstRescuerId",
+        u3."name" as "firstRescuerName",
+        d."secondRescuerId",
+        u4."name" as "secondRescuerName",
+        d."radioOperatorId",
+        u5."name" as "radioOperatorName",
+        d."assistantRadioOperatorId",
+        u6."name" as "assistantRadioOperatorName",
+        d."traineeId",
+        u7."name" as "traineeName"
+      FROM duty d
+        left join "user" u on u.id = "leaderId"
+        left join "user" u2 on u2.id = "driverId"
+        left join "user" u3 on u3.id = "firstRescuerId"
+        left join "user" u4 on u4.id = "secondRescuerId"
+        left join "user" u5 on u5.id = "radioOperatorId"
+        left join "user" u6 on u6.id = "assistantRadioOperatorId"
+        left join "user" u7 on u7.id = "traineeId"
+      WHERE date >= '${dateMin}' AND date <= '${dateMax}'
+      ORDER BY d.date DESC, d.shift DESC
+    `);
+  } catch (error) {
+    throw error;
+  }
+}

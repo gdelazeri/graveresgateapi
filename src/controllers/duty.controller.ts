@@ -6,7 +6,7 @@ import {
 } from 'http-status';
 import ResponseData from '../utils/ResponseData';
 import { DutyPayload, GetDutyParams, ListDutyByMonthParams, ListDutyMonth, ListDutyPreviousQuery } from '../interfaces/Duty';
-import { listDutyByMonth, listPreviousDuty, getDutyByDateAndShift, updateDuty, createDuty, getDutyByDateAndShiftWithUserNames } from '../services/duty.service';
+import { listDutyByMonth, listPreviousDuty, getDutyByDateAndShift, updateDuty, createDuty, getDutyByDateAndShiftWithUserNames, listDutiesByDate } from '../services/duty.service';
 import DutyWeekDay from '../enum/duty/DutyWeekDay';
 import DutyShift from '../enum/duty/DutyShift';
 import { Duty } from '../models/duty.model';
@@ -155,6 +155,33 @@ export async function postDuty(
     }
 
     const response = await getDutyByDateAndShiftWithUserNames(payload.date, payload.shift);
+
+    return res.status(OK).send(new ResponseData(response));
+  } catch (error) {
+    res.sendStatus(INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function listDutiesForChecklist(
+  req: Request,
+  res: Response,
+) {
+  /* 	
+    #swagger.tags = ['Duty']
+    #swagger.description = 'List nearby duties'
+    #swagger.security = [{ "Bearer": [ ] }]
+    #swagger.responses['200']
+    #swagger.responses['400']
+    #swagger.responses['500']
+  */
+  try {
+    const yesterday = moment().subtract(1, 'day').format('YYYY-MM-DD');
+    const today = moment().format('YYYY-MM-DD');
+
+    const response = await listDutiesByDate({
+      dateMin: yesterday,
+      dateMax: today,
+    });
 
     return res.status(OK).send(new ResponseData(response));
   } catch (error) {
