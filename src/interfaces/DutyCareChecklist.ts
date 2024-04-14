@@ -1,6 +1,7 @@
 import * as core from 'express-serve-static-core';
 import DutyCareChecklistIncidentContinuation from '../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation';
 import { ChecklistFilledAnswer } from './Checklist';
+import { string } from 'yup';
 
 export interface ListByDutyParams extends core.ParamsDictionary {
   dutyId: string;
@@ -8,6 +9,11 @@ export interface ListByDutyParams extends core.ParamsDictionary {
 
 export interface GetDutyCareByIdParams extends core.ParamsDictionary {
   id: string;
+}
+
+export interface ListPagedQuery extends core.Query {
+  page: string;
+  pageSize: string;
 }
 
 export interface PostDutyCareChecklistPayload {

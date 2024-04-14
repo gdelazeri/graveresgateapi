@@ -40,3 +40,10 @@ export const getByIdSchema = object({
     id: string().required()
   })
 });
+
+export const listPagedSchema = object({
+  query: object({
+    page: number().required().min(1),
+    pageSize: number().required()
+  })
+});

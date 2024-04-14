@@ -2,13 +2,15 @@ import express from 'express';
 import {
   post,
   listByDuty,
-  getById
+  getById,
+  listPaged
 } from '../controllers/dutyCareChecklist.controller';
 import validateRequest from '../middlewares/validateRequest';
 import requiresAuth from '../middlewares/requiresAuth';
 import {
   getByIdSchema,
   listByDutyIdSchema,
+  listPagedSchema,
   postSchema
 } from '../schemas/dutyCareChecklist.schema';
 
@@ -22,17 +24,24 @@ router.post(
 );
 
 router.get(
-  '/:dutyId',
+  '/list/duty/:dutyId',
   requiresAuth([]),
   validateRequest(listByDutyIdSchema),
   listByDuty,
 );
 
 router.get(
-  '/getById/:id',
+  '/get/:id',
   requiresAuth([]),
   validateRequest(getByIdSchema),
   getById,
+);
+
+router.get(
+  '/list/paged',
+  requiresAuth([]),
+  validateRequest(listPagedSchema),
+  listPaged,
 );
 
 export default router;
