@@ -35,3 +35,7 @@ export enum ChecklistErrorCodes {
 export enum SettingErrorCodes {
   NotFound = 'S_0001',
 }
+
+export enum DutyCareChecklistErrorCodes {
+  NotFound = 'DCC_0001',
+}
