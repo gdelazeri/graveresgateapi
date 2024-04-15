@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from "http-status";
 import { GetDutyCareByIdParams, ListByDutyParams, ListPagedQuery, PostDutyCareChecklistPayload } from "../interfaces/DutyCareChecklist";
-import { getChecklist } from "../services/checklist.service";
+import { getChecklist, getChecklistByChecklistFilledId, getChecklistFilledAnswers } from "../services/checklist.service";
 import ChecklistType from '../enum/checklist/ChecklistType';
 import { ChecklistErrorCodes, DutyCareChecklistErrorCodes, DutyErrorCodes, VehicleErrorCodes } from "../enum/ErrorCodes";
 import ResponseData from "../utils/ResponseData";
@@ -129,9 +129,18 @@ export async function getById(
   try {
     const { id } = req.params;
 
-    const result = await findDutyCareChecklistId(id);
-    if (!result) {
+    const dutyCareChecklist = await findDutyCareChecklistId(id);
+    if (!dutyCareChecklist) {
       return res.status(BAD_REQUEST).send(DutyCareChecklistErrorCodes.NotFound);
+    }
+
+    const checklistFilledAnswers = await getChecklistFilledAnswers(dutyCareChecklist.checklistFilledId);
+    const checklist = await getChecklistByChecklistFilledId(dutyCareChecklist.checklistFilledId);
+
+    const result = {
+      ...dutyCareChecklist,
+      checklistName: checklist?.name,
+      checklistFilledAnswers
     }
 
     return res.status(OK).send(new ResponseData(result));

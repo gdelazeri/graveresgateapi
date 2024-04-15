@@ -25,7 +25,10 @@ export async function findDutyCareChecklistPaged(page: number, pageSize: number)
 
 export async function findDutyCareChecklistId(id: string) {
   try {
-    return dutyCareChecklistRepository.findOne({ where: { id } });
+    return dutyCareChecklistRepository.findOne({
+      where: { id },
+      relations: { createdByUser: true, duty: true, vehicle: true },
+    });
   } catch (error) {
     throw error;
   }
