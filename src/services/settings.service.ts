@@ -10,3 +10,11 @@ export async function getSettingValue(key: string) {
     throw error;
   }
 }
+
+export async function saveSettingValue(key: string, value: any) {
+  try {
+    return settingRepository.upsert({ key, value }, ['key']);
+  } catch (error) {
+    throw error;
+  }
+}

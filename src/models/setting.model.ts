@@ -14,8 +14,8 @@ export class Setting {
   @Column({ nullable: false })
   key: string;
 
-  @Column({ nullable: false })
-  value: string;
+  @Column('jsonb', {nullable: true})
+  value: object | object[];
 
   @Column({ nullable: false, default: new Date() })
   createdAt: Date;

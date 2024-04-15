@@ -1,8 +1,9 @@
 import express from 'express';
-import { getSetting } from '../controllers/settings.controller';
+import { getSetting, postSetting } from '../controllers/settings.controller';
 import validateRequest from '../middlewares/validateRequest';
-import { getSettingSchema } from '../schemas/settings.schema';
+import { getSettingSchema, postSettingSchema } from '../schemas/settings.schema';
 import requiresAuth from '../middlewares/requiresAuth';
+import Permission from '../enum/user/UserPermission';
 
 const router = express.Router();
 
@@ -11,6 +12,13 @@ router.get(
   requiresAuth([]),
   validateRequest(getSettingSchema),
   getSetting,
+);
+
+router.post(
+  '/:key',
+  requiresAuth([Permission.ADMIN]),
+  validateRequest(postSettingSchema),
+  postSetting,
 );
 
 export default router;
