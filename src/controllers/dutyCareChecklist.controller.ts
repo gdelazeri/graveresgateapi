@@ -11,7 +11,7 @@ import { ChecklistFilledAnswer } from "../models/checklistFilledAnswer.model";
 import { DutyCareChecklist } from "../models/dutyCareChecklist.model";
 import { findById as findVehicleById } from "../services/vehicle.service";
 import { findById as findDutyById } from "../services/duty.service";
-import { findByDutyId, findDutyCareChecklistId, findDutyCareCheclistPaged } from "../services/dutyCareChecklist.service";
+import { findByDutyId, findDutyCareChecklistId, findDutyCareChecklistPaged } from "../services/dutyCareChecklist.service";
 
 export async function post(
   req: Request<unknown, unknown, PostDutyCareChecklistPayload>,
@@ -155,7 +155,7 @@ export async function listPaged(
   try {
     const { page, pageSize } = req.query;
 
-    const result = await findDutyCareCheclistPaged(parseInt(page), parseInt(pageSize));
+    const result = await findDutyCareChecklistPaged(parseInt(page), parseInt(pageSize));
 
     return res.status(OK).send(new ResponseData(result));
   } catch (error) {

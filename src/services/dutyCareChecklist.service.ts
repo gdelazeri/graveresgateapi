@@ -11,9 +11,13 @@ export async function findByDutyId(dutyId: string) {
   }
 }
 
-export async function findDutyCareCheclistPaged(page: number, pageSize: number) {
+export async function findDutyCareChecklistPaged(page: number, pageSize: number) {
   try {
-    return dutyCareChecklistRepository.find({ skip: (page - 1) * pageSize, take: pageSize });
+    return dutyCareChecklistRepository.find({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      order: { date: 'DESC', time: 'DESC' },
+    });
   } catch (error) {
     throw error;
   }
