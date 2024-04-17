@@ -9,6 +9,7 @@ import VehicleTrip from './vehicleTrip.routes';
 import Checklist from './checklist.routes';
 import DutyCareChecklist from './dutyCareChecklist.routes';
 import Settings from './settings.routes';
+import DriverChecklist from './driverChecklist.routes';
 
 export enum ROUTE_MAP {
   USER_V1 = '/v1/user',
@@ -20,6 +21,7 @@ export enum ROUTE_MAP {
   CHECKLIST_V1 = '/v1/checklist',
   DUTY_CARE_CHECKLIST_V1 = '/v1/duty-care-checklist',
   SETTING_V1 = '/v1/setting',
+  DRIVER_CHECKLIST_V1 = '/v1/driver-checklist',
 }
 
 const routes = express.Router();
@@ -37,5 +39,6 @@ routes.use(ROUTE_MAP.VEHICLE_TRIP_V1, VehicleTrip);
 routes.use(ROUTE_MAP.CHECKLIST_V1, Checklist);
 routes.use(ROUTE_MAP.DUTY_CARE_CHECKLIST_V1, DutyCareChecklist);
 routes.use(ROUTE_MAP.SETTING_V1, Settings);
+routes.use(ROUTE_MAP.DRIVER_CHECKLIST_V1, DriverChecklist);
 
 export default routes;

@@ -13,6 +13,7 @@ import { ChecklistQuestionItem } from './checklistQuestionItem.model';
 import { ChecklistQuestionOption } from './checklistQuestionOption.model';
 import { ChecklistFilledAnswer } from './checklistFilledAnswer.model';
 import { Setting } from './setting.model';
+import { DriverChecklist } from './driverChecklist.model';
 
 export default [
   User,
@@ -29,5 +30,6 @@ export default [
   ChecklistQuestionItem,
   ChecklistQuestionOption,
   ChecklistFilledAnswer,
-  Setting
+  Setting,
+  DriverChecklist
 ]
