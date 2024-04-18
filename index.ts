@@ -40,6 +40,11 @@ async function init() {
   // Routes
   app.use(routes)
 
+  // Routes
+  app.get('/', (req: Request, res: Response) => {
+    res.send('Grave Resgate API is running')
+  });
+
   // Swagger
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
