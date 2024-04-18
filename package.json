@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.ts",
-    "build": "rm -rf dist/ && prettier --write src/ && tsc",
+    "build": "rm -rf dist/ && prettier --write src/ && tsc && npm run typeorm migration:run -- -d ./src/dataSource.ts",
     "start": "node dist/index.js",
     "test": "jest",
     "swagger": "ts-node swagger && yarn run dev",
