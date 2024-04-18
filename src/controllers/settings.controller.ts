@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-import {
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-} from 'http-status';
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { getSettingValue, saveSettingValue } from '../services/settings.service';
+import {
+  getSettingValue,
+  saveSettingValue,
+} from '../services/settings.service';
 import { GetSettingParams } from '../interfaces/Setting';
 import { SettingErrorCodes } from '../enum/ErrorCodes';
 
@@ -24,13 +23,15 @@ export async function getSetting(
   try {
     const { key } = req.params;
 
-    const setting = await getSettingValue(key)
-    
+    const setting = await getSettingValue(key);
+
     if (setting) {
       return res.status(OK).send(new ResponseData(setting.value));
     }
 
-    return res.status(NOT_FOUND).send(new ResponseData(null, SettingErrorCodes.NotFound));
+    return res
+      .status(NOT_FOUND)
+      .send(new ResponseData(null, SettingErrorCodes.NotFound));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
@@ -49,7 +50,10 @@ export async function postSetting(
     #swagger.responses['500']
   */
   try {
-    const { params: { key }, body } = req;
+    const {
+      params: { key },
+      body,
+    } = req;
 
     await saveSettingValue(key, body);
 

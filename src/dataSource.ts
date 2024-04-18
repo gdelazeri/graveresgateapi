@@ -13,7 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   logging: true,
   synchronize: false,
   migrations: [...migrations],
-  entities: [...models]
+  entities: [...models],
 };
 
 const dataSource = new DataSource(dataSourceOptions);

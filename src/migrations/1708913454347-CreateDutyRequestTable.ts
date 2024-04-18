@@ -1,5 +1,5 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import DutyShift from "../enum/duty/DutyShift";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import DutyShift from '../enum/duty/DutyShift';
 
 export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -58,14 +58,16 @@ export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
             name: 'createdAt',
             type: 'date',
             isNullable: false,
-            default: 'now()'
+            default: 'now()',
           },
         ],
-        foreignKeys: [{
-          columnNames: ['userId'],
-          referencedTableName: 'user',
-          referencedColumnNames: ['id']
-        }],
+        foreignKeys: [
+          {
+            columnNames: ['userId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+        ],
       }),
     );
   }

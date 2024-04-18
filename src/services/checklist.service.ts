@@ -9,9 +9,13 @@ import { Checklist } from '../models/checklist.model';
 import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
 
 const checklistRepository = DataSource.getRepository(Checklist);
-const checklistFilledAnswerRepository = DataSource.getRepository(ChecklistFilledAnswer);
+const checklistFilledAnswerRepository = DataSource.getRepository(
+  ChecklistFilledAnswer,
+);
 
-export async function getChecklist(type: ChecklistType): Promise<Checklist | null> {
+export async function getChecklist(
+  type: ChecklistType,
+): Promise<Checklist | null> {
   try {
     return checklistRepository.findOne({ where: { type } });
   } catch (error) {
@@ -19,7 +23,9 @@ export async function getChecklist(type: ChecklistType): Promise<Checklist | nul
   }
 }
 
-export async function getChecklistQuestions(type: ChecklistType): Promise<ChecklistQuestion[]> {
+export async function getChecklistQuestions(
+  type: ChecklistType,
+): Promise<ChecklistQuestion[]> {
   try {
     return checklistRepository.query(`
       SELECT cq.id, cq."text", cq."type", cq."hasOtherOption", cq."required", cq."multiple"
@@ -33,7 +39,9 @@ export async function getChecklistQuestions(type: ChecklistType): Promise<Checkl
   }
 }
 
-export async function getChecklistQuestionItems(type: ChecklistType): Promise<ChecklistQuestionItem[]> {
+export async function getChecklistQuestionItems(
+  type: ChecklistType,
+): Promise<ChecklistQuestionItem[]> {
   try {
     return checklistRepository.query(`
       SELECT cqi.id, cqi."checklistQuestionId", cqi.text
@@ -48,7 +56,9 @@ export async function getChecklistQuestionItems(type: ChecklistType): Promise<Ch
   }
 }
 
-export async function getChecklistQuestionOptions(type: ChecklistType): Promise<ChecklistQuestionOption[]> {
+export async function getChecklistQuestionOptions(
+  type: ChecklistType,
+): Promise<ChecklistQuestionOption[]> {
   try {
     return checklistRepository.query(`
       SELECT cqo.id, cqo."checklistQuestionId", cqo.text
@@ -63,15 +73,21 @@ export async function getChecklistQuestionOptions(type: ChecklistType): Promise<
   }
 }
 
-export async function getChecklistFilledAnswers(checklistFilledId: string): Promise<ChecklistFilledAnswer[]> {
+export async function getChecklistFilledAnswers(
+  checklistFilledId: string,
+): Promise<ChecklistFilledAnswer[]> {
   try {
-    return checklistFilledAnswerRepository.find({ where: { checklistFilledId } });
+    return checklistFilledAnswerRepository.find({
+      where: { checklistFilledId },
+    });
   } catch (error) {
     throw error;
   }
 }
 
-export async function getChecklistByChecklistFilledId(checklistFilledId: string): Promise<Checklist> {
+export async function getChecklistByChecklistFilledId(
+  checklistFilledId: string,
+): Promise<Checklist> {
   try {
     const checklist = await checklistRepository.query(`
       SELECT c.id, c.name, c."type"

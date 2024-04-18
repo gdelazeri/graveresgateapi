@@ -14,7 +14,7 @@ export const listByDateAndShiftSchema = object({
   params: object({
     date: string().required(),
     shift: string().oneOf(Object.values(DutyShift)),
-  })
+  }),
 });
 
 export const postDutyRequestSchema = object({
@@ -24,8 +24,11 @@ export const postDutyRequestSchema = object({
     startAt: string().required(),
     endAt: string().required(),
     note: string().optional().nullable(),
-    positions: array().of(string().oneOf(Object.values(DutyPosition))).required().min(1),
-  })
+    positions: array()
+      .of(string().oneOf(Object.values(DutyPosition)))
+      .required()
+      .min(1),
+  }),
 });
 
 export const deleteDutyRequestSchema = object({

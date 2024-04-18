@@ -31,5 +31,5 @@ export default [
   ChecklistQuestionOption,
   ChecklistFilledAnswer,
   Setting,
-  DriverChecklist
-]
+  DriverChecklist,
+];

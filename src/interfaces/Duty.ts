@@ -1,8 +1,8 @@
 import * as core from 'express-serve-static-core';
-import DutyShift from "../enum/duty/DutyShift";
+import DutyShift from '../enum/duty/DutyShift';
 
 export interface DutyParams extends core.ParamsDictionary {
-  id: string
+  id: string;
 }
 
 export enum ListDutyMonth {

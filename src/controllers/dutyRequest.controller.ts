@@ -1,21 +1,31 @@
 import { Request, Response } from 'express';
-import {
-  BAD_REQUEST,
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-} from 'http-status';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status';
 import { DutyRequestErrorCodes, UserErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
-import { PostDutyRequestPayload, DutyRequestParams, ListDutyRequest, DutyRequestReponse } from '../interfaces/DutyRequest';
-import { createDutyRequest, findByDateAndShift, findById, softDelete, findByUser, findExistent } from '../services/dutyRequest.service';
-import { createDutyRequestPosition, findByDutyRequestId } from '../services/dutyRequestPosition.service';
+import {
+  PostDutyRequestPayload,
+  DutyRequestParams,
+  ListDutyRequest,
+  DutyRequestReponse,
+} from '../interfaces/DutyRequest';
+import {
+  createDutyRequest,
+  findByDateAndShift,
+  findById,
+  softDelete,
+  findByUser,
+  findExistent,
+} from '../services/dutyRequest.service';
+import {
+  createDutyRequestPosition,
+  findByDutyRequestId,
+} from '../services/dutyRequestPosition.service';
 import { checkUserActive } from '../services/user.service';
 import { createDuty, getDutyByDateAndShift } from '../services/duty.service';
 
 export async function getById(
   req: Request<DutyRequestParams, unknown, unknown>,
-  res: Response
+  res: Response,
 ) {
   /* 	
     #swagger.tags = ['DutyRequest']
@@ -45,7 +55,7 @@ export async function getById(
       startAt: dutyRequest.startAt,
       endAt: dutyRequest.endAt,
       note: dutyRequest.note,
-      positions: dutyRequestPositions.map((item) => item.position),
+      positions: dutyRequestPositions.map(item => item.position),
       status: dutyRequest.status,
     } as DutyRequestReponse;
 
@@ -82,7 +92,7 @@ export async function listByDateAndShift(
   try {
     const { date, shift } = req.params;
 
-    const list = await findByDateAndShift(date, shift)
+    const list = await findByDateAndShift(date, shift);
     const response: DutyRequestReponse[] = [];
 
     for (const item of list) {
@@ -96,7 +106,7 @@ export async function listByDateAndShift(
         endAt: item.endAt,
         note: item.note,
         createdAt: String(item.createdAt),
-        positions: dutyRequestPositions.map((item) => item.position),
+        positions: dutyRequestPositions.map(item => item.position),
         status: 'PENDING',
       });
     }
@@ -107,10 +117,7 @@ export async function listByDateAndShift(
   }
 }
 
-export async function listByUser(
-  req: Request,
-  res: Response,
-) {
+export async function listByUser(req: Request, res: Response) {
   /* 	
     #swagger.tags = ['DutyRequest']
     #swagger.description = 'List duty requests by user'
@@ -136,7 +143,7 @@ export async function listByUser(
         startAt: item.startAt,
         endAt: item.endAt,
         note: item.note,
-        positions: dutyRequestPositions.map((item) => item.position),
+        positions: dutyRequestPositions.map(item => item.position),
         status: item.status,
         createdAt: item.createdAt,
       });
@@ -179,7 +186,9 @@ export async function postDutyRequest(
     if (dutyRequestExists) {
       return res
         .status(BAD_REQUEST)
-        .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestExistent));
+        .send(
+          new ResponseData(null, DutyRequestErrorCodes.DutyRequestExistent),
+        );
     }
 
     const payload = {
@@ -189,15 +198,18 @@ export async function postDutyRequest(
       endAt: body.endAt,
       note: body.note,
       userId,
-    }
+    };
 
     const dutyRequest = await createDutyRequest(payload);
-    
+
     for (const position of body.positions) {
-      await createDutyRequestPosition({ position, dutyRequestId: dutyRequest.id });
+      await createDutyRequestPosition({
+        position,
+        dutyRequestId: dutyRequest.id,
+      });
     }
 
-    if (!await getDutyByDateAndShift(body.date, body.shift)) {
+    if (!(await getDutyByDateAndShift(body.date, body.shift))) {
       await createDuty({ date: body.date, shift: body.shift });
     }
 
@@ -209,7 +221,7 @@ export async function postDutyRequest(
 
 export async function deleteDutyRequest(
   req: Request<DutyRequestParams>,
-  res: Response
+  res: Response,
 ) {
   /*
     #swagger.tags = ['DutyRequest']
@@ -234,7 +246,9 @@ export async function deleteDutyRequest(
     if (!(await findById(id))) {
       return res
         .status(NOT_FOUND)
-        .send(new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent));
+        .send(
+          new ResponseData(null, DutyRequestErrorCodes.DutyRequestInexistent),
+        );
     }
 
     await softDelete(id, userId);

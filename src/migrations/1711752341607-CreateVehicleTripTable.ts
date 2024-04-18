@@ -1,7 +1,6 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class CreateVehicleTripTable1711752341607 implements MigrationInterface {
-
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -67,13 +66,25 @@ export class CreateVehicleTripTable1711752341607 implements MigrationInterface {
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()'
+            default: 'now()',
           },
         ],
         foreignKeys: [
-          { columnNames: ['driverId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['vehicleId'], referencedTableName: 'vehicle', referencedColumnNames: ['id'] },
-          { columnNames: ['createdByUserId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
+          {
+            columnNames: ['driverId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['vehicleId'],
+            referencedTableName: 'vehicle',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['createdByUserId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
         ],
       }),
     );

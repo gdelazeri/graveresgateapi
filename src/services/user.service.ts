@@ -10,7 +10,8 @@ const userRepository = DataSource.getRepository(User);
 
 export async function createUser(input: any) {
   try {
-    return userRepository.save(userRepository.create(input));
+    const user = await userRepository.save(userRepository.create(input));
+    return user[0];
   } catch (error) {
     throw error;
   }
@@ -37,7 +38,7 @@ export async function findUserById(id: string) {
     return userRepository.findOne({
       where: { id, deletedAt: IsNull() },
       select: { password: false },
-      relations: { course: true }
+      relations: { course: true },
     });
   } catch (error) {
     throw error;
@@ -49,14 +50,22 @@ export async function findUsers(statusList: Status[], filters: any = {}) {
     const where = {
       status: In(statusList),
       deletedAt: IsNull(),
-      ...filters
+      ...filters,
     };
 
     return userRepository.find({
       where,
-      select: ['id', 'name', 'imageUrl', 'isLeader', 'isDriver', 'status', 'permission'],
+      select: [
+        'id',
+        'name',
+        'imageUrl',
+        'isLeader',
+        'isDriver',
+        'status',
+        'permission',
+      ],
       order: { name: 'ASC' },
-      relations: { course: true }
+      relations: { course: true },
     });
   } catch (error) {
     throw error;
@@ -66,7 +75,11 @@ export async function findUsers(statusList: Status[], filters: any = {}) {
 export async function checkValidUser(id: string) {
   try {
     return userRepository.findOne({
-      where: { id, status: In([Status.ACTIVE, Status.PENDING]), deletedAt: IsNull() },
+      where: {
+        id,
+        status: In([Status.ACTIVE, Status.PENDING]),
+        deletedAt: IsNull(),
+      },
     });
   } catch (error) {
     throw error;
@@ -126,7 +139,6 @@ export async function findLatestRegistrationId() {
     throw error;
   }
 }
-
 
 export function generateTokens(user: any) {
   try {

@@ -64,9 +64,9 @@ export class User {
   @Column({ nullable: true })
   courseId: string;
 
-  @OneToOne(() => Course, (course) => course.id)
+  @OneToOne(() => Course, course => course.id)
   @JoinColumn()
-  course: Relation<Course>
+  course: Relation<Course>;
 
   @Column({ nullable: true })
   approvedBy: string;

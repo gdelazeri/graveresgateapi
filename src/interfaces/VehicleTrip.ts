@@ -1,13 +1,13 @@
 import * as core from 'express-serve-static-core';
 
 export interface VehicleTripParams extends core.ParamsDictionary {
-  id: string
+  id: string;
 }
 
 export interface ListQuery extends core.Query {
-  vehicleId?: string
-  page: string
-  pageSize: string
+  vehicleId?: string;
+  page: string;
+  pageSize: string;
 }
 
 export interface PostVehicleTripPayload {

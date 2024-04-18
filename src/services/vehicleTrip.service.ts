@@ -5,7 +5,9 @@ const repository = DataSource.getRepository(VehicleTrip);
 
 export async function createVehicleTrip(input: any) {
   try {
-    return repository.save(repository.create(input)) as unknown as Promise<VehicleTrip>;
+    return repository.save(
+      repository.create(input),
+    ) as unknown as Promise<VehicleTrip>;
   } catch (error) {
     throw error;
   }
@@ -26,22 +28,26 @@ export async function findById(id: string) {
       relations: { createdByUser: true, driver: true, vehicle: true },
       select: {
         createdByUser: {
-          name: true
+          name: true,
         },
         driver: {
-          name: true
+          name: true,
         },
         vehicle: {
-          name: true
-        }
-      }
+          name: true,
+        },
+      },
     });
   } catch (error) {
     throw error;
   }
 }
 
-export async function findPaged(page: number, pageSize: number, vehicleId?: string) {
+export async function findPaged(
+  page: number,
+  pageSize: number,
+  vehicleId?: string,
+) {
   try {
     let where = {};
     if (vehicleId) {
@@ -56,12 +62,12 @@ export async function findPaged(page: number, pageSize: number, vehicleId?: stri
       relations: { driver: true, vehicle: true },
       select: {
         driver: {
-          name: true
+          name: true,
         },
         vehicle: {
-          name: true
-        }
-      }
+          name: true,
+        },
+      },
     });
   } catch (error) {
     throw error;

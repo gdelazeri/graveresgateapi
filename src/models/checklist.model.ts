@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  Generated,
-} from 'typeorm';
+import { Entity, Column, PrimaryColumn, Generated } from 'typeorm';
 import ChecklistType from '../enum/checklist/ChecklistType';
 
 @Entity('checklist')

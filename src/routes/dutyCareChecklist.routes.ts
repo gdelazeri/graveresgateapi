@@ -3,7 +3,7 @@ import {
   post,
   listByDuty,
   getById,
-  listPaged
+  listPaged,
 } from '../controllers/dutyCareChecklist.controller';
 import validateRequest from '../middlewares/validateRequest';
 import requiresAuth from '../middlewares/requiresAuth';
@@ -11,17 +11,12 @@ import {
   getByIdSchema,
   listByDutyIdSchema,
   listPagedSchema,
-  postSchema
+  postSchema,
 } from '../schemas/dutyCareChecklist.schema';
 
 const router = express.Router();
 
-router.post(
-  '',
-  requiresAuth([]),
-  validateRequest(postSchema),
-  post,
-);
+router.post('', requiresAuth([]), validateRequest(postSchema), post);
 
 router.get(
   '/list/duty/:dutyId',

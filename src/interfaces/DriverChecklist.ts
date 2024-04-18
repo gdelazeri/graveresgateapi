@@ -19,5 +19,5 @@ export interface PostDriverChecklistPayload {
   dutyId: string;
   kmInitial: string;
   vehicleId: string;
-  checklistAnswers?: ChecklistFilledAnswer[]
+  checklistAnswers?: ChecklistFilledAnswer[];
 }

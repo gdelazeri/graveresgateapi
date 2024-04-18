@@ -1,12 +1,8 @@
 import express from 'express';
-import {
-  getQuestions,
-} from '../controllers/checklist.controller';
+import { getQuestions } from '../controllers/checklist.controller';
 import validateRequest from '../middlewares/validateRequest';
 import requiresAuth from '../middlewares/requiresAuth';
-import {
-  getChecklistQuestionSchema
-} from '../schemas/checklist.schema';
+import { getChecklistQuestionSchema } from '../schemas/checklist.schema';
 
 const router = express.Router();
 

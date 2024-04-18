@@ -20,9 +20,9 @@ export class DriverChecklist {
   @Column({ nullable: false })
   dutyId: string;
 
-  @OneToOne(() => Duty, (duty) => duty.id)
+  @OneToOne(() => Duty, duty => duty.id)
   @JoinColumn()
-  duty: Relation<Vehicle>
+  duty: Relation<Vehicle>;
 
   @Column({ nullable: false })
   kmInitial: string;
@@ -30,9 +30,9 @@ export class DriverChecklist {
   @Column({ nullable: false })
   vehicleId: string;
 
-  @OneToOne(() => Vehicle, (vehicle) => vehicle.id)
+  @OneToOne(() => Vehicle, vehicle => vehicle.id)
   @JoinColumn()
-  vehicle: Relation<Vehicle>
+  vehicle: Relation<Vehicle>;
 
   @Column({ nullable: true })
   checklistFilledId: string;
@@ -40,9 +40,9 @@ export class DriverChecklist {
   @Column({ nullable: false })
   createdByUserId: string;
 
-  @OneToOne(() => User, (user) => user.id)
+  @OneToOne(() => User, user => user.id)
   @JoinColumn()
-  createdByUser: Relation<User>
+  createdByUser: Relation<User>;
 
   @Column({ nullable: false, default: new Date() })
   createdAt: string;

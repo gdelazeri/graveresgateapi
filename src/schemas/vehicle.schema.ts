@@ -16,7 +16,7 @@ export const postVehicleSchema = object({
     model: string().required(),
     year: string().optional(),
     isAvailable: boolean().required(),
-  })
+  }),
 });
 
 export const putVehicleSchema = object({
@@ -32,7 +32,7 @@ export const putVehicleSchema = object({
     model: string().required(),
     year: string().optional(),
     isAvailable: boolean().required(),
-  })
+  }),
 });
 
 export const deleteVehicleSchema = object({

@@ -1,18 +1,20 @@
 import { Request, Response } from 'express';
-import {
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  NO_CONTENT,
-  OK,
-} from 'http-status';
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, NO_CONTENT, OK } from 'http-status';
 import { VehicleErrorCodes } from '../enum/ErrorCodes';
 import ResponseData from '../utils/ResponseData';
-import { createVehicle, findAll, findAvailable, findById, softDelete, updateVehicle } from '../services/vehicle.service';
+import {
+  createVehicle,
+  findAll,
+  findAvailable,
+  findById,
+  softDelete,
+  updateVehicle,
+} from '../services/vehicle.service';
 import { PostVehiclePayload, VehicleParams } from '../interfaces/Vehicle';
 
 export async function getById(
   req: Request<VehicleParams, unknown, unknown>,
-  res: Response
+  res: Response,
 ) {
   /* 	
     #swagger.tags = ['Vehicle']
@@ -23,7 +25,9 @@ export async function getById(
     #swagger.responses['500']
   */
   try {
-    const { params: { id } } = req;
+    const {
+      params: { id },
+    } = req;
 
     const vehicle = await findById(id);
 
@@ -50,7 +54,7 @@ export async function list(
     #swagger.responses['500']
   */
   try {
-    const list = await findAll()
+    const list = await findAll();
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -71,7 +75,7 @@ export async function listAvailable(
     #swagger.responses['500']
   */
   try {
-    const list = await findAvailable()
+    const list = await findAvailable();
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -106,7 +110,7 @@ export async function postVehicle(
       model: body.model,
       year: body.year,
       isAvailable: body.isAvailable,
-    }
+    };
 
     const vehicle = await createVehicle(payload);
 
@@ -153,7 +157,7 @@ export async function putVehicle(
       model: body.model,
       year: body.year,
       isAvailable: body.isAvailable,
-    }
+    };
 
     if (!(await findById(id))) {
       return res
@@ -171,7 +175,7 @@ export async function putVehicle(
 
 export async function deleteVehicle(
   req: Request<VehicleParams>,
-  res: Response
+  res: Response,
 ) {
   /*
     #swagger.tags = ['Vehicle']
@@ -188,7 +192,9 @@ export async function deleteVehicle(
     #swagger.responses['500']
   */
   try {
-    const { params: { id } } = req;
+    const {
+      params: { id },
+    } = req;
 
     if (!(await findById(id))) {
       return res

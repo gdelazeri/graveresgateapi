@@ -3,13 +3,12 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser, findUserById } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import Permission from '../../../src/enum/user/UserPermission';
-import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, OK } from 'http-status';
+import { FORBIDDEN, NOT_FOUND, OK } from 'http-status';
 import Status from '../../../src/enum/user/UserStatus';
 import { createAccessToken } from '../../../src/utils/JsonWebToken';
-import { GenericErrorCodes } from '../../../src/enum/ErrorCodes';
 
 const api = makeApp('', routes);
 
@@ -31,16 +30,16 @@ describe('src/routes/user.routes deleteUser', () => {
   });
 
   test('delete user successfully', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj, permission: Permission.ADMIN });
-    const { _id } = await User.create({ ...userObj2 });
+    const { id: userId, permission } = await createUser({ ...userObj, permission: Permission.ADMIN });
+    const { id } = await createUser({ ...userObj2 });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
     const res = await request(api)
-      .delete(`${ROUTE_MAP.USER_V1}/${_id}`)
+      .delete(`${ROUTE_MAP.USER_V1}/${id}`)
       .auth(jwtTokenUser, { type: "bearer" });
 
-    const userDeleted = await User.findById(_id);
+    const userDeleted = await findUserById(id);
 
     expect(res.status).toEqual(OK);
     expect(userDeleted?.status).toEqual(Status.DELETED);
@@ -49,7 +48,7 @@ describe('src/routes/user.routes deleteUser', () => {
   });
 
   test('error on update user cause user logged is not an admin', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -61,7 +60,7 @@ describe('src/routes/user.routes deleteUser', () => {
   });
 
   test('error on delete user cause user not exists', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj, permission: Permission.ADMIN });
+    const { id: userId, permission } = await createUser({ ...userObj, permission: Permission.ADMIN });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 

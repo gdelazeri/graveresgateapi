@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  Generated,
-} from 'typeorm';
+import { Entity, Column, PrimaryColumn, Generated } from 'typeorm';
 
 @Entity('settings')
 export class Setting {
@@ -14,7 +9,7 @@ export class Setting {
   @Column({ nullable: false })
   key: string;
 
-  @Column('jsonb', {nullable: true})
+  @Column('jsonb', { nullable: true })
   value: object | object[];
 
   @Column({ nullable: false, default: new Date() })

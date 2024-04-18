@@ -1,5 +1,5 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import DutyShift from "../enum/duty/DutyShift";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import DutyShift from '../enum/duty/DutyShift';
 
 export class CreateDutyTable1710122109904 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -63,17 +63,45 @@ export class CreateDutyTable1710122109904 implements MigrationInterface {
             name: 'createdAt',
             type: 'date',
             isNullable: false,
-            default: 'now()'
+            default: 'now()',
           },
         ],
         foreignKeys: [
-          { columnNames: ['leaderId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['driverId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['firstRescuerId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['secondRescuerId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['radioOperatorId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['assistantRadioOperatorId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['traineeId'], referencedTableName: 'user', referencedColumnNames: ['id'] }
+          {
+            columnNames: ['leaderId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['driverId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['firstRescuerId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['secondRescuerId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['radioOperatorId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['assistantRadioOperatorId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['traineeId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
         ],
       }),
     );

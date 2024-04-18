@@ -7,7 +7,9 @@ const dutyRequestRepository = DataSource.getRepository(DutyRequest);
 
 export async function createDutyRequest(input: any) {
   try {
-    return dutyRequestRepository.save(dutyRequestRepository.create(input)) as unknown as Promise<DutyRequest>;
+    return dutyRequestRepository.save(
+      dutyRequestRepository.create(input),
+    ) as unknown as Promise<DutyRequest>;
   } catch (error) {
     throw error;
   }
@@ -48,10 +50,10 @@ export async function findById(id: string) {
           ) THEN 'APPROVED' ELSE 'PENDING' END AS status
       FROM "dutyRequest" dr
       WHERE dr.id = '${id}'
-    `)
+    `);
 
-    if (dutyList.length === 1) return dutyList[0]
-    return null
+    if (dutyList.length === 1) return dutyList[0];
+    return null;
   } catch (error) {
     throw error;
   }
@@ -76,9 +78,15 @@ export async function findByDateAndShift(date: string, shift: DutyShift) {
   }
 }
 
-export async function findExistent(date: string, shift: DutyShift, userId: string) {
+export async function findExistent(
+  date: string,
+  shift: DutyShift,
+  userId: string,
+) {
   try {
-    return dutyRequestRepository.findOne({ where: { date, shift, userId, deletedAt: IsNull() }});
+    return dutyRequestRepository.findOne({
+      where: { date, shift, userId, deletedAt: IsNull() },
+    });
   } catch (error) {
     throw error;
   }
@@ -88,9 +96,10 @@ export async function findByUser(userId: string) {
   try {
     const date = new Date();
     date.setDate(date.getDate() - 1);
-    const startDate = date.toISOString().substring(0, 10)
+    const startDate = date.toISOString().substring(0, 10);
 
-    return dutyRequestRepository.query(`
+    return dutyRequestRepository.query(
+      `
       SELECT
         id,
         date,
@@ -119,7 +128,9 @@ export async function findByUser(userId: string) {
         AND dr."deletedAt" IS NULL
         AND dr."date" >= '${startDate}'
       ORDER BY dr."date" ASC
-    `, [])
+    `,
+      [],
+    );
   } catch (error) {
     throw error;
   }

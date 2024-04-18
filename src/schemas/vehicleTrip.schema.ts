@@ -14,7 +14,7 @@ export const listSchema = object({
     vehicleId: string().optional(),
     page: number().required().min(1),
     pageSize: number().required().min(1).max(MAX_PAGE_SIZE),
-  })
+  }),
 });
 
 export const postVehicleTripSchema = object({
@@ -28,14 +28,15 @@ export const postVehicleTripSchema = object({
     endAt: string().required(),
     place: string().required(),
     reason: string().required(),
-  })
+  }),
 });
-
 
 export const putVehicleTripSchema = object({
   params: object({
     id: string().required(),
-  }).noUnknown(true).strict(),
+  })
+    .noUnknown(true)
+    .strict(),
   body: object({
     vehicleId: string().required(),
     driverId: string().required(),
@@ -46,5 +47,5 @@ export const putVehicleTripSchema = object({
     endAt: string().required(),
     place: string().required(),
     reason: string().required(),
-  })
+  }),
 });

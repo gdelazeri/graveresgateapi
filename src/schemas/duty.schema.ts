@@ -5,22 +5,22 @@ import { MAX_PAGE_SIZE } from '../enum/Constants';
 
 export const listByMonthSchema = object({
   params: object({
-    month: string().required().oneOf(Object.values(ListDutyMonth))
-  })
+    month: string().required().oneOf(Object.values(ListDutyMonth)),
+  }),
 });
 
 export const listPreviousSchema = object({
   query: object({
     page: number().required().min(1),
     pageSize: number().required().min(1).max(MAX_PAGE_SIZE),
-  })
+  }),
 });
 
 export const getSchema = object({
   params: object({
     date: string().required(),
-    shift: string().required().oneOf(Object.values(DutyShift))
-  })
+    shift: string().required().oneOf(Object.values(DutyShift)),
+  }),
 });
 
 export const postSchema = object({
@@ -34,5 +34,5 @@ export const postSchema = object({
     radioOperatorId: string().optional().nullable(),
     assistantRadioOperatorId: string().optional().nullable(),
     traineeId: string().optional().nullable(),
-  })
+  }),
 });

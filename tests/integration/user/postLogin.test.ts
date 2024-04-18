@@ -3,12 +3,9 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
-import Permission from '../../../src/enum/user/UserPermission';
-import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, OK, UNAUTHORIZED } from 'http-status';
-import Status from '../../../src/enum/user/UserStatus';
-import { createAccessToken } from '../../../src/utils/JsonWebToken';
+import { OK, UNAUTHORIZED } from 'http-status';
 import { UserErrorCodes } from '../../../src/enum/ErrorCodes';
 
 const api = makeApp('', routes);
@@ -30,7 +27,7 @@ describe('src/routes/user.routes deleteUser', () => {
   });
 
   test('login successfully', async () => {
-    await User.create({ ...userObj });
+    await createUser({ ...userObj });
 
     const res = await request(api)
       .post(`${ROUTE_MAP.USER_V1}/login`)
@@ -42,7 +39,7 @@ describe('src/routes/user.routes deleteUser', () => {
   });
 
   test('error on login cause password is wrong', async () => {
-    await User.create({ ...userObj });
+    await createUser({ ...userObj });
 
     const res = await request(api)
       .post(`${ROUTE_MAP.USER_V1}/login`)
@@ -53,7 +50,7 @@ describe('src/routes/user.routes deleteUser', () => {
   });
 
   test('error on login cause email is wrong', async () => {
-    await User.create({ ...userObj });
+    await createUser({ ...userObj });
 
     const res = await request(api)
       .post(`${ROUTE_MAP.USER_V1}/login`)

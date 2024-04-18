@@ -3,7 +3,7 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import { createAccessToken } from '../../../src/utils/JsonWebToken';
 import Permission from '../../../src/enum/user/UserPermission';
@@ -30,7 +30,7 @@ describe('src/routes/user.routes getOwnUser', () => {
       email: 'teste@teste.com',
       password: 'teste123456',
     };
-    const { _id: userId, permission, status, isDriver } = await User.create({ ...userObj });
+    const { id: userId, permission, status, isDriver } = await createUser({ ...userObj });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -52,7 +52,7 @@ describe('src/routes/user.routes getOwnUser', () => {
       email: 'teste@teste.com',
       password: 'teste123456',
     };
-    await User.create({ ...userObj });
+    await createUser({ ...userObj });
 
     const res = await request(api)
       .get(ROUTE_MAP.USER_V1);

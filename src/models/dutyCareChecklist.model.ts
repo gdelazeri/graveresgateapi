@@ -21,7 +21,7 @@ export class DutyCareChecklist {
   @Column({ nullable: false })
   dutyId: string;
 
-  @OneToOne(() => Duty, (duty) => duty.id)
+  @OneToOne(() => Duty, duty => duty.id)
   @JoinColumn()
   duty: Duty;
 
@@ -30,38 +30,38 @@ export class DutyCareChecklist {
 
   @Column({ nullable: false })
   date: string;
-  
+
   @Column({ nullable: false })
   time: string;
-  
+
   @Column({ nullable: false })
   vehicleId: string;
 
-  @OneToOne(() => Vehicle, (vehicle) => vehicle.id)
+  @OneToOne(() => Vehicle, vehicle => vehicle.id)
   @JoinColumn()
-  vehicle: Relation<Vehicle>
+  vehicle: Relation<Vehicle>;
 
   @Column({ nullable: false })
   reason: string;
 
   @Column({ nullable: false })
-  victimName: string
+  victimName: string;
 
   @Column({ nullable: false })
-  victimGender: string
+  victimGender: string;
 
   @Column({ nullable: false })
-  victimAge: number
+  victimAge: number;
 
   @Column({ nullable: true })
-  victimDocument: string
+  victimDocument: string;
 
   @Column({ nullable: false })
   incidentAddress: string;
-  
+
   @Column({ nullable: false })
   incidentAddressDistrict: string;
-  
+
   @Column({ nullable: false })
   incidentAddressCity: string;
 
@@ -75,11 +75,11 @@ export class DutyCareChecklist {
   checklistFilledId: string;
 
   @Column({ nullable: false })
-  createdByUserId: string
+  createdByUserId: string;
 
-  @OneToOne(() => User, (user) => user.id)
+  @OneToOne(() => User, user => user.id)
   @JoinColumn()
-  createdByUser: Relation<User>
+  createdByUser: Relation<User>;
 
   @Column({ nullable: false, default: new Date() })
   createdAt: Date;

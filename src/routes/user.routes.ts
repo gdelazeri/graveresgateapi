@@ -25,12 +25,7 @@ import Permission from '../enum/user/UserPermission';
 
 const router = express.Router();
 
-router.get(
-  '',
-  requiresAuth([]),
-  validateRequest(getOwnUserSchema),
-  getOwnUser,
-);
+router.get('', requiresAuth([]), validateRequest(getOwnUserSchema), getOwnUser);
 
 router.get(
   '/getById/:id',
@@ -39,17 +34,9 @@ router.get(
   getUserById,
 );
 
-router.get(
-  '/list/active',
-  requiresAuth([]),
-  listActiveUsers,
-);
+router.get('/list/active', requiresAuth([]), listActiveUsers);
 
-router.get(
-  '/list/all',
-  requiresAuth([Permission.ADMIN]),
-  listAllUsers,
-);
+router.get('/list/all', requiresAuth([Permission.ADMIN]), listAllUsers);
 
 router.post('', validateRequest(postUserSchema), postUser);
 
@@ -60,12 +47,7 @@ router.put(
   putUser,
 );
 
-router.put(
-  '',
-  requiresAuth([]),
-  validateRequest(putOwnUserSchema),
-  putOwnUser,
-);
+router.put('', requiresAuth([]), validateRequest(putOwnUserSchema), putOwnUser);
 
 router.delete(
   '/:id',

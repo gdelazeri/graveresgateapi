@@ -6,7 +6,9 @@ const vehicleRepository = DataSource.getRepository(Vehicle);
 
 export async function createVehicle(input: any) {
   try {
-    return vehicleRepository.save(vehicleRepository.create(input)) as unknown as Promise<Vehicle>;
+    return vehicleRepository.save(
+      vehicleRepository.create(input),
+    ) as unknown as Promise<Vehicle>;
   } catch (error) {
     throw error;
   }
@@ -30,7 +32,10 @@ export async function findById(id: string) {
 
 export async function findAll() {
   try {
-    return vehicleRepository.find({ where: { deletedAt: IsNull() }, order: { isAvailable: 'DESC', name: 'ASC' } });
+    return vehicleRepository.find({
+      where: { deletedAt: IsNull() },
+      order: { isAvailable: 'DESC', name: 'ASC' },
+    });
   } catch (error) {
     throw error;
   }
@@ -38,7 +43,10 @@ export async function findAll() {
 
 export async function findAvailable() {
   try {
-    return vehicleRepository.find({ where: { isAvailable: true, deletedAt: IsNull() }, order: { name: 'ASC' } });
+    return vehicleRepository.find({
+      where: { isAvailable: true, deletedAt: IsNull() },
+      order: { name: 'ASC' },
+    });
   } catch (error) {
     throw error;
   }

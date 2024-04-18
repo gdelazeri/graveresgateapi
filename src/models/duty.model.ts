@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  Generated,
-} from 'typeorm';
+import { Entity, Column, PrimaryColumn, Generated } from 'typeorm';
 import DutyShift from '../enum/duty/DutyShift';
 
 @Entity('duty')
@@ -20,22 +15,22 @@ export class Duty {
 
   @Column({ nullable: false })
   leaderId: string;
-  
+
   @Column({ nullable: false })
   driverId: string;
-  
+
   @Column({ nullable: false })
   firstRescuerId: string;
-  
+
   @Column({ nullable: false })
   secondRescuerId: string;
-  
+
   @Column({ nullable: false })
   radioOperatorId: string;
-  
+
   @Column({ nullable: false })
   assistantRadioOperatorId: string;
-  
+
   @Column({ nullable: false })
   traineeId: string;
 

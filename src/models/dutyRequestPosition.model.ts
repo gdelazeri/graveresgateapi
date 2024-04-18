@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryColumn,
-  Generated,
-} from 'typeorm';
+import { Entity, Column, PrimaryColumn, Generated } from 'typeorm';
 import DutyPosition from '../enum/duty/DutyPosition';
 
 @Entity('dutyRequestPosition')

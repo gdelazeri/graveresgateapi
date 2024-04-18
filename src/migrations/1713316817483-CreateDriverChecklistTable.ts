@@ -1,7 +1,8 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateDriverChecklistTable1713316817483 implements MigrationInterface {
-
+export class CreateDriverChecklistTable1713316817483
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -42,14 +43,30 @@ export class CreateDriverChecklistTable1713316817483 implements MigrationInterfa
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()'
+            default: 'now()',
           },
         ],
         foreignKeys: [
-          { columnNames: ['vehicleId'], referencedTableName: 'vehicle', referencedColumnNames: ['id'] },
-          { columnNames: ['dutyId'], referencedTableName: 'duty', referencedColumnNames: ['id'] },
-          { columnNames: ['createdByUserId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistFilledId'], referencedTableName: 'checklistFilled', referencedColumnNames: ['id'] },
+          {
+            columnNames: ['vehicleId'],
+            referencedTableName: 'vehicle',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['dutyId'],
+            referencedTableName: 'duty',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['createdByUserId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['checklistFilledId'],
+            referencedTableName: 'checklistFilled',
+            referencedColumnNames: ['id'],
+          },
         ],
       }),
     );
@@ -58,5 +75,4 @@ export class CreateDriverChecklistTable1713316817483 implements MigrationInterfa
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('driverChecklist');
   }
-
 }

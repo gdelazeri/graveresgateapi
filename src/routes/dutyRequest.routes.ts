@@ -2,7 +2,9 @@ import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
 import {
   deleteDutyRequestSchema,
-  getByIdSchema, listByDateAndShiftSchema, postDutyRequestSchema
+  getByIdSchema,
+  listByDateAndShiftSchema,
+  postDutyRequestSchema,
 } from '../schemas/dutyRequest.schema';
 import requiresAuth from '../middlewares/requiresAuth';
 import Permission from '../enum/user/UserPermission';
@@ -30,17 +32,13 @@ router.get(
   listByDateAndShift,
 );
 
-router.get(
-  '/requests',
-  requiresAuth([]),
-  listByUser,
-);
+router.get('/requests', requiresAuth([]), listByUser);
 
 router.post(
   '',
   requiresAuth([]),
   validateRequest(postDutyRequestSchema),
-  postDutyRequest
+  postDutyRequest,
 );
 
 router.delete(

@@ -3,7 +3,7 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser, findUserByEmail } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import Permission from '../../../src/enum/user/UserPermission';
 import { BAD_REQUEST, OK } from 'http-status';
@@ -33,7 +33,7 @@ describe('src/routes/user.routes postUser', () => {
       .post(ROUTE_MAP.USER_V1)
       .send({ ...userObj });
 
-    const userCreated = await User.findOne({ email: userObj.email });
+    const userCreated = await findUserByEmail(userObj.email);
 
     expect(res.status).toEqual(OK);
     expect(res.body.result.accessToken).toBeDefined();
@@ -51,7 +51,7 @@ describe('src/routes/user.routes postUser', () => {
   });
 
   test('error on create user cause already exists another user with the same email', async () => {
-    await User.create({ ...userObj });
+    await createUser({ ...userObj });
 
     const res = await request(api)
       .post(ROUTE_MAP.USER_V1)

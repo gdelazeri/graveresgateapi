@@ -1,7 +1,7 @@
 import * as core from 'express-serve-static-core';
 
 export interface VehicleParams extends core.ParamsDictionary {
-  id: string
+  id: string;
 }
 
 export interface PostVehiclePayload {

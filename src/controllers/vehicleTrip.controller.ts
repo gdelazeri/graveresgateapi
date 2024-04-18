@@ -1,20 +1,24 @@
 import { Request, Response } from 'express';
-import {
-  BAD_REQUEST,
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-} from 'http-status';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { createVehicleTrip, findById, findPaged, updateVehicleTrip } from '../services/vehicleTrip.service';
+import {
+  createVehicleTrip,
+  findById,
+  findPaged,
+  updateVehicleTrip,
+} from '../services/vehicleTrip.service';
 import { findById as findVehicleById } from '../services/vehicle.service';
 import { findUserById } from '../services/user.service';
-import { ListQuery, PostVehicleTripPayload, VehicleTripParams } from '../interfaces/VehicleTrip';
+import {
+  ListQuery,
+  PostVehicleTripPayload,
+  VehicleTripParams,
+} from '../interfaces/VehicleTrip';
 import { VehicleErrorCodes, VehicleTripErrorCodes } from '../enum/ErrorCodes';
 
 export async function getById(
   req: Request<VehicleTripParams, unknown, unknown>,
-  res: Response
+  res: Response,
 ) {
   /* 	
     #swagger.tags = ['VehicleTrip']
@@ -25,7 +29,9 @@ export async function getById(
     #swagger.responses['500']
   */
   try {
-    const { params: { id } } = req;
+    const {
+      params: { id },
+    } = req;
 
     const vehicleTrip = await findById(id);
 
@@ -52,14 +58,17 @@ export async function list(
     #swagger.responses['500']
   */
   try {
-    const { query: { vehicleId, page, pageSize } } = req;
-    
+    const {
+      query: { vehicleId, page, pageSize },
+    } = req;
+
     if (vehicleId && !(await findVehicleById(vehicleId))) {
-      return res.status(BAD_REQUEST)
+      return res
+        .status(BAD_REQUEST)
         .send(new ResponseData(null, VehicleErrorCodes.VehicleInexistent));
     }
 
-    const list = await findPaged(parseInt(page), parseInt(pageSize), vehicleId)
+    const list = await findPaged(parseInt(page), parseInt(pageSize), vehicleId);
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -88,17 +97,22 @@ export async function postVehicleTrip(
     const { body, userId } = req;
 
     if (!(await findVehicleById(body.vehicleId))) {
-      return res.status(BAD_REQUEST)
+      return res
+        .status(BAD_REQUEST)
         .send(new ResponseData(null, VehicleErrorCodes.VehicleInexistent));
     }
 
     const driver = await findUserById(body.driverId);
     if (!driver) {
-      return res.status(BAD_REQUEST)
+      return res
+        .status(BAD_REQUEST)
         .send(new ResponseData(null, VehicleTripErrorCodes.UserNotADriver));
     }
 
-    const vehicleTrip = await createVehicleTrip({ ...body, createdByUserId: userId });
+    const vehicleTrip = await createVehicleTrip({
+      ...body,
+      createdByUserId: userId,
+    });
 
     return res.status(OK).send(new ResponseData(vehicleTrip));
   } catch (error) {
@@ -124,16 +138,23 @@ export async function putVehicleTrip(
     #swagger.responses['500']
   */
   try {
-    const { body, params: { id } } = req;
+    const {
+      body,
+      params: { id },
+    } = req;
 
     if (!(await findVehicleById(body.vehicleId))) {
-      return res.status(BAD_REQUEST)
+      return res
+        .status(BAD_REQUEST)
         .send(new ResponseData(null, VehicleErrorCodes.VehicleInexistent));
     }
 
     if (!(await findById(id))) {
-      return res.status(BAD_REQUEST)
-        .send(new ResponseData(null, VehicleTripErrorCodes.VehicleTripInexistent));
+      return res
+        .status(BAD_REQUEST)
+        .send(
+          new ResponseData(null, VehicleTripErrorCodes.VehicleTripInexistent),
+        );
     }
 
     await updateVehicleTrip(id, { ...body });

@@ -8,7 +8,9 @@ const dutyRepository = DataSource.getRepository(Duty);
 
 export async function createDuty(input: any) {
   try {
-    return dutyRepository.save(dutyRepository.create(input)) as unknown as Promise<Duty>;
+    return dutyRepository.save(
+      dutyRepository.create(input),
+    ) as unknown as Promise<Duty>;
   } catch (error) {
     throw error;
   }
@@ -38,7 +40,10 @@ export async function getDutyByDateAndShift(date: string, shift: DutyShift) {
   }
 }
 
-export async function getDutyByDateAndShiftWithUserNames(date: string, shift: DutyShift) {
+export async function getDutyByDateAndShiftWithUserNames(
+  date: string,
+  shift: DutyShift,
+) {
   try {
     const duty = await dutyRepository.query(`
       SELECT
@@ -90,21 +95,27 @@ export async function getDutyByDateAndShiftWithUserNames(date: string, shift: Du
 export async function listDutyByMonth({
   month,
 }: {
-  month: ListDutyMonth
+  month: ListDutyMonth;
 }): Promise<Duty[]> {
   try {
     let conditions = '1=1';
 
     switch (month) {
       case ListDutyMonth.CURRENT: {
-        const dateMin = moment().startOf('month').format('YYYY-MM-DD')
-        const dateMax = moment().endOf('month').format('YYYY-MM-DD')
+        const dateMin = moment().startOf('month').format('YYYY-MM-DD');
+        const dateMax = moment().endOf('month').format('YYYY-MM-DD');
         conditions = `date >= '${dateMin}' AND date <= '${dateMax}'`;
         break;
       }
       case ListDutyMonth.NEXT: {
-        const dateMin = moment().add(1, 'month').startOf('month').format('YYYY-MM-DD')
-        const dateMax = moment().add(1, 'month').endOf('month').format('YYYY-MM-DD')
+        const dateMin = moment()
+          .add(1, 'month')
+          .startOf('month')
+          .format('YYYY-MM-DD');
+        const dateMax = moment()
+          .add(1, 'month')
+          .endOf('month')
+          .format('YYYY-MM-DD');
         conditions = `date >= '${dateMin}' AND date <= '${dateMax}'`;
         break;
       }
@@ -147,13 +158,13 @@ export async function listDutyByMonth({
 
 export async function listPreviousDuty({
   page,
-  pageSize
+  pageSize,
 }: {
-  page: number,
-  pageSize: number
+  page: number;
+  pageSize: number;
 }): Promise<Duty[]> {
   try {
-    const dateMax = moment().startOf('month').format('YYYY-MM-DD')
+    const dateMax = moment().startOf('month').format('YYYY-MM-DD');
 
     return dutyRepository.query(`
       SELECT
@@ -193,10 +204,10 @@ export async function listPreviousDuty({
 
 export async function listDutiesByDate({
   dateMin,
-  dateMax
+  dateMax,
 }: {
-  dateMin: string,
-  dateMax: string
+  dateMin: string;
+  dateMax: string;
 }): Promise<Duty[]> {
   try {
     return dutyRepository.query(`

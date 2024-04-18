@@ -1,12 +1,23 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-import {
-  INTERNAL_SERVER_ERROR,
-  OK,
-} from 'http-status';
+import { INTERNAL_SERVER_ERROR, OK } from 'http-status';
 import ResponseData from '../utils/ResponseData';
-import { DutyPayload, GetDutyParams, ListDutyByMonthParams, ListDutyMonth, ListDutyPreviousQuery } from '../interfaces/Duty';
-import { listDutyByMonth, listPreviousDuty, getDutyByDateAndShift, updateDuty, createDuty, getDutyByDateAndShiftWithUserNames, listDutiesByDate } from '../services/duty.service';
+import {
+  DutyPayload,
+  GetDutyParams,
+  ListDutyByMonthParams,
+  ListDutyMonth,
+  ListDutyPreviousQuery,
+} from '../interfaces/Duty';
+import {
+  listDutyByMonth,
+  listPreviousDuty,
+  getDutyByDateAndShift,
+  updateDuty,
+  createDuty,
+  getDutyByDateAndShiftWithUserNames,
+  listDutiesByDate,
+} from '../services/duty.service';
 import DutyWeekDay from '../enum/duty/DutyWeekDay';
 import DutyShift from '../enum/duty/DutyShift';
 import { Duty } from '../models/duty.model';
@@ -29,24 +40,46 @@ export async function listByMonth(
     const dutyList = await listDutyByMonth({ month });
 
     const monthDays = [];
-    const date = moment().add(month === ListDutyMonth.NEXT ? 1 : 0, 'month').startOf('month');
-    const lastMonthDay = moment().add(month === ListDutyMonth.NEXT ? 1 : 0, 'month').endOf('month');
+    const date = moment()
+      .add(month === ListDutyMonth.NEXT ? 1 : 0, 'month')
+      .startOf('month');
+    const lastMonthDay = moment()
+      .add(month === ListDutyMonth.NEXT ? 1 : 0, 'month')
+      .endOf('month');
 
     while (date.format('YYYY-MM-DD') <= lastMonthDay.format('YYYY-MM-DD')) {
       switch (date.weekday()) {
         case DutyWeekDay.THURSDAY:
-          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.NIGHT });
+          monthDays.push({
+            date: date.format('YYYY-MM-DD'),
+            shift: DutyShift.NIGHT,
+          });
           break;
         case DutyWeekDay.FRIDAY:
-          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.DAY });
-          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.NIGHT });
+          monthDays.push({
+            date: date.format('YYYY-MM-DD'),
+            shift: DutyShift.DAY,
+          });
+          monthDays.push({
+            date: date.format('YYYY-MM-DD'),
+            shift: DutyShift.NIGHT,
+          });
           break;
         case DutyWeekDay.SATURDAY:
-          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.DAY });
-          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.NIGHT });
+          monthDays.push({
+            date: date.format('YYYY-MM-DD'),
+            shift: DutyShift.DAY,
+          });
+          monthDays.push({
+            date: date.format('YYYY-MM-DD'),
+            shift: DutyShift.NIGHT,
+          });
           break;
         case DutyWeekDay.SUNDAY:
-          monthDays.push({ date: date.format('YYYY-MM-DD'), shift: DutyShift.DAY });
+          monthDays.push({
+            date: date.format('YYYY-MM-DD'),
+            shift: DutyShift.DAY,
+          });
           break;
       }
       date.add(1, 'day');
@@ -55,7 +88,9 @@ export async function listByMonth(
     const response: Duty[] = [];
 
     for (const day of monthDays) {
-      const duty = dutyList.find((duty) => duty.date === day.date && duty.shift === day.shift);
+      const duty = dutyList.find(
+        duty => duty.date === day.date && duty.shift === day.shift,
+      );
       if (duty) {
         response.push({ ...duty });
       } else {
@@ -86,7 +121,7 @@ export async function listPrevious(
 
     const response = await listPreviousDuty({
       page: parseInt(page),
-      pageSize: parseInt(pageSize)
+      pageSize: parseInt(pageSize),
     });
 
     return res.status(OK).send(new ResponseData(response));
@@ -144,7 +179,7 @@ export async function postDuty(
   */
   try {
     const { body } = req;
-    const payload = { ...body }
+    const payload = { ...body };
 
     const duty = await getDutyByDateAndShift(payload.date, payload.shift);
 
@@ -154,7 +189,10 @@ export async function postDuty(
       await createDuty(payload);
     }
 
-    const response = await getDutyByDateAndShiftWithUserNames(payload.date, payload.shift);
+    const response = await getDutyByDateAndShiftWithUserNames(
+      payload.date,
+      payload.shift,
+    );
 
     return res.status(OK).send(new ResponseData(response));
   } catch (error) {
@@ -162,10 +200,7 @@ export async function postDuty(
   }
 }
 
-export async function listDutiesForChecklist(
-  req: Request,
-  res: Response,
-) {
+export async function listDutiesForChecklist(req: Request, res: Response) {
   /* 	
     #swagger.tags = ['Duty']
     #swagger.description = 'List nearby duties'

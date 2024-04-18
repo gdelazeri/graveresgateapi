@@ -7,34 +7,34 @@ export interface GetChecklistParams extends core.ParamsDictionary {
 }
 
 export interface ChecklistQuestion {
-  id: string
-  checklistId: string
-  text: string
-  order: number
-  type: ChecklistQuestionType
-  hasOtherOption: boolean
-  required: boolean
-  items: ChecklistQuestionItem[]
-  options: ChecklistQuestionOption[]
+  id: string;
+  checklistId: string;
+  text: string;
+  order: number;
+  type: ChecklistQuestionType;
+  hasOtherOption: boolean;
+  required: boolean;
+  items: ChecklistQuestionItem[];
+  options: ChecklistQuestionOption[];
 }
 
 export interface ChecklistQuestionItem {
-  id: string
-  checklistQuestionId: string
-  text: string
-  order: number
+  id: string;
+  checklistQuestionId: string;
+  text: string;
+  order: number;
 }
 
 export interface ChecklistQuestionOption {
-  id: string
-  checklistQuestionId: string
-  text: string
-  order: number
+  id: string;
+  checklistQuestionId: string;
+  text: string;
+  order: number;
 }
 
 export interface ChecklistFilledAnswer {
-  checklistQuestionId: string
-  checklistQuestion: string
-  checklistQuestionItem?: string
-  checklistQuestionOption?: string
+  checklistQuestionId: string;
+  checklistQuestion: string;
+  checklistQuestionItem?: string;
+  checklistQuestionOption?: string;
 }

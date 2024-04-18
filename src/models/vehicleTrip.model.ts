@@ -17,46 +17,46 @@ export class VehicleTrip {
   id: string;
 
   @Column({ nullable: false })
-  vehicleId: string
+  vehicleId: string;
 
-  @OneToOne(() => Vehicle, (vehicle) => vehicle.id)
+  @OneToOne(() => Vehicle, vehicle => vehicle.id)
   @JoinColumn()
-  vehicle: Vehicle
+  vehicle: Vehicle;
 
   @Column({ nullable: false })
-  driverId: string
+  driverId: string;
 
-  @OneToOne(() => User, (user) => user.id)
+  @OneToOne(() => User, user => user.id)
   @JoinColumn()
-  driver: User
+  driver: User;
 
   @Column({ nullable: false })
-  date: string
+  date: string;
 
   @Column({ nullable: false })
-  kmInitial: string
+  kmInitial: string;
 
   @Column({ nullable: false })
-  kmFinal: string
+  kmFinal: string;
 
   @Column({ nullable: false })
-  startAt: string
+  startAt: string;
 
   @Column({ nullable: false })
-  endAt: string
+  endAt: string;
 
   @Column({ nullable: false })
-  place: string
+  place: string;
 
   @Column({ nullable: false })
-  reason: string
+  reason: string;
 
   @Column({ nullable: false })
-  createdByUserId: string
+  createdByUserId: string;
 
-  @OneToOne(() => User, (user) => user.id)
+  @OneToOne(() => User, user => user.id)
   @JoinColumn()
-  createdByUser: Relation<User>
+  createdByUser: Relation<User>;
 
   @Column({ nullable: false, default: new Date() })
   createdAt: Date;

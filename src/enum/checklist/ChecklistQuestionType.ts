@@ -1,6 +1,6 @@
 enum ChecklistQuestionType {
   TEXT = 'TEXT',
-  OPTION = 'OPTION'
+  OPTION = 'OPTION',
 }
 
 export default ChecklistQuestionType;

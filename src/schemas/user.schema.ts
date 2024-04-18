@@ -26,7 +26,10 @@ export const postUserSchema = object({
       .required('Email is required'),
     birthDate: string()
       .required('Birth date is required')
-      .length(10, 'Birth date is too short - should be exacly 10 chars with format.'),
+      .length(
+        10,
+        'Birth date is too short - should be exacly 10 chars with format.',
+      ),
     phone: string()
       .required('Phone is required')
       .min(11, 'Phone is too short - should be 11 chars minimum.'),

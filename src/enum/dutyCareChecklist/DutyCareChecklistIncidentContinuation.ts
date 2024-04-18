@@ -1,6 +1,6 @@
 enum DutyCareChecklistIncidentContinuation {
   REMOVAL = 'REMOVAL',
-  REFUSED = 'REFUSED'
+  REFUSED = 'REFUSED',
 }
 
 export default DutyCareChecklistIncidentContinuation;

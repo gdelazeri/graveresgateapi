@@ -7,13 +7,13 @@ import {
   listPrevious,
   getDuty,
   postDuty,
-  listDutiesForChecklist
+  listDutiesForChecklist,
 } from '../controllers/duty.controller';
 import {
   getSchema,
   listByMonthSchema,
   listPreviousSchema,
-  postSchema
+  postSchema,
 } from '../schemas/duty.schema';
 
 const router = express.Router();
@@ -32,12 +32,7 @@ router.get(
   listPrevious,
 );
 
-router.get(
-  '/list/checklist',
-  requiresAuth([]),
-  listDutiesForChecklist,
-);
-
+router.get('/list/checklist', requiresAuth([]), listDutiesForChecklist);
 
 router.get(
   '/get/:date/:shift',

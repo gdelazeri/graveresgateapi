@@ -11,7 +11,7 @@ import {
   postVehicleTrip,
   putVehicleTrip,
   list,
-  getById
+  getById,
 } from '../controllers/vehicleTrip.controller';
 import Permission from '../enum/user/UserPermission';
 

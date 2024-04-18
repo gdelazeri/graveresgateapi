@@ -105,7 +105,7 @@ export async function listActiveUsers(
   try {
     const { isLeader, isDriver, permission } = req.query;
 
-    const filters: any = {}
+    const filters: any = {};
 
     if (isString(isLeader)) {
       filters.isLeader = isLeader === 'true';
@@ -138,7 +138,11 @@ export async function listAllUsers(
     #swagger.responses['500']
   */
   try {
-    const list = await findUsers([Status.ACTIVE, Status.PENDING, Status.SUSPENDED]);
+    const list = await findUsers([
+      Status.ACTIVE,
+      Status.PENDING,
+      Status.SUSPENDED,
+    ]);
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {
@@ -220,9 +224,15 @@ export async function putUser(
         .send(new ResponseData(null, UserErrorCodes.UserInexistent));
     }
 
-    if (user.registrationId === null && user.status === Status.PENDING && body.status === Status.ACTIVE) {
+    if (
+      user.registrationId === null &&
+      user.status === Status.PENDING &&
+      body.status === Status.ACTIVE
+    ) {
       const registration = await findLatestRegistrationId();
-      body.registrationId = generateRegistrationId(registration?.registrationId);
+      body.registrationId = generateRegistrationId(
+        registration?.registrationId,
+      );
     }
 
     await updateUser(id, body as unknown as User);

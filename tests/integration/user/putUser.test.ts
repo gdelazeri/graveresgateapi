@@ -3,7 +3,7 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser, findUserById } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import Permission from '../../../src/enum/user/UserPermission';
 import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, NO_CONTENT, OK } from 'http-status';
@@ -31,17 +31,17 @@ describe('src/routes/user.routes putUser', () => {
   });
 
   test('update user successfully', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj, permission: Permission.ADMIN });
-    const { _id } = await User.create({ ...userObj2 });
+    const { id: userId, permission } = await createUser({ ...userObj, permission: Permission.ADMIN });
+    const { id } = await createUser({ ...userObj2 });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
     const res = await request(api)
-      .put(`${ROUTE_MAP.USER_V1}/${_id}`)
+      .put(`${ROUTE_MAP.USER_V1}/${id}`)
       .send({ status: Status.ACTIVE, permission: Permission.VOLUNTARY })
       .auth(jwtTokenUser, { type: "bearer" });
 
-    const userUpdated = await User.findById(_id);
+    const userUpdated = await findUserById(id);
 
     expect(res.status).toEqual(NO_CONTENT);
     expect(userUpdated?.status).toEqual(Status.ACTIVE);
@@ -49,7 +49,7 @@ describe('src/routes/user.routes putUser', () => {
   });
 
   test('error on update user cause user logged is not an admin', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -62,7 +62,7 @@ describe('src/routes/user.routes putUser', () => {
   });
 
   test('error on update user cause user not exists', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj, permission: Permission.ADMIN });
+    const { id: userId, permission } = await createUser({ ...userObj, permission: Permission.ADMIN });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -75,13 +75,13 @@ describe('src/routes/user.routes putUser', () => {
   });
 
   test('error on update user cause some fields are invalid', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj, permission: Permission.ADMIN });
-    const { _id } = await User.create({ ...userObj2 });
+    const { id: userId, permission } = await createUser({ ...userObj, permission: Permission.ADMIN });
+    const { id } = await createUser({ ...userObj2 });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
     const res = await request(api)
-      .put(`${ROUTE_MAP.USER_V1}/${_id}`)
+      .put(`${ROUTE_MAP.USER_V1}/${id}`)
       .send({ status: Status.ACTIVE, permission: Permission.VOLUNTARY, password: 'newpassword123' })
       .auth(jwtTokenUser, { type: "bearer" });
 

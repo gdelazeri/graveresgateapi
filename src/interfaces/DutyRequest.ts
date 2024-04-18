@@ -1,5 +1,5 @@
 import * as core from 'express-serve-static-core';
-import DutyShift from "../enum/duty/DutyShift";
+import DutyShift from '../enum/duty/DutyShift';
 import DutyPosition from '../enum/duty/DutyPosition';
 
 export interface PostDutyRequestPayload {
@@ -8,11 +8,11 @@ export interface PostDutyRequestPayload {
   startAt: string;
   endAt: string;
   note: string;
-  positions: DutyPosition[]
+  positions: DutyPosition[];
 }
 
 export interface DutyRequestParams extends core.ParamsDictionary {
-  id: string
+  id: string;
 }
 
 export interface ListDutyRequest extends core.ParamsDictionary {

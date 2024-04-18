@@ -3,7 +3,7 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import { createAccessToken } from '../../../src/utils/JsonWebToken';
 import Permission from '../../../src/enum/user/UserPermission';
@@ -30,8 +30,8 @@ describe('src/routes/user.routes listUsers', () => {
   });
 
   test('list users successfully', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
-    await User.create({ ...userObj2 });
+    const { id: userId, permission } = await createUser({ ...userObj });
+    await createUser({ ...userObj2 });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -44,8 +44,8 @@ describe('src/routes/user.routes listUsers', () => {
   });
 
   test('list users successfully with pageSize = 1', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
-    await User.create({ ...userObj2 });
+    const { id: userId, permission } = await createUser({ ...userObj });
+    await createUser({ ...userObj2 });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -58,8 +58,8 @@ describe('src/routes/user.routes listUsers', () => {
   });
 
   test('error on list users due to permission', async () => {
-    await User.create({ ...userObj });
-    const { _id: userId, permission } = await User.create({ ...userObj2 });
+    await createUser({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj2 });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -71,7 +71,7 @@ describe('src/routes/user.routes listUsers', () => {
   });
 
   test('error on list users cause pageNumber is wrong', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -84,7 +84,7 @@ describe('src/routes/user.routes listUsers', () => {
   });
 
   test('error on list users cause pageSize is wrong', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -97,7 +97,7 @@ describe('src/routes/user.routes listUsers', () => {
   });
 
   test('error on list users cause is missing query params', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
     
     const jwtTokenUser = createAccessToken({ userId, permission });
 

@@ -3,7 +3,7 @@ import request from 'supertest';
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
 import routes from '../../../src/routes/index.routes';
 import makeApp from '../../../mocks/makeApp';
-import User from '../../../src/models/user.model';
+import { createUser, findUserById } from '../../../src/services/user.service';
 import { ROUTE_MAP } from '../../../src/routes/index.routes';
 import Permission from '../../../src/enum/user/UserPermission';
 import { BAD_REQUEST, NOT_FOUND, NO_CONTENT } from 'http-status';
@@ -14,7 +14,6 @@ const api = makeApp('', routes);
 
 // Mocks
 const userObj = { name: "Teste user", email: 'teste@teste.com', password: 'teste123456' };
-const userObj2 = { name: "Teste user 2", email: 'teste2@teste.com', password: 'teste123456' };
 
 describe('src/routes/user.routes putUser', () => {
   beforeAll(async () => {
@@ -30,7 +29,7 @@ describe('src/routes/user.routes putUser', () => {
   });
 
   test('update own user successfully', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 
@@ -39,7 +38,7 @@ describe('src/routes/user.routes putUser', () => {
       .send({ name: 'New name' })
       .auth(jwtTokenUser, { type: "bearer" });
 
-    const userUpdated = await User.findById(userId);
+    const userUpdated = await findUserById(userId);
 
     expect(res.status).toEqual(NO_CONTENT);
     expect(userUpdated?.name).toEqual('New name');
@@ -59,7 +58,7 @@ describe('src/routes/user.routes putUser', () => {
   });
 
   test('error on update user cause some fields are invalid', async () => {
-    const { _id: userId, permission } = await User.create({ ...userObj });
+    const { id: userId, permission } = await createUser({ ...userObj });
 
     const jwtTokenUser = createAccessToken({ userId, permission });
 

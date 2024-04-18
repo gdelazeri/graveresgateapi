@@ -11,26 +11,26 @@ export const postSchema = object({
         checklistQuestion: string().required(),
         checklistQuestionItem: string().optional().nullable(),
         checklistQuestionOption: string().optional().nullable(),
-      })
-    )
-  })
+      }),
+    ),
+  }),
 });
 
 export const listByDutyIdSchema = object({
   params: object({
-    dutyId: string().required()
-  })
+    dutyId: string().required(),
+  }),
 });
 
 export const getByIdSchema = object({
   params: object({
-    id: string().required()
-  })
+    id: string().required(),
+  }),
 });
 
 export const listPagedSchema = object({
   query: object({
     page: number().required().min(1),
-    pageSize: number().required()
-  })
+    pageSize: number().required(),
+  }),
 });

@@ -11,7 +11,10 @@ export async function findByDutyId(dutyId: string) {
   }
 }
 
-export async function findDutyCareChecklistPaged(page: number, pageSize: number) {
+export async function findDutyCareChecklistPaged(
+  page: number,
+  pageSize: number,
+) {
   try {
     return dutyCareChecklistRepository.find({
       skip: (page - 1) * pageSize,

@@ -1,8 +1,13 @@
-import { Request, Response } from "express";
-import { GetChecklistParams } from "../interfaces/Checklist";
-import { getChecklist, getChecklistQuestionItems, getChecklistQuestionOptions, getChecklistQuestions } from "../services/checklist.service";
-import { INTERNAL_SERVER_ERROR, OK } from "http-status";
-import ResponseData from "../utils/ResponseData";
+import { Request, Response } from 'express';
+import { GetChecklistParams } from '../interfaces/Checklist';
+import {
+  getChecklist,
+  getChecklistQuestionItems,
+  getChecklistQuestionOptions,
+  getChecklistQuestions,
+} from '../services/checklist.service';
+import { INTERNAL_SERVER_ERROR, OK } from 'http-status';
+import ResponseData from '../utils/ResponseData';
 
 export async function getQuestions(
   req: Request<GetChecklistParams, unknown, unknown, unknown>,
@@ -19,25 +24,29 @@ export async function getQuestions(
   try {
     const { type } = req.params;
 
-    const checklist = await getChecklist(type)
-    const questions = await getChecklistQuestions(type)
-    const questionItems = await getChecklistQuestionItems(type)
-    const questionOptions = await getChecklistQuestionOptions(type)
+    const checklist = await getChecklist(type);
+    const questions = await getChecklistQuestions(type);
+    const questionItems = await getChecklistQuestionItems(type);
+    const questionOptions = await getChecklistQuestionOptions(type);
 
-    const checklistQuestions = questions.map((question) => {
-      const items = questionItems.filter((item) => item.checklistQuestionId === question.id)
-      const options = questionOptions.filter((item) => item.checklistQuestionId === question.id)
+    const checklistQuestions = questions.map(question => {
+      const items = questionItems.filter(
+        item => item.checklistQuestionId === question.id,
+      );
+      const options = questionOptions.filter(
+        item => item.checklistQuestionId === question.id,
+      );
       return {
         ...question,
         items,
         options,
-      }
-    })
+      };
+    });
 
     const result = {
       ...checklist,
       questions: checklistQuestions,
-    }
+    };
 
     return res.status(OK).send(new ResponseData(result));
   } catch (error) {

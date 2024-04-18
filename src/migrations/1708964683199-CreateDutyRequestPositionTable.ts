@@ -1,7 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import DutyPosition from "../enum/duty/DutyPosition";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import DutyPosition from '../enum/duty/DutyPosition';
 
-export class CreateDutyRequestPositionTable1708964683199 implements MigrationInterface {
+export class CreateDutyRequestPositionTable1708964683199
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -25,11 +27,13 @@ export class CreateDutyRequestPositionTable1708964683199 implements MigrationInt
             enum: Object.values(DutyPosition),
           },
         ],
-        foreignKeys: [{
-          columnNames: ['dutyRequestId'],
-          referencedTableName: 'dutyRequest',
-          referencedColumnNames: ['id']
-        }],
+        foreignKeys: [
+          {
+            columnNames: ['dutyRequestId'],
+            referencedTableName: 'dutyRequest',
+            referencedColumnNames: ['id'],
+          },
+        ],
       }),
     );
   }

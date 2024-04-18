@@ -1,12 +1,14 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import DutyCareChecklistIncidentContinuation from "../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import DutyCareChecklistIncidentContinuation from '../enum/dutyCareChecklist/DutyCareChecklistIncidentContinuation';
 
-export class CreateDutyCareChecklistTable1712604348786 implements MigrationInterface {
+export class CreateDutyCareChecklistTable1712604348786
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       CREATE TYPE incident_continuation
       AS ENUM ('${DutyCareChecklistIncidentContinuation.REMOVAL}', '${DutyCareChecklistIncidentContinuation.REFUSED}');
-    `)
+    `);
     await queryRunner.createTable(
       new Table({
         name: 'dutyCareChecklist',
@@ -106,13 +108,25 @@ export class CreateDutyCareChecklistTable1712604348786 implements MigrationInter
             name: 'createdAt',
             type: 'timestamp',
             isNullable: false,
-            default: 'now()'
+            default: 'now()',
           },
         ],
         foreignKeys: [
-          { columnNames: ['vehicleId'], referencedTableName: 'vehicle', referencedColumnNames: ['id'] },
-          { columnNames: ['createdByUserId'], referencedTableName: 'user', referencedColumnNames: ['id'] },
-          { columnNames: ['checklistFilledId'], referencedTableName: 'checklistFilled', referencedColumnNames: ['id'] },
+          {
+            columnNames: ['vehicleId'],
+            referencedTableName: 'vehicle',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['createdByUserId'],
+            referencedTableName: 'user',
+            referencedColumnNames: ['id'],
+          },
+          {
+            columnNames: ['checklistFilledId'],
+            referencedTableName: 'checklistFilled',
+            referencedColumnNames: ['id'],
+          },
         ],
       }),
     );

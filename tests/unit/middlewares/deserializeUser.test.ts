@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { UNAUTHORIZED } from 'http-status';
 import Permission from '../../../src/enum/user/UserPermission';
 import deserializeUser from '../../../src/middlewares/deserializeUser';
-import User from '../../../src/models/user.model';
+import { createUser } from '../../../src/services/user.service';
 import { createAccessToken, createRefreshToken } from '../../../src/utils/JsonWebToken';
 
 import { connectDB, clearDB, disconnectDB } from '../../../mocks/database';
@@ -65,9 +65,9 @@ describe('src/middlewares/deserializeUser.ts', () => {
         email: 'teste@teste.com',
         password: 'teste123456',
       };
-      const { _id, permission } = await User.create({ ...userObj });
-      const accessToken = createAccessToken({ userId: _id, permission }, '0');
-      const refreshToken = createRefreshToken({ userId: _id, permission });
+      const { id, permission } = await createUser({ ...userObj });
+      const accessToken = createAccessToken({ userId: id, permission }, '0');
+      const refreshToken = createRefreshToken({ userId: id, permission });
       const request = {
         headers: {
           authorization: `Bearer ${accessToken}`,

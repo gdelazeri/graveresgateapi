@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  INTERNAL_SERVER_ERROR,
-  OK,
-} from 'http-status';
+import { INTERNAL_SERVER_ERROR, OK } from 'http-status';
 import ResponseData from '../utils/ResponseData';
 import { findAll } from '../services/course.service';
 
@@ -19,7 +16,7 @@ export async function list(
     #swagger.responses['500']
   */
   try {
-    const list = await findAll()
+    const list = await findAll();
 
     return res.status(OK).send(new ResponseData(list));
   } catch (error) {

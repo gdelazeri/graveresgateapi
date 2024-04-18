@@ -1,17 +1,35 @@
-import { Request, Response } from "express";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from "http-status";
-import { GetDutyCareByIdParams, ListByDutyParams, ListPagedQuery, PostDutyCareChecklistPayload } from "../interfaces/DutyCareChecklist";
-import { getChecklist, getChecklistByChecklistFilledId, getChecklistFilledAnswers } from "../services/checklist.service";
+import { Request, Response } from 'express';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from 'http-status';
+import {
+  GetDutyCareByIdParams,
+  ListByDutyParams,
+  ListPagedQuery,
+  PostDutyCareChecklistPayload,
+} from '../interfaces/DutyCareChecklist';
+import {
+  getChecklist,
+  getChecklistByChecklistFilledId,
+  getChecklistFilledAnswers,
+} from '../services/checklist.service';
 import ChecklistType from '../enum/checklist/ChecklistType';
-import { ChecklistErrorCodes, DutyCareChecklistErrorCodes, DutyErrorCodes, VehicleErrorCodes } from "../enum/ErrorCodes";
-import ResponseData from "../utils/ResponseData";
-import dataSource from "../dataSource";
-import { ChecklistFilled } from "../models/checklistFilled.model";
-import { ChecklistFilledAnswer } from "../models/checklistFilledAnswer.model";
-import { DutyCareChecklist } from "../models/dutyCareChecklist.model";
-import { findById as findVehicleById } from "../services/vehicle.service";
-import { findById as findDutyById } from "../services/duty.service";
-import { findByDutyId, findDutyCareChecklistId, findDutyCareChecklistPaged } from "../services/dutyCareChecklist.service";
+import {
+  ChecklistErrorCodes,
+  DutyCareChecklistErrorCodes,
+  DutyErrorCodes,
+  VehicleErrorCodes,
+} from '../enum/ErrorCodes';
+import ResponseData from '../utils/ResponseData';
+import dataSource from '../dataSource';
+import { ChecklistFilled } from '../models/checklistFilled.model';
+import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
+import { DutyCareChecklist } from '../models/dutyCareChecklist.model';
+import { findById as findVehicleById } from '../services/vehicle.service';
+import { findById as findDutyById } from '../services/duty.service';
+import {
+  findByDutyId,
+  findDutyCareChecklistId,
+  findDutyCareChecklistPaged,
+} from '../services/dutyCareChecklist.service';
 
 export async function post(
   req: Request<unknown, unknown, PostDutyCareChecklistPayload>,
@@ -25,7 +43,7 @@ export async function post(
     #swagger.responses['400']
     #swagger.responses['500']
   */
-  const queryRunner = dataSource.createQueryRunner()
+  const queryRunner = dataSource.createQueryRunner();
   try {
     const { body, userId } = req;
 
@@ -49,8 +67,8 @@ export async function post(
     const { id: checklistFilledId } = await queryRunner.manager.save(
       ChecklistFilled,
       queryRunner.manager.create(ChecklistFilled, {
-        checklistId: checklist.id
-      })
+        checklistId: checklist.id,
+      }),
     );
 
     if (Array.isArray(body.checklistAnswers)) {
@@ -59,8 +77,8 @@ export async function post(
           ChecklistFilledAnswer,
           queryRunner.manager.create(ChecklistFilledAnswer, {
             ...answer,
-            checklistFilledId
-          })
+            checklistFilledId,
+          }),
         );
       }
     }
@@ -70,8 +88,8 @@ export async function post(
       queryRunner.manager.create(DutyCareChecklist, {
         ...body,
         checklistFilledId,
-        createdByUserId: userId
-      })
+        createdByUserId: userId,
+      }),
     );
 
     await queryRunner.commitTransaction();
@@ -134,14 +152,18 @@ export async function getById(
       return res.status(BAD_REQUEST).send(DutyCareChecklistErrorCodes.NotFound);
     }
 
-    const checklistFilledAnswers = await getChecklistFilledAnswers(dutyCareChecklist.checklistFilledId);
-    const checklist = await getChecklistByChecklistFilledId(dutyCareChecklist.checklistFilledId);
+    const checklistFilledAnswers = await getChecklistFilledAnswers(
+      dutyCareChecklist.checklistFilledId,
+    );
+    const checklist = await getChecklistByChecklistFilledId(
+      dutyCareChecklist.checklistFilledId,
+    );
 
     const result = {
       ...dutyCareChecklist,
       checklistName: checklist?.name,
-      checklistFilledAnswers
-    }
+      checklistFilledAnswers,
+    };
 
     return res.status(OK).send(new ResponseData(result));
   } catch (error) {
@@ -164,7 +186,10 @@ export async function listPaged(
   try {
     const { page, pageSize } = req.query;
 
-    const result = await findDutyCareChecklistPaged(parseInt(page), parseInt(pageSize));
+    const result = await findDutyCareChecklistPaged(
+      parseInt(page),
+      parseInt(pageSize),
+    );
 
     return res.status(OK).send(new ResponseData(result));
   } catch (error) {
