@@ -12,7 +12,9 @@ export const dataSourceOptions: DataSourceOptions = {
   database: DATABASE_NAME,
   logging: true,
   synchronize: false,
-  ssl: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   migrations: [...migrations],
   entities: [...models],
 };
