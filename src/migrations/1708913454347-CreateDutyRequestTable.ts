@@ -15,7 +15,7 @@ export class CreateDutyRequestTable1708913454347 implements MigrationInterface {
           },
           {
             name: 'date',
-            type: 'varchar',
+            type: 'date',
             isNullable: false,
           },
           {

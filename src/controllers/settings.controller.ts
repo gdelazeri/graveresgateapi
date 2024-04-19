@@ -57,7 +57,9 @@ export async function postSetting(
 
     await saveSettingValue(key, body);
 
-    return res.sendStatus(OK);
+    const setting = await getSettingValue(key);
+
+    return res.status(OK).send(new ResponseData(setting?.value));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }

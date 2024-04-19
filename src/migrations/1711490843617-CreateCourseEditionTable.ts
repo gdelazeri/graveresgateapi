@@ -28,8 +28,6 @@ export class CreateCourseEditionTable1711490843617
         ],
       }),
     );
-    await queryRunner.query('ALTER TABLE "user" DROP COLUMN "courseEditionId"');
-    await queryRunner.query('ALTER TABLE "user" ADD COLUMN "courseId" UUID');
     await queryRunner.query(
       'ALTER TABLE "user" ADD CONSTRAINT fk_user_course FOREIGN KEY ("courseId") REFERENCES "course" (id);',
     );

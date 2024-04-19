@@ -167,7 +167,9 @@ export async function putVehicle(
 
     await updateVehicle(id, payload);
 
-    return res.sendStatus(NO_CONTENT);
+    const vehicle = await findById(id);
+
+    return res.status(OK).send(new ResponseData(vehicle));
   } catch (error) {
     res.sendStatus(INTERNAL_SERVER_ERROR);
   }
