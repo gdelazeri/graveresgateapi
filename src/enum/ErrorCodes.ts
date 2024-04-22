@@ -39,3 +39,7 @@ export enum SettingErrorCodes {
 export enum DutyCareChecklistErrorCodes {
   NotFound = 'DCC_0001',
 }
+
+export enum DriverChecklistErrorCodes {
+  NotFound = 'DC_0001',
+}

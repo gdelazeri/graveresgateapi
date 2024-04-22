@@ -6,3 +6,9 @@ export const getChecklistQuestionSchema = object({
     type: string().required().oneOf(Object.values(ChecklistType)),
   }),
 });
+
+export const listByDutyIdSchema = object({
+  params: object({
+    dutyId: string().required()
+  }),
+});

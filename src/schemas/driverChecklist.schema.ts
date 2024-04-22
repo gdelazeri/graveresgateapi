@@ -16,12 +16,6 @@ export const postSchema = object({
   }),
 });
 
-export const listByDutyIdSchema = object({
-  params: object({
-    dutyId: string().required(),
-  }),
-});
-
 export const getByIdSchema = object({
   params: object({
     id: string().required(),

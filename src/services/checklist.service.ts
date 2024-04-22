@@ -4,6 +4,7 @@ import {
   ChecklistQuestion,
   ChecklistQuestionItem,
   ChecklistQuestionOption,
+  DutyChecklist,
 } from '../interfaces/Checklist';
 import { Checklist } from '../models/checklist.model';
 import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
@@ -98,6 +99,23 @@ export async function getChecklistByChecklistFilledId(
     `);
 
     return checklist.length === 1 ? checklist[0] : null;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function findChecklistsByDutyId(
+  dutyId: string,
+): Promise<DutyChecklist[]> {
+  try {
+    const checklists = await checklistRepository.query(`
+      SELECT dc.id, "dutyId", c."name" as "checklistName", c."type" 
+      FROM public."driverChecklist" dc 
+      left join "checklistFilled" cf on cf.id = dc."checklistFilledId" 
+      left join checklist c on c.id = cf."checklistId" 
+      where "dutyId" = '${dutyId}'
+    `);
+    return checklists
   } catch (error) {
     throw error;
   }

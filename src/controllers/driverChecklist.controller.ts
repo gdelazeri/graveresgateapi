@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from 'http-status';
 import {
   GetDriverChecklistByIdParams,
-  ListByDutyParams,
   ListPagedQuery,
   PostDriverChecklistPayload,
 } from '../interfaces/DriverChecklist';
@@ -14,7 +13,7 @@ import {
 import ChecklistType from '../enum/checklist/ChecklistType';
 import {
   ChecklistErrorCodes,
-  DutyCareChecklistErrorCodes,
+  DriverChecklistErrorCodes,
   DutyErrorCodes,
   VehicleErrorCodes,
 } from '../enum/ErrorCodes';
@@ -25,7 +24,6 @@ import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
 import { findById as findVehicleById } from '../services/vehicle.service';
 import { findById as findDutyById } from '../services/duty.service';
 import {
-  findByDutyId,
   findDriverChecklistById,
   findDriverChecklistPaged,
 } from '../services/driverChecklist.service';
@@ -104,34 +102,6 @@ export async function post(
   }
 }
 
-export async function listByDuty(
-  req: Request<ListByDutyParams>,
-  res: Response,
-) {
-  /* 	
-    #swagger.tags = ['DriverChecklist']
-    #swagger.description = 'List driver checklist by duty id'
-    #swagger.security = [{ "Bearer": [ ] }]
-    #swagger.responses['200']
-    #swagger.responses['400']
-    #swagger.responses['500']
-  */
-  try {
-    const { dutyId } = req.params;
-
-    const duty = await findDutyById(dutyId);
-    if (!duty) {
-      return res.status(BAD_REQUEST).send(DutyErrorCodes.NotFound);
-    }
-
-    const result = await findByDutyId(dutyId);
-
-    return res.status(OK).send(new ResponseData(result));
-  } catch (error) {
-    return res.sendStatus(INTERNAL_SERVER_ERROR);
-  }
-}
-
 export async function getById(
   req: Request<GetDriverChecklistByIdParams>,
   res: Response,
@@ -149,7 +119,7 @@ export async function getById(
 
     const dutyCareChecklist = await findDriverChecklistById(id);
     if (!dutyCareChecklist) {
-      return res.status(BAD_REQUEST).send(DutyCareChecklistErrorCodes.NotFound);
+      return res.status(BAD_REQUEST).send(DriverChecklistErrorCodes.NotFound);
     }
 
     const checklistFilledAnswers = await getChecklistFilledAnswers(

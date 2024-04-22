@@ -6,6 +6,10 @@ export interface GetChecklistParams extends core.ParamsDictionary {
   type: ChecklistType;
 }
 
+export interface ListByDutyParams extends core.ParamsDictionary {
+  dutyId: string;
+}
+
 export interface ChecklistQuestion {
   id: string;
   checklistId: string;
@@ -37,4 +41,11 @@ export interface ChecklistFilledAnswer {
   checklistQuestion: string;
   checklistQuestionItem?: string;
   checklistQuestionOption?: string;
+}
+
+export interface DutyChecklist {
+  id: string
+  dutyId: string
+  checklistName: string
+  type: ChecklistType
 }
