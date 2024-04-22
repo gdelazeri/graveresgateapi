@@ -17,6 +17,7 @@ export async function findDriverChecklistPaged(page: number, pageSize: number) {
       skip: (page - 1) * pageSize,
       take: pageSize,
       order: { createdAt: 'DESC' },
+      relations: { duty: true, vehicle: true },
     });
   } catch (error) {
     throw error;

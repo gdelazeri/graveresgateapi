@@ -57,7 +57,7 @@ export class CreateChecklistTables1712283856794 implements MigrationInterface {
       }),
     );
     await queryRunner.query(
-      `CREATE TYPE question_type AS ENUM ('${ChecklistQuestionType.TEXT}', '${ChecklistQuestionType.OPTION}');`,
+      `CREATE TYPE question_type AS ENUM ('${ChecklistQuestionType.TEXT}', '${ChecklistQuestionType.OPTION}', '${ChecklistQuestionType.SELECT}');`,
     );
     await queryRunner.createTable(
       new Table({
