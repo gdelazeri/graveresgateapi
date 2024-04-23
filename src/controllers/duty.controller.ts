@@ -146,12 +146,12 @@ export async function getDuty(
     const { date, shift } = req.params;
 
     const duty = await getDutyByDateAndShiftWithUserNames(date, shift);
-    let response = {};
+    let response: Duty;
 
     if (duty) {
-      response = { ...duty };
+      response = { ...duty } as Duty;
     } else {
-      response = { date, shift };
+      response = { date, shift, isAvailable: true } as unknown as Duty;
     }
 
     return res.status(OK).send(new ResponseData(response));
