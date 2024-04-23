@@ -45,7 +45,6 @@ export interface ChecklistFilledAnswer {
 
 export interface DutyChecklist {
   id: string
-  dutyId: string
   checklistName: string
   type: ChecklistType
 }

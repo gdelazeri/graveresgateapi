@@ -109,7 +109,7 @@ export async function findChecklistsByDutyId(
 ): Promise<DutyChecklist[]> {
   try {
     const checklists = await checklistRepository.query(`
-      SELECT dc.id, "dutyId", c."name" as "checklistName", c."type" 
+      SELECT dc.id, c."name" as "checklistName", c."type" 
       FROM public."driverChecklist" dc 
       left join "checklistFilled" cf on cf.id = dc."checklistFilledId" 
       left join checklist c on c.id = cf."checklistId" 
