@@ -50,6 +50,8 @@ export async function getDutyByDateAndShiftWithUserNames(
         d.id,
         TO_CHAR("date" , 'YYYY-MM-DD') as "date",
         d.shift,
+        d."isAvailable",
+        d.note,
         d."leaderId",
         u.name as "leaderName",
         u."imageUrl" as "leaderImageUrl",
@@ -126,6 +128,7 @@ export async function listDutyByMonth({
         d.id,
         TO_CHAR("date" , 'YYYY-MM-DD') as "date",
         d.shift,
+        d."isAvailable",
         d."leaderId",
         u.name as "leaderName",
         d."driverId",
@@ -172,6 +175,7 @@ export async function listPreviousDuty({
         TO_CHAR("date" , 'YYYY-MM-DD') as "date",
         d.shift,
         d."leaderId",
+        d."isAvailable",
         u.name as "leaderName",
         d."driverId",
         u2."name" as "driverName",
@@ -237,7 +241,7 @@ export async function listDutiesByDate({
         left join "user" u5 on u5.id = "radioOperatorId"
         left join "user" u6 on u6.id = "assistantRadioOperatorId"
         left join "user" u7 on u7.id = "traineeId"
-      WHERE date >= '${dateMin}' AND date <= '${dateMax}'
+      WHERE date >= '${dateMin}' AND date <= '${dateMax}' AND "isAvailable" = true
       ORDER BY d.date DESC, d.shift DESC
     `);
   } catch (error) {

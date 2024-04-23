@@ -94,7 +94,7 @@ export async function listByMonth(
       if (duty) {
         response.push({ ...duty });
       } else {
-        response.push({ date: day.date, shift: day.shift } as any);
+        response.push({ date: day.date, shift: day.shift, isAvailable: true } as unknown as Duty);
       }
     }
 

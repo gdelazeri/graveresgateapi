@@ -34,6 +34,12 @@ export class Duty {
   @Column({ nullable: false })
   traineeId: string;
 
+  @Column({ nullable: false, default: true })
+  isAvailable: string;
+
+  @Column({ nullable: false, default: true })
+  note: string;
+
   @Column({ nullable: false, default: new Date() })
   createdAt: Date;
 }

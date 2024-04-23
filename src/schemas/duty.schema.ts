@@ -1,4 +1,4 @@
-import { number, object, string } from 'yup';
+import { boolean, number, object, string } from 'yup';
 import { ListDutyMonth } from '../interfaces/Duty';
 import DutyShift from '../enum/duty/DutyShift';
 import { MAX_PAGE_SIZE } from '../enum/Constants';
@@ -34,5 +34,7 @@ export const postSchema = object({
     radioOperatorId: string().optional().nullable(),
     assistantRadioOperatorId: string().optional().nullable(),
     traineeId: string().optional().nullable(),
+    isAvailable: boolean().optional().nullable(),
+    note: string().optional().nullable(),
   }),
 });
