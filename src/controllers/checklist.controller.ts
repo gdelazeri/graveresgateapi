@@ -37,7 +37,7 @@ export async function getQuestions(
       );
       const options = questionOptions.filter(
         item => item.checklistQuestionId === question.id,
-      );
+      )
       return {
         ...question,
         items,

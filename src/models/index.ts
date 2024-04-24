@@ -14,6 +14,7 @@ import { ChecklistQuestionOption } from './checklistQuestionOption.model';
 import { ChecklistFilledAnswer } from './checklistFilledAnswer.model';
 import { Setting } from './setting.model';
 import { DriverChecklist } from './driverChecklist.model';
+import { RescuerChecklist } from './rescuerChecklist.model';
 
 export default [
   User,
@@ -32,4 +33,5 @@ export default [
   ChecklistFilledAnswer,
   Setting,
   DriverChecklist,
+  RescuerChecklist,
 ];

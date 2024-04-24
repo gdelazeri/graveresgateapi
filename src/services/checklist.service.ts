@@ -67,7 +67,7 @@ export async function getChecklistQuestionOptions(
       LEFT JOIN "checklistQuestion" cq ON cq.id = cqo."checklistQuestionId"
       LEFT JOIN checklist c ON c.id = cq."checklistId"
       WHERE c."type" = '${type}'
-      ORDER BY cq."order" ASC
+      ORDER BY cqo."checklistQuestionId" ASC, cqo."order" ASC
     `);
   } catch (error) {
     throw error;
@@ -110,10 +110,16 @@ export async function findChecklistsByDutyId(
   try {
     const checklists = await checklistRepository.query(`
       SELECT dc.id, c."name" as "checklistName", c."type" 
-      FROM public."driverChecklist" dc 
-      left join "checklistFilled" cf on cf.id = dc."checklistFilledId" 
-      left join checklist c on c.id = cf."checklistId" 
-      where "dutyId" = '${dutyId}'
+      FROM "driverChecklist" dc 
+        LEFT JOIN "checklistFilled" cf on cf.id = dc."checklistFilledId" 
+        LEFT JOIN checklist c on c.id = cf."checklistId" 
+      WHERE "dutyId" = '${dutyId}'
+      UNION
+      SELECT rc.id, c."name" as "checklistName", c."type" 
+      FROM "rescuerChecklist" rc
+        LEFT JOIN "checklistFilled" cf on cf.id = rc."checklistFilledId" 
+        LEFT JOIN checklist c on c.id = cf."checklistId"
+      WHERE "dutyId" = '${dutyId}'
     `);
     return checklists
   } catch (error) {

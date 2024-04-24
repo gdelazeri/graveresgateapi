@@ -14,6 +14,7 @@ import { CreateDutyCareChecklistTable1712604348786 } from './1712604348786-Creat
 import { CreateSettingsTable1713035338212 } from './1713035338212-CreateSettingsTable';
 import { CreateDriverChecklistTable1713316817483 } from './1713316817483-CreateDriverChecklistTable';
 import { AddIsAvailableColumnDutyTable1713879655458 } from './1713879655458-AddIsAvailableColumnDutyTable';
+import { CreateRescuerChecklistTable1713984534662 } from './1713984534662-CreateRescuerChecklistTable';
 
 export default [
   CreateUserTable1708913454300,
@@ -31,5 +32,6 @@ export default [
   CreateDutyCareChecklistTable1712604348786,
   CreateSettingsTable1713035338212,
   CreateDriverChecklistTable1713316817483,
-  AddIsAvailableColumnDutyTable1713879655458
+  AddIsAvailableColumnDutyTable1713879655458,
+  CreateRescuerChecklistTable1713984534662
 ];

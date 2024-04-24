@@ -43,3 +43,7 @@ export enum DutyCareChecklistErrorCodes {
 export enum DriverChecklistErrorCodes {
   NotFound = 'DC_0001',
 }
+
+export enum RescuerChecklistErrorCodes {
+  NotFound = 'RC_0001',
+}

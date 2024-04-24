@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from 'http-status';
 import {
-  GetDriverChecklistByIdParams,
+  GetRescuerChecklistByIdParams,
   ListPagedQuery,
-  PostDriverChecklistPayload,
-} from '../interfaces/DriverChecklist';
+  PostRescuerChecklistPayload,
+} from '../interfaces/RescuerChecklist';
 import {
   getChecklist,
   getChecklistByChecklistFilledId,
@@ -13,7 +13,7 @@ import {
 import ChecklistType from '../enum/checklist/ChecklistType';
 import {
   ChecklistErrorCodes,
-  DriverChecklistErrorCodes,
+  RescuerChecklistErrorCodes,
   DutyErrorCodes,
   VehicleErrorCodes,
 } from '../enum/ErrorCodes';
@@ -24,18 +24,18 @@ import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
 import { findById as findVehicleById } from '../services/vehicle.service';
 import { findById as findDutyById } from '../services/duty.service';
 import {
-  findDriverChecklistById,
-  findDriverChecklistPaged,
-} from '../services/driverChecklist.service';
-import { DriverChecklist } from '../models/driverChecklist.model';
+  findRescuerChecklistById,
+  findRescuerChecklistPaged,
+} from '../services/rescuerChecklist.service';
+import { RescuerChecklist } from '../models/rescuerChecklist.model';
 
 export async function post(
-  req: Request<unknown, unknown, PostDriverChecklistPayload>,
+  req: Request<unknown, unknown, PostRescuerChecklistPayload>,
   res: Response,
 ) {
   /* 	
-    #swagger.tags = ['DriverChecklist']
-    #swagger.description = 'Save driver checklist answers'
+    #swagger.tags = ['RescuerChecklist']
+    #swagger.description = 'Save rescuer checklist answers'
     #swagger.security = [{ "Bearer": [ ] }]
     #swagger.responses['200']
     #swagger.responses['400']
@@ -45,7 +45,7 @@ export async function post(
   try {
     const { body, userId } = req;
 
-    const checklist = await getChecklist(ChecklistType.DRIVER);
+    const checklist = await getChecklist(ChecklistType.RESCUER);
     if (!checklist) {
       return res.status(BAD_REQUEST).send(ChecklistErrorCodes.NotFound);
     }
@@ -82,8 +82,8 @@ export async function post(
     }
 
     const { id } = await queryRunner.manager.save(
-      DriverChecklist,
-      queryRunner.manager.create(DriverChecklist, {
+      RescuerChecklist,
+      queryRunner.manager.create(RescuerChecklist, {
         ...body,
         checklistFilledId,
         createdByUserId: userId,
@@ -103,12 +103,12 @@ export async function post(
 }
 
 export async function getById(
-  req: Request<GetDriverChecklistByIdParams>,
+  req: Request<GetRescuerChecklistByIdParams>,
   res: Response,
 ) {
   /* 	
-    #swagger.tags = ['DriverChecklist']
-    #swagger.description = 'Get driver checklist by id'
+    #swagger.tags = ['RescuerChecklist']
+    #swagger.description = 'Get rescuer checklist by id'
     #swagger.security = [{ "Bearer": [ ] }]
     #swagger.responses['200']
     #swagger.responses['400']
@@ -117,20 +117,20 @@ export async function getById(
   try {
     const { id } = req.params;
 
-    const driverChecklist = await findDriverChecklistById(id);
-    if (!driverChecklist) {
-      return res.status(BAD_REQUEST).send(DriverChecklistErrorCodes.NotFound);
+    const rescuerChecklist = await findRescuerChecklistById(id);
+    if (!rescuerChecklist) {
+      return res.status(BAD_REQUEST).send(RescuerChecklistErrorCodes.NotFound);
     }
 
     const checklistFilledAnswers = await getChecklistFilledAnswers(
-      driverChecklist.checklistFilledId,
+      rescuerChecklist.checklistFilledId,
     );
     const checklist = await getChecklistByChecklistFilledId(
-      driverChecklist.checklistFilledId,
+      rescuerChecklist.checklistFilledId,
     );
 
     const result = {
-      ...driverChecklist,
+      ...rescuerChecklist,
       checklistName: checklist?.name,
       checklistFilledAnswers,
     };
@@ -146,8 +146,8 @@ export async function listPaged(
   res: Response,
 ) {
   /* 	
-    #swagger.tags = ['DriverChecklist']
-    #swagger.description = 'List driver checklist by page'
+    #swagger.tags = ['RescuerChecklist']
+    #swagger.description = 'List rescuer checklist by page'
     #swagger.security = [{ "Bearer": [ ] }]
     #swagger.responses['200']
     #swagger.responses['400']
@@ -156,7 +156,7 @@ export async function listPaged(
   try {
     const { page, pageSize } = req.query;
 
-    const result = await findDriverChecklistPaged(
+    const result = await findRescuerChecklistPaged(
       parseInt(page),
       parseInt(pageSize),
     );

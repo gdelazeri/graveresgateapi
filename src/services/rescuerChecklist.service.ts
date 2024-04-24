@@ -1,7 +1,7 @@
 import DataSource from '../dataSource';
-import { DriverChecklist } from '../models/driverChecklist.model';
+import { RescuerChecklist } from '../models/rescuerChecklist.model';
 
-const repository = DataSource.getRepository(DriverChecklist);
+const repository = DataSource.getRepository(RescuerChecklist);
 
 export async function findByDutyId(dutyId: string) {
   try {
@@ -11,20 +11,20 @@ export async function findByDutyId(dutyId: string) {
   }
 }
 
-export async function findDriverChecklistPaged(page: number, pageSize: number) {
+export async function findRescuerChecklistPaged(page: number, pageSize: number) {
   try {
     return repository.find({
       skip: (page - 1) * pageSize,
       take: pageSize,
       order: { createdAt: 'DESC' },
-      relations: { duty: true, vehicle: true, createdByUser: true },
+      relations: { duty: true, vehicle: true, createdByUser: true  },
     });
   } catch (error) {
     throw error;
   }
 }
 
-export async function findDriverChecklistById(id: string) {
+export async function findRescuerChecklistById(id: string) {
   try {
     return repository.findOne({
       where: { id },
