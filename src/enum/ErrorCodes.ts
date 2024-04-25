@@ -47,3 +47,7 @@ export enum DriverChecklistErrorCodes {
 export enum RescuerChecklistErrorCodes {
   NotFound = 'RC_0001',
 }
+
+export enum RadioOperatorChecklistErrorCodes {
+  NotFound = 'ROC_0001',
+}
