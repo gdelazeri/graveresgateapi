@@ -1,3 +1,4 @@
+import { QueryRunner } from 'typeorm';
 import DataSource from '../dataSource';
 import ChecklistType from '../enum/checklist/ChecklistType';
 import {
@@ -8,6 +9,7 @@ import {
 } from '../interfaces/Checklist';
 import { Checklist } from '../models/checklist.model';
 import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
+import { ChecklistFilledAnswer as ChecklistFilledAnswerItem } from '../interfaces/Checklist';
 
 const checklistRepository = DataSource.getRepository(Checklist);
 const checklistFilledAnswerRepository = DataSource.getRepository(
@@ -122,6 +124,25 @@ export async function findChecklistsByDutyId(
       WHERE "dutyId" = '${dutyId}'
     `);
     return checklists
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function insertChecklistFilledAnswers(
+  queryRunner: QueryRunner,
+  checklistAnswers: ChecklistFilledAnswerItem[],
+  checklistFilledId: string,
+): Promise<void> {
+  try {
+    const checklistFilledAnswers = checklistAnswers.map((answer) => ({
+      ...answer,
+      checklistFilledId,
+    }))
+    await queryRunner.manager.save(
+      ChecklistFilledAnswer,
+      queryRunner.manager.create(ChecklistFilledAnswer, checklistFilledAnswers),
+    );
   } catch (error) {
     throw error;
   }

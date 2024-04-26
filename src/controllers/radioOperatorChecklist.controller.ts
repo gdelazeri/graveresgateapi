@@ -9,6 +9,7 @@ import {
   getChecklist,
   getChecklistByChecklistFilledId,
   getChecklistFilledAnswers,
+  insertChecklistFilledAnswers,
 } from '../services/checklist.service';
 import ChecklistType from '../enum/checklist/ChecklistType';
 import {
@@ -19,7 +20,6 @@ import {
 import ResponseData from '../utils/ResponseData';
 import dataSource from '../dataSource';
 import { ChecklistFilled } from '../models/checklistFilled.model';
-import { ChecklistFilledAnswer } from '../models/checklistFilledAnswer.model';
 import { findById as findDutyById } from '../services/duty.service';
 import {
   findRadioOperatorChecklistById,
@@ -63,15 +63,7 @@ export async function post(
     );
 
     if (Array.isArray(body.checklistAnswers)) {
-      for (const answer of body.checklistAnswers) {
-        await queryRunner.manager.save(
-          ChecklistFilledAnswer,
-          queryRunner.manager.create(ChecklistFilledAnswer, {
-            ...answer,
-            checklistFilledId,
-          }),
-        );
-      }
+      await insertChecklistFilledAnswers(queryRunner, [...body.checklistAnswers], checklistFilledId);
     }
 
     const { id } = await queryRunner.manager.save(
