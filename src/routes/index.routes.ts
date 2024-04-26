@@ -11,6 +11,7 @@ import DutyCareChecklist from './dutyCareChecklist.routes';
 import Settings from './settings.routes';
 import DriverChecklist from './driverChecklist.routes';
 import RescuerChecklist from './rescuerChecklist.routes';
+import RadioOperatorChecklist from './radioOperatorChecklist.routes';
 
 export enum ROUTE_MAP {
   USER_V1 = '/v1/user',
@@ -24,6 +25,7 @@ export enum ROUTE_MAP {
   SETTING_V1 = '/v1/setting',
   DRIVER_CHECKLIST_V1 = '/v1/driver-checklist',
   RESCUER_CHECKLIST_V1 = '/v1/rescuer-checklist',
+  RADIO_OPERATOR_CHECKLIST_V1 = '/v1/radio-operator-checklist',
 }
 
 const routes = express.Router();
@@ -43,5 +45,6 @@ routes.use(ROUTE_MAP.DUTY_CARE_CHECKLIST_V1, DutyCareChecklist);
 routes.use(ROUTE_MAP.SETTING_V1, Settings);
 routes.use(ROUTE_MAP.DRIVER_CHECKLIST_V1, DriverChecklist);
 routes.use(ROUTE_MAP.RESCUER_CHECKLIST_V1, RescuerChecklist);
+routes.use(ROUTE_MAP.RADIO_OPERATOR_CHECKLIST_V1, RadioOperatorChecklist);
 
 export default routes;

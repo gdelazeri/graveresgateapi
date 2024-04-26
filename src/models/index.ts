@@ -15,6 +15,7 @@ import { ChecklistFilledAnswer } from './checklistFilledAnswer.model';
 import { Setting } from './setting.model';
 import { DriverChecklist } from './driverChecklist.model';
 import { RescuerChecklist } from './rescuerChecklist.model';
+import { RadioOperatorChecklist } from './radioOperatorChecklist.model';
 
 export default [
   User,
@@ -34,4 +35,5 @@ export default [
   Setting,
   DriverChecklist,
   RescuerChecklist,
+  RadioOperatorChecklist
 ];
